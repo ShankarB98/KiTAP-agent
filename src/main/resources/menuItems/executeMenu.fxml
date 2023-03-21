@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="executeTestsAnchorPane" prefHeight="268.0" prefWidth="416.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kitap.agent.ui.controllers.ExecuteMenu">
+   <children>
+      <Label fx:id="executeTitle" layoutX="73.0" layoutY="14.0" prefHeight="39.0" prefWidth="256.0" text="Execute KiTAP Tests" textFill="#096eb6">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="versionCombo" layoutX="21.0" layoutY="197.0" prefHeight="25.0" prefWidth="375.0" />
+      <ImageView fx:id="kitapImage" fitHeight="53.0" fitWidth="52.0" layoutX="21.0" layoutY="14.0">
+         <image>
+            <Image url="@../images/kitap.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="executeAutLabel" layoutX="21.0" layoutY="128.0" text="Select AUT:">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="versionLabel" layoutX="20.0" layoutY="178.0" text="Select Version:">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Button fx:id="viewTestResults" layoutX="150.0" layoutY="236.0" mnemonicParsing="false" onAction="#displayTestResults" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: #096eb6;" text="View Tests Results" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <effect>
+            <InnerShadow>
+               <color>
+                  <Color opacity="0.5456852316856384" />
+               </color>
+            </InnerShadow>
+         </effect>
+      </Button>
+      <Button fx:id="cancelButton" layoutX="22.0" layoutY="236.0" mnemonicParsing="false" onAction="#cancelClicked" prefHeight="25.0" prefWidth="111.0" style="-fx-background-color: #de3c27;" text="Cancel" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <effect>
+            <InnerShadow>
+               <color>
+                  <Color opacity="0.5482233166694641" />
+               </color>
+            </InnerShadow>
+         </effect>
+      </Button>
+      <Button fx:id="executeTestButton" layoutX="284.0" layoutY="236.0" mnemonicParsing="false" onAction="#testExecution" prefHeight="25.0" prefWidth="111.0" style="-fx-background-color: #096eb6;" text="Execute Tests" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <effect>
+            <InnerShadow>
+               <color>
+                  <Color opacity="0.5507614016532898" />
+               </color>
+            </InnerShadow>
+         </effect>
+      </Button>
+      <ComboBox fx:id="executeAutCombo" layoutX="21.0" layoutY="146.0" onAction="#onAutSelection" prefHeight="25.0" prefWidth="375.0" />
+      <ProgressIndicator fx:id="executeTestsProgressIndicator" layoutX="185.0" layoutY="128.0" visible="false" />
+      <Label fx:id="blinkLabel" layoutX="310.0" layoutY="259.0" text="Executing..." visible="false" />
+      <Label layoutX="22.0" layoutY="78.0" text="Select AUT Type:">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="autType" layoutX="21.0" layoutY="96.0" onAction="#onChangeOfAutType" prefHeight="25.0" prefWidth="375.0" />
+   </children>
+   <effect>
+      <Blend />
+   </effect>
+</AnchorPane>

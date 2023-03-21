@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="anchorPane" onMouseClicked="#onClickAnchorPane" prefHeight="263.0" prefWidth="419.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kitap.agent.ui.controllers.GenerateMenu">
+    <children>
+        <Label fx:id="generateTitle" layoutX="73.0" layoutY="14.0" prefHeight="39.0" prefWidth="256.0" text="Generate KiTAP Tests" textFill="#096eb6">
+            <font>
+                <Font size="27.0" />
+            </font>
+        </Label>
+        <ComboBox fx:id="autCombo" layoutX="24.0" layoutY="155.0" prefHeight="25.0" prefWidth="259.0" />
+        <TextField fx:id="folderTextField" layoutX="24.0" layoutY="104.0" prefHeight="25.0" prefWidth="259.0" />
+        <ImageView fx:id="kitapImage" fitHeight="53.0" fitWidth="52.0" layoutX="21.0" layoutY="14.0">
+            <image>
+                <Image url="@../images/kitap.png" />
+            </image>
+        </ImageView>
+        <Label fx:id="folderLabel" layoutX="23.0" layoutY="85.0" text="Select the folder containing your test project:">
+            <font>
+                <Font size="13.0" />
+            </font>
+        </Label>
+        <Button fx:id="browseButton" layoutX="292.0" layoutY="103.0" mnemonicParsing="false" onAction="#choosingFolder" prefHeight="25.0" prefWidth="103.0" style="-fx-background-color: #096eb6;" text="Browse" textFill="WHITE">
+            <font>
+                <Font size="13.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+            <effect>
+                <InnerShadow>
+                    <color>
+                        <Color opacity="0.5507614016532898" />
+                    </color>
+                </InnerShadow>
+            </effect>
+        </Button>
+        <Label fx:id="autLabel" layoutX="24.0" layoutY="138.0" text="Select AUT:">
+         <font>
+            <Font size="13.0" />
+         </font></Label>
+        <Button fx:id="createAutButton" layoutX="292.0" layoutY="155.0" mnemonicParsing="false" onAction="#enterNewAut" prefHeight="25.0" prefWidth="103.0" style="-fx-background-color: #096eb6;" text="Create New AUT" textFill="WHITE">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+            <effect>
+                <InnerShadow>
+                    <color>
+                        <Color opacity="0.5456852316856384" />
+                    </color>
+                </InnerShadow>
+            </effect>
+        </Button>
+        <Button fx:id="cancelButton" layoutX="25.0" layoutY="225.0" mnemonicParsing="false" onAction="#clickedCancelButton" prefHeight="25.0" prefWidth="103.0" style="-fx-background-color: #de3c27;" text="Cancel" textFill="WHITE">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+            <effect>
+                <InnerShadow>
+                    <color>
+                        <Color opacity="0.550000011920929" />
+                    </color>
+                </InnerShadow>
+            </effect>
+        </Button>
+        <Button fx:id="generateTestsButton" layoutX="292.0" layoutY="225.0" mnemonicParsing="false" onAction="#generateTests" prefHeight="25.0" prefWidth="103.0" style="-fx-background-color: #096eb6;" text="Generate Tests" textFill="WHITE">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+            <effect>
+                <InnerShadow>
+                    <color>
+                        <Color opacity="0.5507614016532898" />
+                    </color>
+                </InnerShadow>
+            </effect>
+        </Button>
+      <ProgressIndicator fx:id="generateTestsProgressIndicator" layoutX="183.0" layoutY="133.0" visible="false" />
+      <Label fx:id="generatingBlinkLabel" layoutX="310.0" layoutY="249.0" nodeOrientation="LEFT_TO_RIGHT" text="Generating..." visible="false" />
+      <Label fx:id="autTypeLabel" layoutX="26.0" layoutY="194.0" text="AUT Type:">
+         <font>
+            <Font size="13.0" />
+         </font></Label>
+      <Label fx:id="autTypeResult" layoutX="93.0" layoutY="196.0" prefHeight="17.0" prefWidth="121.0" textFill="#096eb6" />
+<!--      <Button fx:id="test" layoutX="163.0" layoutY="225.0" mnemonicParsing="false" onAction="#onTest" text="Button" />-->
+    </children>
+    <effect>
+        <Blend />
+    </effect>
+
+</AnchorPane>
