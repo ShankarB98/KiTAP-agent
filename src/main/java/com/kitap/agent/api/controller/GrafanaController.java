@@ -24,19 +24,16 @@ public class GrafanaController {
 
     private final ExecutedTestCaseRepository executedTestCaseRepository;
 
-    /*@PostMapping("/test-result")
-    public EExecutedTestCase createTestResult(@RequestBody EExecutedTestCase testResult) {
-
-        testResult.setCreatedAt(ZonedDateTime.now().minusDays(0));
-        return testResultRepository.save(testResult);
-    }*/
-
 
     @GetMapping()
     public List<ExecutedTestCase> getTestsResults() {
         return executedTestCaseRepository.findAll();
+
     }
 
+    /**
+     * @Description returns list of aut's
+     * */
     @GetMapping("/table/{autName}/{testCaseVersion}/{fromTime}/{toTime}")
     public List<TestResultTable> getTestsResultsTable(@PathVariable String autName, @PathVariable Integer testCaseVersion, @PathVariable ZonedDateTime fromTime, @PathVariable ZonedDateTime toTime) {
         System.out.println("TestTest");
@@ -83,41 +80,5 @@ public class GrafanaController {
         ZonedDateTime to = toTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
         return executedTestCaseRepository.countByTime(autName, testCaseVersion, from, to);
     }
-
-
 }
-
-/*@GetMapping("/test-result/count-by-test-name/{autName}/{result}/{version}/{fromTime}/{toTime}")
-    public List<TestNameCountResponse> count(@PathVariable String autName, @PathVariable String result, @PathVariable Integer version, @PathVariable ZonedDateTime fromTime, @PathVariable ZonedDateTime toTime) {
-
-        ZonedDateTime from = fromTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
-        ZonedDateTime to = toTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
-        return executedTestCaseRepository.findResultCount(autName, result, version, from, to);
-    }
-
-    @GetMapping("/test-result/count/{autName}/{result}/{version}/{fromTime}/{toTime}")
-    public List<ITestsCountResponse> count2(@PathVariable String autName, @PathVariable String result, @PathVariable Integer version, @PathVariable ZonedDateTime fromTime, @PathVariable ZonedDateTime toTime) {
-
-        ZonedDateTime from = fromTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
-        ZonedDateTime to = toTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
-        return executedTestCaseRepository.findNameCountttt(autName, result, version, from, to);
-    }
-
-    @GetMapping("/test-result/{autName}/{version}/{fromTime}/{toTime}")
-    public List<EExecutedTestCase> getResults(@PathVariable String autName, @PathVariable Integer version, @PathVariable ZonedDateTime fromTime, @PathVariable ZonedDateTime toTime) {
-
-        ZonedDateTime from = fromTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
-        ZonedDateTime to = toTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
-        return executedTestCaseRepository.findByAutNameAndTestCaseVersionAndCreatedAtBetweenOrderByCreatedAtDesc(autName, version, from, to);
-    }
-
-    @GetMapping("/test-result/aut-name")
-    public List<String> getAutNames() {
-        return executedTestCaseRepository.findAutNames();
-    }
-
-    @GetMapping("/test-result/version")
-    public List<String> getResults() {
-        return executedTestCaseRepository.findVersions();
-    }*/
 

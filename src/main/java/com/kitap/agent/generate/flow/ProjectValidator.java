@@ -1,6 +1,6 @@
 package com.kitap.agent.generate.flow;
 
-import com.kitap.agent.generate.base.BaseClass;
+import com.kitap.agent.base.BaseClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
@@ -26,10 +26,6 @@ public class ProjectValidator extends BaseClass {
                 arr[0] = "invalid";
                 break;
             case "Web":
-                arr[0] = "valid";
-                arr[1] = value;
-                System.out.println(arr[0]);
-                break;
             case "Sales Force":
             case "Desktop":
             case "Mobile":
@@ -116,8 +112,6 @@ public class ProjectValidator extends BaseClass {
                 }
             }
             if (isKitapCore && containsPlatform){
-                System.out.println("contains both");
-                System.out.println(value);
                 return value;
             }
         } catch (IOException ex) {

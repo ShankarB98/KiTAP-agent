@@ -1,6 +1,6 @@
 package com.kitap.agent.generate.flow;
 
-import com.kitap.agent.generate.base.BaseClass;
+import com.kitap.agent.base.BaseClass;
 import com.kitap.testresult.dto.agent.GenerationDetails;
 import lombok.extern.slf4j.Slf4j;
 

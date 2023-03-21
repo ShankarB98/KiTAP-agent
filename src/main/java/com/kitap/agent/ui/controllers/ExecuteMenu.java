@@ -4,6 +4,7 @@ import com.kitap.agent.api.apicalls.ApiCalls;
 import com.kitap.agent.generate.util.FileOperations;
 import com.kitap.agent.ui.tray.AddEffectsToMenuAndMenuItems;
 import com.kitap.agent.ui.tray.AgentTrayIcon;
+import com.kitap.agent.util.PropertyReader;
 import com.kitap.testresult.dto.execute.ExecutionAutDetails;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
@@ -22,7 +23,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Objects;
 
 /**
@@ -39,6 +44,8 @@ public class ExecuteMenu {
             Objects.requireNonNull(AgentTrayIcon.class.getResource("/images/green.png")).toExternalForm());
 
     ApiCalls apiCalls = new ApiCalls();
+    PropertyReader reader = new PropertyReader();
+    String separator = File.separator;
 
     final FileOperations operations = new FileOperations();
 
@@ -77,7 +84,14 @@ public class ExecuteMenu {
      */
     @FXML
     public void displayTestResults(ActionEvent actionEvent) {
-
+        try{
+            URI htmlFileUri = new URI(reader.getProperty("destinationpath")+separator+
+                    autType.getValue()+separator+executeAutCombo.getValue()+separator+
+                    versionCombo.getValue()+separator+"target"+separator+"site"+separator+"serenity"+separator+"index.html");
+            Desktop.getDesktop().browse(htmlFileUri);
+        }catch (URISyntaxException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -131,8 +145,15 @@ public class ExecuteMenu {
                         blinkLabel.setVisible(false); // stopping Blinking Text
 
                         //Closing Stage after process completion
-                        Stage executeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
-                        executeStage.close();
+                        //Stage executeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
+                        //executeStage.close();
+
+                        /**
+                         * Enabling all the buttons in UI
+                         * */
+                        executeTestButton.setDisable(false);
+                        viewTestResults.setDisable(false);
+                        cancelButton.setDisable(false);
 
 
                         //Enabling all the contextmenu Items
@@ -148,25 +169,25 @@ public class ExecuteMenu {
         }.start();
     }
 
-            /**
-             * Function performed when Cancel Button is clicked in JavaFX UI
-             *
-             * @param actionEvent JavaFX UI Cancel Button Click
-             */
-            @FXML
-            public void cancelClicked(ActionEvent actionEvent) {
-                Stage executeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
-                executeStage.close();
-                log.info("Clicked Cancel Button");
-            }
+    /**
+     * Function performed when Cancel Button is clicked in JavaFX UI
+     *
+     * @param actionEvent JavaFX UI Cancel Button Click
+     */
+    @FXML
+    public void cancelClicked(ActionEvent actionEvent) {
+        Stage executeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
+        executeStage.close();
+        log.info("Clicked Cancel Button");
+    }
 
-            public void onChangeOfAutType(ActionEvent actionEvent) {
-                executeAutCombo.getItems().removeAll(executeAutCombo.getItems());
-                executeAutCombo.getItems().addAll(apiCalls.getAllAUT(autType.getValue()));
-            }
+    public void onChangeOfAutType(ActionEvent actionEvent) {
+        executeAutCombo.getItems().removeAll(executeAutCombo.getItems());
+        executeAutCombo.getItems().addAll(apiCalls.getAllAUT(autType.getValue()));
+    }
 
-            public void onAutSelection(ActionEvent actionEvent) {
-                versionCombo.getItems().removeAll(versionCombo.getItems());
-                versionCombo.getItems().addAll(operations.getListOfFolders(autType.getValue() + File.separator + executeAutCombo.getValue()));
-            }
-        }
+    public void onAutSelection(ActionEvent actionEvent) {
+        versionCombo.getItems().removeAll(versionCombo.getItems());
+        versionCombo.getItems().addAll(operations.getListOfFolders(autType.getValue() + File.separator + executeAutCombo.getValue()));
+    }
+}

@@ -1,5 +1,6 @@
 package com.kitap.agent.ui.machineInfo;
 
+import com.kitap.agent.database.model.dto.AgentDto;
 import com.kitap.testresult.dto.agent.RegistrationDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,7 @@ import java.net.UnknownHostException;
 @Component
 public class MachineInformation {
 
-    public RegistrationDetails getMachineInformation(String registrationKey, String agentName) {
+    public AgentDto getMachineInformation(String registrationKey, String agentName) {
 
         String macAddress;
         // Get Host Name and Get IP Address
@@ -36,18 +37,18 @@ public class MachineInformation {
         String osVersion = System.getProperty("os.version");
         String adminUser = System.getProperty("user.name");
 
-        RegistrationDetails machineDetails = new RegistrationDetails();
-        machineDetails.setAgentName(agentName);
-        machineDetails.setRegistrationKey(registrationKey);
-        machineDetails.setIpAddress(ipAddress);
-        machineDetails.setOsName(osName);
-        machineDetails.setOsVersion(osVersion);
-        machineDetails.setDeviceType(osName);
-        machineDetails.setMacAddress(macAddress);
-        machineDetails.setHostName(adminUser);
+        AgentDto agentDto = new AgentDto();
+        agentDto.setName(agentName);
+        agentDto.setAgentRegistrationKeyId(registrationKey);
+        agentDto.setIpAddress(ipAddress);
+        agentDto.setOsName(osName);
+        agentDto.setOsVersion(osVersion);
+        agentDto.setDeviceType(osName);
+        agentDto.setMacAddress(macAddress);
+        agentDto.setHostName(adminUser);
         log.info("Host : " + hostName);
-        log.info(machineDetails.toString());
-        return machineDetails;
+        log.info(agentDto.toString());
+        return agentDto;
     }
 
     /**

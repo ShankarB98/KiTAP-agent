@@ -1,5 +1,8 @@
 package com.kitap.agent.ui.tray;
 
+import com.kitap.agent.api.apicalls.ApiCalls;
+import com.kitap.agent.ui.machineInfo.MachineInformation;
+import com.kitap.agent.util.PropertyReader;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
@@ -12,12 +15,13 @@ import java.util.Objects;
 
 /**
  * @Author: KT1497
- *
  * @Description: TrayIcon adding to System Tray. Adding Context Menu with MenuItems to our TrayIcon.
  */
 @Slf4j
 @Data
 public class AgentTrayIcon {
+
+    PropertyReader reader = new PropertyReader();
 
     private AddEffectsToMenuAndMenuItems icon;
 
@@ -35,9 +39,7 @@ public class AgentTrayIcon {
 
     /**
      * @Author: KT1497
-     *
      * @Description: TrayIcon adding to systemtray,Adding ContextMenu to our TrayIcon
-     *
      */
     public void createAndAddAgentTrayIconWithMenuToTray() {
 
@@ -79,7 +81,7 @@ public class AgentTrayIcon {
         //Create Seperator in Context Menu
         seperatorLine = new SeparatorMenuItem();
 
-        Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/images/KairosIcon.png"));
+        Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/images/kitapTrayIcon.png"));
 
         icon = new AddEffectsToMenuAndMenuItems(image, menu);
         addMenuToTrayIcon();
@@ -88,56 +90,60 @@ public class AgentTrayIcon {
 
     /**
      * @Author: KT1497
-     *
      * @Description: Adding ContextMenu to our TrayIcon
-     *
      */
     public void addMenuToTrayIcon() {
 
-       /* RegistrationServiceImpl registrationService = new RegistrationServiceImpl();
+        MachineInformation machineInformation = new MachineInformation();
+        ApiCalls apiCalls = new ApiCalls();
 
-        log.info("calling api to know registration status of agent");
-        boolean isRegistered = apiCalls.isRegister(registrationService.getMacAddress());
+        String isServerless = reader.getProperty("isServerLess");
+        Boolean serverCheck = Boolean.parseBoolean(isServerless);
 
-        if (!isRegistered) {
-            //add
-            menu.getItems().add(runMenuItem);
-            menu.getItems().add(register);
-            menu.getItems().add(reStart);
-            menu.getItems().add(sp);
-            menu.getItems().add(quit);
-            //remove
-            /*menu.getItems().remove(deRegister);
-            menu.getItems().remove(generate);
-            menu.getItems().remove(executeTests);
-        } else {
-            //add
-            menu.getItems().add(runMenuItem);
-            menu.getItems().add(generate);
+        if (serverCheck) {
+            menu.getItems().add(runStatus);
+            menu.getItems().add(generateTests);
             menu.getItems().add(executeTests);
-            menu.getItems().add(deRegister);
             menu.getItems().add(reStart);
-            menu.getItems().add(sp);
+            menu.getItems().add(seperatorLine);
             menu.getItems().add(quit);
-            //remove
-            /*menu.getItems().remove(register);
-        }*/
-        menu.getItems().add(runStatus);
-        menu.getItems().add(generateTests);
-        menu.getItems().add(executeTests);
-        menu.getItems().add(reStart);
-        //menu.getItems().add(genOrExe);
-        menu.getItems().add(seperatorLine);
-        menu.getItems().add(quit);
+        } else {
+            log.info("calling api to know registration status of agent");
+            boolean isRegistered = apiCalls.isRegister(machineInformation.getMacAddress());
+
+            if (!isRegistered) {
+                //add
+                menu.getItems().add(runStatus);
+                menu.getItems().add(register);
+                menu.getItems().add(reStart);
+                menu.getItems().add(seperatorLine);
+                menu.getItems().add(quit);
+                //remove
+                menu.getItems().remove(deRegister);
+                menu.getItems().remove(generateTests);
+                menu.getItems().remove(executeTests);
+            } else {
+                //add
+                menu.getItems().add(runStatus);
+                menu.getItems().add(generateTests);
+                menu.getItems().add(executeTests);
+                menu.getItems().add(deRegister);
+                menu.getItems().add(reStart);
+                menu.getItems().add(seperatorLine);
+                menu.getItems().add(quit);
+                //remove
+                menu.getItems().remove(register);
+            }
+        }
+
+
     }
 
     /**
      * @Author: KT1497
-     *
      * @Description: Adding TrayIcon to SystemTray
-     *
      * @params: caption is the title of the message popup window, text is any string displaying message,
-     *         messagetype is the type of message
+     * messagetype is the type of message
      */
     public void addAgentTrayIconToTray(String caption, String text, TrayIcon.MessageType messageType) {
         try {
@@ -153,10 +159,9 @@ public class AgentTrayIcon {
 
     /**
      * @Author: KT1497
-     *
      * @Description: Removing TrayIcon from System Tray
      * @params: caption is the title of the message popup window, text is any string displaying message,
-     *         messagetype is the type of message
+     * messagetype is the type of message
      */
     public void removeAgentTrayIconFromTray(String caption, String text, TrayIcon.MessageType messageType) {
         icon.displayMessage(caption, text, messageType);

@@ -1,8 +1,8 @@
 package com.kitap.agent.database.service;
 
+import com.kitap.agent.base.BaseClass;
 import com.kitap.agent.database.model.ApplicationUnderTest;
 import com.kitap.agent.database.repository.ApplicationUnderTestRepo;
-import com.kitap.agent.generate.base.BaseClass;
 import com.kitap.agent.util.MachineInfo;
 import com.kitap.agent.util.PropertyReader;
 import com.kitap.testresult.dto.agent.MachineDetails;

@@ -2,7 +2,7 @@ package com.kitap.agent.api.controller;
 
 import com.kitap.agent.database.repository.ExecutedTestCaseRepository;
 import com.kitap.agent.database.service.ResultSaver;
-import com.kitap.agent.execute.execution.TestRunner;
+import com.kitap.agent.execute.TestRunner;
 import com.kitap.agent.generate.util.FileOperations;
 import com.kitap.testresult.dto.execute.ExecutionAutDetails;
 import org.springframework.beans.factory.annotation.Autowired;

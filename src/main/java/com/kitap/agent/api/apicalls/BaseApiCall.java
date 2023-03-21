@@ -1,6 +1,8 @@
 package com.kitap.agent.api.apicalls;
 
+import com.kitap.agent.base.BaseClass;
 import com.kitap.agent.database.model.ApplicationUnderTest;
+import com.kitap.agent.database.model.dto.AgentDto;
 import com.kitap.agent.util.PropertyReader;
 import com.kitap.testresult.dto.agent.RegistrationDetails;
 import com.kitap.testresult.dto.execute.ExecutionAutDetails;
@@ -10,14 +12,16 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public abstract class BaseApiCall {
+public abstract class BaseApiCall extends BaseClass {
     RestTemplate restTemplate = new RestTemplate();
     URI uri;
     String baseUrl;
     HttpHeaders headers = new HttpHeaders();
     HttpEntity<?> request;
     ResponseEntity<?> responseBody;
-    PropertyReader reader = new PropertyReader();
+
+    String baseServerUrl = properties.getProperty("server.base.url");
+    String baseAgentUrl = properties.getProperty("agent.base.url");
     public BaseApiCall(){
         headers.setContentType(MediaType.APPLICATION_JSON);
     }
@@ -42,9 +46,9 @@ public abstract class BaseApiCall {
         responseBody = restTemplate.exchange(uri, HttpMethod.GET, request, String[].class);
     }
 
-    protected void getResponse(RegistrationDetails details){
+    protected void getResponse(AgentDto agentDto){
         setBaseURI();
-        setRequest(details);
+        setRequest(agentDto);
         responseBody = restTemplate.exchange(uri, HttpMethod.POST, request, (Class<?>) Boolean.class);
     }
 
@@ -69,8 +73,8 @@ public abstract class BaseApiCall {
     public void setRequest(String macAddress){
         request = new HttpEntity<>(macAddress, headers);
     }
-    public void setRequest(RegistrationDetails registrationDetails){
-        request = new HttpEntity<>(registrationDetails, headers);
+    public void setRequest(AgentDto agentDto){
+        request = new HttpEntity<>(agentDto, headers);
     }
 
     public void setRequest(ExecutionAutDetails details){
@@ -90,6 +94,10 @@ public abstract class BaseApiCall {
         setBaseURI();
         setRequest(jsonData);
         responseBody = restTemplate.exchange(uri, HttpMethod.POST, request, void.class);
+    }
+
+    public void setRequest(Class<?> jsonObject){
+        request = new HttpEntity<>(jsonObject, headers);
     }
 
 }
