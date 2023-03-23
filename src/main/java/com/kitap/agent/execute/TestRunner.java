@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class TestRunner extends BaseClass {
+public class TestRunner {
 
     final String separator = File.separator;
     private final ExecutionAutDetails executionDetails;
@@ -21,7 +21,7 @@ public class TestRunner extends BaseClass {
     public List<ExecutedTestCase> executeTests(){
         TestExecution execution = new TestExecution();
         String testType = this.executionDetails.getTestType();
-        String projectPath = properties.getProperty("destinationpath")+
+        String projectPath = BaseClass.properties.getProperty("destinationpath")+
                 separator+testType+
                 separator+this.executionDetails.getAut()+
                 separator+this.executionDetails.getVersion();

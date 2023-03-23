@@ -1,7 +1,7 @@
 package com.kitap.agent.ui.menuitem.actions;
 
 import com.kitap.agent.api.apicalls.ApiCalls;
-import com.kitap.agent.ui.machineInfo.MachineInformation;
+import com.kitap.agent.base.BaseClass;
 import com.kitap.agent.ui.tray.AgentTrayIcon;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,10 +27,7 @@ public class ContextMenuItemsAction {
 
 //    @Autowired
 //    CallDeregisterApi callDeregisterApi;
-
     ApiCalls apiCalls = new ApiCalls();
-    MachineInformation machineInformation = new MachineInformation();
-
     AgentTrayIcon agentTrayIcon= new AgentTrayIcon();
 
     /**
@@ -65,7 +62,7 @@ public class ContextMenuItemsAction {
         confirmationAlert.setContentText("Are you sure ??");
         confirmationAlert.showAndWait().ifPresent((btnType) -> {
             if (btnType == ButtonType.OK) {
-                apiCalls.deRegister(machineInformation.getMacAddress());
+                apiCalls.deRegister(BaseClass.machineInformation.macAddress);
                 Alert informationAlert = new Alert(Alert.AlertType.INFORMATION);
                 informationAlert.setTitle("Deregistration");
                 informationAlert.setContentText("Agent is Deregistered");
@@ -167,7 +164,7 @@ public class ContextMenuItemsAction {
     public void quitAgent(AgentTrayIcon agentTrayIcon) {
         agentTrayIcon.removeAgentTrayIconFromTray("Agent is Shutting Down!!", "", TrayIcon.MessageType.NONE);
         log.info("calling api to inform agent is shutting down");
-        apiCalls.quit(machineInformation.getMacAddress());
+        apiCalls.quit(BaseClass.machineInformation.macAddress);
         System.exit(0);
     }
 }

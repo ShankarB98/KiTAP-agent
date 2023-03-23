@@ -1,7 +1,7 @@
 package com.kitap.agent.ui.machineInfo;
 
 import com.kitap.agent.database.model.dto.AgentDto;
-import com.kitap.testresult.dto.agent.RegistrationDetails;
+import com.kitap.agent.util.PropertyReader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -20,33 +20,35 @@ import java.net.UnknownHostException;
  */
 @Slf4j
 @Component
-public class MachineInformation {
+public class MachineInformation{
+    final PropertyReader reader = new PropertyReader();
+    public final InetAddress inetAddress;
+    public final String osName;
+    public final String osVersion;
+    public final String adminUser;
 
-    public AgentDto getMachineInformation(String registrationKey, String agentName) {
+    public final String macAddress;
 
-        String macAddress;
-        // Get Host Name and Get IP Address
-        InetAddress inetAddress = getInetAddress();
-        String hostName = inetAddress.getHostName();
-        String ipAddress = inetAddress.getHostAddress();
+    public MachineInformation(){
+        this.inetAddress = getInetAddress();
+        this.osName = System.getProperty("os.name");
+        this.osVersion = System.getProperty("os.version");
+        this.adminUser = System.getProperty("user.name");
+        this.macAddress = getMacAddress();
+    }
 
-        // Get MAC Address
-        macAddress = getMacAddress();
-
-        String osName = System.getProperty("os.name");
-        String osVersion = System.getProperty("os.version");
-        String adminUser = System.getProperty("user.name");
-
+    public AgentDto getAgentDto(String agentName){
         AgentDto agentDto = new AgentDto();
         agentDto.setName(agentName);
-        agentDto.setAgentRegistrationKeyId(registrationKey);
-        agentDto.setIpAddress(ipAddress);
+        agentDto.setIpAddress(inetAddress.getHostAddress());
         agentDto.setOsName(osName);
         agentDto.setOsVersion(osVersion);
         agentDto.setDeviceType(osName);
-        agentDto.setMacAddress(macAddress);
+        agentDto.setMacAddress(getMacAddress());
         agentDto.setHostName(adminUser);
-        log.info("Host : " + hostName);
+        String portNumber = reader.getProperty("server.port");
+        agentDto.setPortNumber(portNumber == null ? 8080 : Integer.parseInt(portNumber));
+        log.info("Host : " + inetAddress.getHostAddress());
         log.info(agentDto.toString());
         return agentDto;
     }

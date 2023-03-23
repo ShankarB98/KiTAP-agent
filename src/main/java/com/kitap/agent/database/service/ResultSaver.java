@@ -10,15 +10,24 @@ import java.util.List;
 @Component
 public class ResultSaver {
 
-    private final ExecutedTestCaseRepository repo;
+    /**
+     * @Description saves the executed result into in-memory database
+     */
 
-    public ResultSaver(ExecutedTestCaseRepository repo){
-        this.repo = repo;
-    }
+    private final ExecutedTestCaseRepository repo;
     private final DtoToEntityConverter converter = new DtoToEntityConverter();
 
-    public void save(List<ExecutedTestCase> tests, ExecutionAutDetails details){
-        for (ExecutedTestCase tcase: tests){
+    public ResultSaver(ExecutedTestCaseRepository repo) {
+        this.repo = repo;
+    }
+
+    /**
+     * @Description save method to save test cases in in-memory database
+     * @param tests - list of test cases that to save in database
+     * @param details - used to fill some test case fields
+     */
+    public void save(List<ExecutedTestCase> tests, ExecutionAutDetails details) {
+        for (ExecutedTestCase tcase : tests) {
             repo.save(converter.convertDtoToEntity(tcase, details));
             repo.findAll();
         }

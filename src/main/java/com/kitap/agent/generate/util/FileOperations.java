@@ -7,9 +7,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 @Slf4j
-public class FileOperations extends BaseClass {
+public class FileOperations {
+
+    final Properties properties = BaseClass.properties;
+    final String separator = File.separator;
 
     public String[] getListOfFolders(String path){
         String kitapPath = properties.getProperty("destinationpath")+separator+path;

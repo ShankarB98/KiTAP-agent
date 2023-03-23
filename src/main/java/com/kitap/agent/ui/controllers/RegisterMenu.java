@@ -1,7 +1,7 @@
 package com.kitap.agent.ui.controllers;
 
 import com.kitap.agent.api.apicalls.ApiCalls;
-import com.kitap.agent.ui.machineInfo.MachineInformation;
+import com.kitap.agent.base.BaseClass;
 import com.kitap.agent.ui.tray.AgentTrayIcon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,7 +28,6 @@ public class RegisterMenu {
 //    MachineInformation machineInformation;
 
     ApiCalls apiCalls = new ApiCalls();
-    MachineInformation machineInformation = new MachineInformation();
     @FXML
     public TextField nameTextField;
     @FXML
@@ -60,10 +59,9 @@ public class RegisterMenu {
             alert.showAndWait();
             log.info("invalid key #" + agentKey);
         } else {
-            apiCalls.register(machineInformation.getMachineInformation(agentKey, agentName));
+            apiCalls.register(BaseClass.machineInformation.getAgentDto(agentName), agentKey);
             agentTrayIcon.addMenuToTrayIcon();
             log.info("calling api to register agent");
-
             Stage registrationStage = (Stage) registrationAnchorPane.getScene().getWindow();
             registrationStage.close();
         }

@@ -16,18 +16,43 @@ public class PropertyReader implements IPropertyReader{
     Properties properties = new Properties();
 
 
+    /**
+     * @Description returns matched key value
+     * @param propertyName - used as key value
+     * @return a String value of matched key
+     * */
     @Override
     public String getProperty(String propertyName) {
         return readProperty(propertyName);
     }
 
+    /**
+     * @Description reads value from properties for key value
+     * @param propertyName - used as key value
+     * @return a String value of matched key
+     * */
+    private String readProperty(String propertyName){
+        propertyName = Objects.requireNonNullElse(propertyName, "");
+        if (propertyName.equals("")){
+            log.error("invalid property name #"+ propertyName);
+            throw new RuntimeException("please enter valid property name");
+        }
+        loadProperties();
+        return this.properties.getProperty(propertyName);
+    }
+
+    /**
+     * @Description returns values from properties for key value
+     * @param propertyNames - used as key value
+     * @return a String array values of matched keys
+     * */
     @Override
     public List<String> getProperties(String[] propertyNames){
         loadProperties();
         List<String> properties = new ArrayList<>();
         for (String propertyName: propertyNames){
             String value = this.properties.getProperty(propertyName);
-            if (value != null && value != "") {
+            if (value != null && !value.equals("")) {
                 properties.add(value);
             }else{
                 log.error("invalid property name #"+ propertyName);
@@ -37,6 +62,10 @@ public class PropertyReader implements IPropertyReader{
         return properties;
     }
 
+    /**
+     * @Description loads all properties into global variable
+     * @return a Properties object that contains all property key value pairs
+     * */
     @Override
     public Properties loadProperties(){
         try {
@@ -48,15 +77,7 @@ public class PropertyReader implements IPropertyReader{
         return this.properties;
     }
 
-    private String readProperty(String propertyName){
-        propertyName = Objects.requireNonNullElse(propertyName, "");
-        if (propertyName.equals("")){
-            log.error("invalid property name #"+ propertyName);
-            throw new RuntimeException("please enter valid property name");
-        }
-        loadProperties();
-        return this.properties.getProperty(propertyName);
-    }
+
 
     public File getResourceAsFile(String resourceName) {
         File file;
@@ -70,10 +91,6 @@ public class PropertyReader implements IPropertyReader{
         return file;
     }
 
-    private static String stripLeadingSlash(String resourceName) {
-        return (resourceName.startsWith("/")) ? resourceName.substring(1) : resourceName;
-    }
-
     private String removeSymbols(String resourceName){
         String path = Thread.currentThread()
                 .getContextClassLoader()
@@ -84,4 +101,10 @@ public class PropertyReader implements IPropertyReader{
         //path = path.replace("")
         return path;
     }
+
+    private static String stripLeadingSlash(String resourceName) {
+        return (resourceName.startsWith("/")) ? resourceName.substring(1) : resourceName;
+    }
+
+
 }

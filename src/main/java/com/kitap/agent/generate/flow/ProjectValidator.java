@@ -9,7 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 @Slf4j
-public class ProjectValidator extends BaseClass {
+public class ProjectValidator {
 
     //String propertiesPath = reader.getProperty(ProjectType.TESTEXECUTION);
 
@@ -39,10 +39,10 @@ public class ProjectValidator extends BaseClass {
 
     private String isValidProject(File projectPath){
         File dir = projectPath.getAbsoluteFile();
-        File subDirMain = new File(dir, properties.getProperty("mainapplicationpath"));
-        File subDirTest = new File(dir,properties.getProperty("testapplicationpath"));
+        File subDirMain = new File(dir, BaseClass.properties.getProperty("mainapplicationpath"));
+        File subDirTest = new File(dir, BaseClass.properties.getProperty("testapplicationpath"));
         if(subDirMain.isDirectory()&&subDirTest.isDirectory()){
-            File pomFile = new File(dir+separator+"pom.xml");
+            File pomFile = new File(dir+BaseClass.separator+"pom.xml");
             if (pomFile.exists()) {
                 return projectAutType(pomFile);
             }else return "pom file does not exists";

@@ -15,9 +15,10 @@ import java.util.List;
 import java.util.Objects;
 
 @Slf4j
-public class FileOperations extends BaseClass {
+public class FileOperations {
 
-    final String destinationPath = properties.getProperty("destinationpath");
+    final String separator = File.separator;
+    final String destinationPath = BaseClass.properties.getProperty("destinationpath");
 
     /** method for copying files to kitap destination path */
     public String copyFiles(GenerationDetails details){

@@ -1,19 +1,25 @@
 package com.kitap.agent.api.apicalls;
 
+import com.kitap.agent.base.BaseClass;
 import com.kitap.agent.database.model.ApplicationUnderTest;
 import com.kitap.agent.database.model.dto.AgentDto;
 import com.kitap.agent.database.service.AUTService;
 import com.kitap.testresult.dto.execute.ExecutionAutDetails;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
+import java.util.Properties;
+
 @Component
+@Slf4j
 public class ApiCalls extends BaseApiCall {
 
+    Properties properties = BaseClass.properties;
 
     public boolean isActive(String macAddress) {
         macAddress = macAddress.replace(" ", "%20");
-        baseUrl = baseServerUrl+properties.getProperty("agent.inactive") + "?macAddress=" + macAddress + "";
+        baseUrl = baseServerUrl+ properties.getProperty("agent.inactive") + "?macAddress=" + macAddress + "";
         getResponse(macAddress, HttpMethod.POST);
         return Boolean.TRUE.equals(responseBody.getBody());
     }
@@ -23,11 +29,12 @@ public class ApiCalls extends BaseApiCall {
      * @param macAddress unique physical address of system which cannot change
      * @return boolean
      * */
-    public boolean isRegister(String macAddress) {
+    public boolean amIRegistered(String macAddress) {
         macAddress = macAddress.replace(" ", "%20");
-        baseUrl = baseServerUrl+properties.getProperty("isRegisterApi") + "?macAddress=" + macAddress + "";
+        baseUrl = baseServerUrl+properties.getProperty("am.i.registered") + "?macAddress=" + macAddress + "";
         getResponse(macAddress, HttpMethod.GET);
-        return Boolean.TRUE.equals(responseBody.getBody());
+        log.info("agent registration status {}", responseBody.getBody());
+        return true;
     }
 
     /**
@@ -35,11 +42,13 @@ public class ApiCalls extends BaseApiCall {
      * @param agentDto contains all agent details
      * @return boolean
      * */
-    public boolean register(AgentDto agentDto) {
+    public boolean register(AgentDto agentDto, String agentRegistrationKey) {
         System.out.println(agentDto);
-        baseUrl = baseServerUrl+properties.getProperty("registerApi");
+        baseUrl = baseServerUrl+properties.getProperty("agent.register")+"?key="+agentRegistrationKey+"";
+        headers.set("key",agentRegistrationKey);
         getResponse(agentDto);
-        return Boolean.TRUE.equals(responseBody.getBody());
+        log.info("agent registration status {}", responseBody.getStatusCode());
+        return responseBody.getStatusCode().value() == 201;
     }
 
     /**
@@ -49,8 +58,9 @@ public class ApiCalls extends BaseApiCall {
      * */
     public boolean deRegister(String macAddress) {
         macAddress = macAddress.replace(" ", "%20");
-        baseUrl = baseServerUrl+properties.getProperty("deRegisterApi") + "?macAddress=" + macAddress + "";
-        getResponse(macAddress, HttpMethod.POST);
+        baseUrl = baseServerUrl+properties.getProperty("agent.deregister") + "?macAddress=" + macAddress + "";
+        getResponse(macAddress, HttpMethod.PUT);
+        log.info(String.valueOf(responseBody.getStatusCode()));
         return Boolean.TRUE.equals(responseBody.getBody());
     }
 
@@ -135,6 +145,12 @@ public class ApiCalls extends BaseApiCall {
         System.out.println(responseBody.getBody());
     }
 
+    /**
+     * @Description saves the aut with specified name and type
+     * @param autName - The name of the AUT.
+     * @param autType - The type of the AUT.
+     * @return A string representing the result of saving the AUT.
+     * */
     public String saveAUT(String autName, String autType) {
         AUTService AUTService = new AUTService();
         return saveAUT(AUTService.getAUT(autName, autType));
@@ -142,7 +158,7 @@ public class ApiCalls extends BaseApiCall {
 
     /**
      * @Description returns list of aut types from in-memory database
-     * @return String []
+     * @return A String array representing list of aut types
      * */
     public String[] getAutTypes(){
         baseUrl = baseAgentUrl+properties.getProperty("getAutTypes");

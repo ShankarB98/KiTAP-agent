@@ -1,7 +1,7 @@
 package com.kitap.agent.ui.tray;
 
 import com.kitap.agent.api.apicalls.ApiCalls;
-import com.kitap.agent.ui.machineInfo.MachineInformation;
+import com.kitap.agent.base.BaseClass;
 import com.kitap.agent.util.PropertyReader;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -20,8 +20,6 @@ import java.util.Objects;
 @Slf4j
 @Data
 public class AgentTrayIcon {
-
-    PropertyReader reader = new PropertyReader();
 
     private AddEffectsToMenuAndMenuItems icon;
 
@@ -93,11 +91,9 @@ public class AgentTrayIcon {
      * @Description: Adding ContextMenu to our TrayIcon
      */
     public void addMenuToTrayIcon() {
-
-        MachineInformation machineInformation = new MachineInformation();
         ApiCalls apiCalls = new ApiCalls();
 
-        String isServerless = reader.getProperty("isServerLess");
+        String isServerless = BaseClass.properties.getProperty("isServerLess");
         Boolean serverCheck = Boolean.parseBoolean(isServerless);
 
         if (serverCheck) {
@@ -109,7 +105,7 @@ public class AgentTrayIcon {
             menu.getItems().add(quit);
         } else {
             log.info("calling api to know registration status of agent");
-            boolean isRegistered = apiCalls.isRegister(machineInformation.getMacAddress());
+            boolean isRegistered = apiCalls.amIRegistered(BaseClass.machineInformation.macAddress);
 
             if (!isRegistered) {
                 //add

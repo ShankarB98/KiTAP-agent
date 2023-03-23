@@ -7,12 +7,20 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.util.List;
+import java.util.Properties;
 
 @Slf4j
-public class TestExecution extends BaseClass {
+public class TestExecution {
 
     final boolean singleOrMultiCase = true;
+    final String separator = File.separator;
+    final Properties properties = BaseClass.properties;
 
+    /**
+     * @Description executes web type projects
+     * @param projectDirectory defines where test cases should execute
+     * @param tests list of test cases to be executed
+     * */
     public List<ExecutedTestCase> webExecution(String projectDirectory, List<String> tests){
         ExecutionHelper helper = new ExecutionHelper();
         /** deleting previously existed serenity test result */
@@ -66,6 +74,11 @@ public class TestExecution extends BaseClass {
         return adapter.obtainSerenityTestResult(projectDirectory+separator+"target"+separator+"site"+separator+"serenity");
     }
 
+    /**
+     * @Description executes sales force type projects
+     * @param projectDirectory defines where test cases should execute
+     * @param tests list of test cases to be executed
+     * */
     public List<ExecutedTestCase> sfExecution(String projectDirectory, List<String> tests){
         ExecutionHelper helper = new ExecutionHelper();
         helper.ifReportsExists(projectDirectory);
@@ -98,6 +111,11 @@ public class TestExecution extends BaseClass {
         return adapter.obtainTestNGTestResult(projectDirectory +separator+ properties.getProperty("testngreportsfilepath"));
     }
 
+    /**
+     * @Description executes api type projects
+     * @param projectDirectory defines where test cases should execute
+     * @param tests list of test cases to be executed
+     * */
     public List<ExecutedTestCase> apiExecution(String projectDirectory, List<String> tests){
         ExecutionHelper helper = new ExecutionHelper();
         /** deleting previously existed serenity test result */

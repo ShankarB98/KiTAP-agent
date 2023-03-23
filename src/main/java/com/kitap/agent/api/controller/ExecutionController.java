@@ -67,7 +67,9 @@ public class ExecutionController {
     }
 
     /**
-     * @Description returns list of aut's
+     * @Description delete an aut
+     * @param invalidAuts - takes invalid auts which are not matched with the list fetched from database
+     *                    and the list fetched from file system.
      * */
     @DeleteMapping("/deleteAUTs")
     public void deleteAUTs(@RequestBody List<String> invalidAuts){

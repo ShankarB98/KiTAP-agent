@@ -1,5 +1,6 @@
 package com.kitap.agent.execute;
 
+import com.kitap.agent.base.BaseClass;
 import com.kitap.agent.util.PropertyReader;
 import lombok.extern.slf4j.Slf4j;
 
@@ -8,13 +9,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Properties;
 
 @Slf4j
 public class ExecutionHelper {
 
-    PropertyReader reader = new PropertyReader();
-
     final String separator = File.separator;
+    Properties properties = BaseClass.properties;
+
+    /**
+     * @Description deletes previously existed test results from target folder
+     * @param file - target folder path
+     * */
     protected void deleteTestResults(File file){
         if (file.exists()) {
             for (File subFile : file.listFiles()) {
@@ -26,6 +32,13 @@ public class ExecutionHelper {
         }
     }
 
+
+    /**
+     * @Description returns the process where command should run
+     * @param command - command to execute
+     * @param directory - location of where command is executing
+     * @return Process - created process at a particular location
+     * */
     protected Process getProcessor(String command, File directory){
         Process process = null;
         try {
@@ -37,6 +50,11 @@ public class ExecutionHelper {
         return process;
     }
 
+    /**
+     * @Description converts the console prints to string and returns the same
+     * @param process - Completed process which holding all the information
+     * @return String - created process at a particular location
+     * */
     protected String processOutput(Process process){
         StringBuilder output = new StringBuilder();
         InputStreamReader inputStreamReader = new InputStreamReader(process.getInputStream());
@@ -58,6 +76,11 @@ public class ExecutionHelper {
         return String.valueOf(output);
     }
 
+
+    /**
+     * @Description handles the different types of exit values and through exception accordingly
+     * @param process - Completed process which holding all the information
+     * */
     protected void throwError(Process process){
         int exitValue;
         try {
@@ -74,6 +97,12 @@ public class ExecutionHelper {
         }
     }
 
+    /**
+     * @Description writes log into defined path
+     * @param projectDirectory - root folder to save logs
+     * @param testCaseName - test case name to create log file
+     * @param output - log content to save
+     * */
     protected void writeLog(String projectDirectory, String testCaseName, String output){
         String logDirectory = projectDirectory + "\\library\\KiTAP\\reports-log";
         File dir = new File(logDirectory);
@@ -93,6 +122,11 @@ public class ExecutionHelper {
         }
     }
 
+    /**
+     * @Description writes log into defined path without test case
+     * @param projectDirectory - root folder to save logs
+     * @param output - log content to save
+     * */
     protected void writeLog(String projectDirectory, String output){
         String logDirectory = projectDirectory + "\\library\\KiTAP\\reports-log";
         createFolders(logDirectory, 1);
@@ -109,7 +143,12 @@ public class ExecutionHelper {
         }
     }
 
-
+    /**
+     * @Deprecated this method is deprecated not using anymore
+     * @Description generate commands to execute
+     * @param testcaseName - test case name
+     * @param testType - test type is used to define command
+     * */
     protected String generateCommands(String testcaseName, String testType){
         if (testType.equals("web")){
             return "mvn.cmd verify";
@@ -121,9 +160,13 @@ public class ExecutionHelper {
         return "";
     }
 
+    /**
+     * @Description checks if reports are existed or not if exist then deletes the older one and create report file
+     * @param projectDirectory - root project directory
+     * */
     protected String ifReportsExists(String projectDirectory){
-        String reportPath = projectDirectory +separator+reader.getProperty("testngreportsfilepath");
-        createFolders(projectDirectory +separator+reader.getProperty("testngreportsfolderpath"), 0);
+        String reportPath = projectDirectory +separator+properties.getProperty("testngreportsfilepath");
+        createFolders(projectDirectory +separator+properties.getProperty("testngreportsfolderpath"), 0);
         File report = new File(reportPath);
         if (report.exists()){
             /*String dfile = projectDirectory + "\\BackupReportFiles\\AgentReport" + java.time.LocalDate.now() + ".json";
@@ -151,6 +194,12 @@ public class ExecutionHelper {
         return "created successfully";
     }
 
+
+    /**
+     * @Description create testng xml file based on list of test cases
+     * @param projectDirectory - project root directory
+     * @param classNames - list of class names to be executed
+     * */
     protected void createTestNGFile(String projectDirectory, List<String> classNames){
         File xmlFileNew = new File(projectDirectory + "\\src\\test\\resources\\all-tests-chrome.xml");
         Path xmlFilePath = Path.of(projectDirectory + "\\src\\test\\resources\\all-tests-chrome.xml");
@@ -200,8 +249,14 @@ public class ExecutionHelper {
         }
     }
 
+    /**
+     * @Description create testng xml file based on list of test cases
+     * @param projectDirectory - project root directory
+     * @param classNames - list of class names to be executed
+     * @param version - version of aut
+     * */
     protected void createTestNGFile(String projectDirectory, List<String> classNames, String version){
-        String testngxmlfilepath = projectDirectory +separator+ reader.getProperty("testngxmlfilepath");
+        String testngxmlfilepath = projectDirectory+separator+properties.getProperty("testngxmlfilepath");
         File xmlFileNew = new File(testngxmlfilepath);
         Path xmlFilePath = Path.of(testngxmlfilepath);
         StringBuilder output = new StringBuilder();
@@ -219,7 +274,7 @@ public class ExecutionHelper {
                     }
                     case "</listeners>" -> {
                         if (!listenerExistFlag) {
-                            output.append("\t\t<listener class-name=\"").append(reader.getProperty("listenerfilename")).append("\"/>\n");
+                            output.append("\t\t<listener class-name=\"").append(properties.getProperty("listenerfilename")).append("\"/>\n");
                         }
                         output.append(st).append("\n");
                         continue;

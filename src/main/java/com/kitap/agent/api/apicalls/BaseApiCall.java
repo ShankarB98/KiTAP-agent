@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public abstract class BaseApiCall extends BaseClass {
+public abstract class BaseApiCall {
     RestTemplate restTemplate = new RestTemplate();
     URI uri;
     String baseUrl;
@@ -20,8 +20,8 @@ public abstract class BaseApiCall extends BaseClass {
     HttpEntity<?> request;
     ResponseEntity<?> responseBody;
 
-    String baseServerUrl = properties.getProperty("server.base.url");
-    String baseAgentUrl = properties.getProperty("agent.base.url");
+    String baseServerUrl = BaseClass.properties.getProperty("server.base.url");
+    String baseAgentUrl = BaseClass.properties.getProperty("agent.base.url");
     public BaseApiCall(){
         headers.setContentType(MediaType.APPLICATION_JSON);
     }
@@ -37,7 +37,7 @@ public abstract class BaseApiCall extends BaseClass {
     protected void getResponse(String reqValue, HttpMethod httpMethod){
         setBaseURI();
         setRequest(reqValue);
-        responseBody = restTemplate.exchange(uri, httpMethod, request, (Class<?>) Boolean.class);
+        responseBody = restTemplate.exchange(uri, httpMethod, request, Boolean.class);
     }
 
     protected void getResponse(String autType){
@@ -49,7 +49,7 @@ public abstract class BaseApiCall extends BaseClass {
     protected void getResponse(AgentDto agentDto){
         setBaseURI();
         setRequest(agentDto);
-        responseBody = restTemplate.exchange(uri, HttpMethod.POST, request, (Class<?>) Boolean.class);
+        responseBody = restTemplate.exchange(uri, HttpMethod.POST, request, void.class);
     }
 
     protected void getResponse(ExecutionAutDetails details){

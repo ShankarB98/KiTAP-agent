@@ -11,13 +11,13 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 @Slf4j
-public class CompileAndGenerateJarFile extends BaseClass {
+public class CompileAndGenerateJarFile {
 
     /**
      * method for compile project and package
      * */
     public void compileAndPackage(File projectDirectory){
-        getProcessor(getProperties(new String[] {"mavenvalidation","mavencompilation","mavenpackaging"}), projectDirectory);
+        getProcessor(BaseClass.getProperties(new String[] {"mavenvalidation","mavencompilation","mavenpackaging"}), projectDirectory);
     }
 
     private Process getProcessor(String[] commands, File directory){

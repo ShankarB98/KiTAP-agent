@@ -12,12 +12,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 @Slf4j
-public class MetaDataGenerator extends BaseClass {
+public class MetaDataGenerator {
     
     /** method to generate test cases
      * jar path is jar file path
      * version Path is which version to create test cases
      * */
+
+    final String separator = File.separator;
 
     ApiCalls apiCalls = new ApiCalls();
 
@@ -56,7 +58,7 @@ public class MetaDataGenerator extends BaseClass {
     }
 
     private String generateJsonFileName(GenerationDetails details){
-        return properties.getProperty("destinationpath")+separator
+        return BaseClass.properties.getProperty("destinationpath")+separator
                             +details.getAutType()+separator
                             +details.getAutName()+separator
                             +details.getVersion()+separator
