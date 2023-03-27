@@ -1,19 +1,15 @@
 package com.kitap.agent.generate.util;
 
-import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.generate.base.BaseClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 
 @Slf4j
-public class FileOperations {
-
-    final Properties properties = BaseClass.properties;
-    final String separator = File.separator;
+public class FileOperations extends BaseClass {
 
     public String[] getListOfFolders(String path){
         String kitapPath = properties.getProperty("destinationpath")+separator+path;

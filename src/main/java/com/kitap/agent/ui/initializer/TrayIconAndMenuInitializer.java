@@ -36,6 +36,7 @@ public class TrayIconAndMenuInitializer {
         restartOnAction(agentTrayIcon);
         quitOnAction(agentTrayIcon);
         executeTestsOnAction(stage, agentTrayIcon);
+        generateOrExecute(stage, agentTrayIcon);
     }
 
     /**
@@ -74,7 +75,7 @@ public class TrayIconAndMenuInitializer {
      * @param agentTrayIcon
      */
     private static void restartOnAction(AgentTrayIcon agentTrayIcon) {
-        agentTrayIcon.getReStart().setOnAction(e -> contextMenuItemsActionImpl.restartAgent(agentTrayIcon));
+        agentTrayIcon.getReStart().setOnAction(e -> restartAgent(agentTrayIcon));
     }
 
     /**
@@ -83,7 +84,7 @@ public class TrayIconAndMenuInitializer {
      * @param agentTrayIcon
      */
     private static void quitOnAction(AgentTrayIcon agentTrayIcon) {
-        agentTrayIcon.getQuit().setOnAction(e -> contextMenuItemsActionImpl.quitAgent(agentTrayIcon));
+        agentTrayIcon.getQuit().setOnAction(e -> quitAgent(agentTrayIcon));
     }
 
     /**
@@ -96,5 +97,44 @@ public class TrayIconAndMenuInitializer {
         agentTrayIcon.getExecuteTests().setOnAction(e -> contextMenuItemsActionImpl.executeMenuItemAction(stage));
     }
 
+    /**
+     * Action call when Generate/Execute MenuItem Clicked
+     *
+     * @param stage JavaFX UI stage
+     * @param agentTrayIcon
+     */
+    private static void generateOrExecute(Stage stage, AgentTrayIcon agentTrayIcon) {
+        agentTrayIcon.getGenOrExe().setOnAction(e -> contextMenuItemsActionImpl.genExeMenuItemAction(stage));
+    }
+
+    /**
+     * Funtionality when restart MenuItem clicked
+     *
+     * @param agentTrayIcon
+     */
+    private static void restartAgent(AgentTrayIcon agentTrayIcon) {
+        log.info("agent is restarting");
+        agentTrayIcon.removeAgentTrayIconFromTray("Agent is Shutting Down!!", "Please Wait!!", TrayIcon.MessageType.INFO);
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            log.error(e.toString());
+            throw new RuntimeException(e);
+        }
+        agentTrayIcon.addMenuToTrayIcon();
+        agentTrayIcon.addAgentTrayIconToTray("Agent is Starting", "Please Wait!!", TrayIcon.MessageType.NONE);
+    }
+
+    /**
+     * Functionality when quit MenuItem clicked
+     *
+     * @param agentTrayIcon
+     */
+    private static void quitAgent(AgentTrayIcon agentTrayIcon) {
+        agentTrayIcon.removeAgentTrayIconFromTray("Agent is Shutting Down!!", "", TrayIcon.MessageType.NONE);
+        log.info("calling api to inform agent is shutting down");
+        //apiCalls.quit(registrationService.getMacAddress());
+        System.exit(0);
+    }
 
 }

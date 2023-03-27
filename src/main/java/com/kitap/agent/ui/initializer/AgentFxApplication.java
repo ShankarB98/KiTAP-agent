@@ -21,7 +21,8 @@ import java.io.File;
 @Slf4j
 public class AgentFxApplication extends Application {
     public ConfigurableApplicationContext applicationContext;
-    private final PropertyReader reader = new PropertyReader();
+
+    private PropertyReader reader = new PropertyReader();
 
     /**
      * Initialize

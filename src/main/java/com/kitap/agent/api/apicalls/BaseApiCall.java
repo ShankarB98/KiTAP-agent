@@ -1,8 +1,6 @@
 package com.kitap.agent.api.apicalls;
 
-import com.kitap.agent.base.BaseClass;
 import com.kitap.agent.database.model.ApplicationUnderTest;
-import com.kitap.agent.database.model.dto.AgentDto;
 import com.kitap.agent.util.PropertyReader;
 import com.kitap.testresult.dto.agent.RegistrationDetails;
 import com.kitap.testresult.dto.execute.ExecutionAutDetails;
@@ -19,9 +17,7 @@ public abstract class BaseApiCall {
     HttpHeaders headers = new HttpHeaders();
     HttpEntity<?> request;
     ResponseEntity<?> responseBody;
-
-    String baseServerUrl = BaseClass.properties.getProperty("server.base.url");
-    String baseAgentUrl = BaseClass.properties.getProperty("agent.base.url");
+    PropertyReader reader = new PropertyReader();
     public BaseApiCall(){
         headers.setContentType(MediaType.APPLICATION_JSON);
     }
@@ -37,7 +33,7 @@ public abstract class BaseApiCall {
     protected void getResponse(String reqValue, HttpMethod httpMethod){
         setBaseURI();
         setRequest(reqValue);
-        responseBody = restTemplate.exchange(uri, httpMethod, request, Boolean.class);
+        responseBody = restTemplate.exchange(uri, httpMethod, request, (Class<?>) Boolean.class);
     }
 
     protected void getResponse(String autType){
@@ -46,10 +42,10 @@ public abstract class BaseApiCall {
         responseBody = restTemplate.exchange(uri, HttpMethod.GET, request, String[].class);
     }
 
-    protected void getResponse(AgentDto agentDto){
+    protected void getResponse(RegistrationDetails details){
         setBaseURI();
-        setRequest(agentDto);
-        responseBody = restTemplate.exchange(uri, HttpMethod.POST, request, void.class);
+        setRequest(details);
+        responseBody = restTemplate.exchange(uri, HttpMethod.POST, request, (Class<?>) Boolean.class);
     }
 
     protected void getResponse(ExecutionAutDetails details){
@@ -73,8 +69,8 @@ public abstract class BaseApiCall {
     public void setRequest(String macAddress){
         request = new HttpEntity<>(macAddress, headers);
     }
-    public void setRequest(AgentDto agentDto){
-        request = new HttpEntity<>(agentDto, headers);
+    public void setRequest(RegistrationDetails registrationDetails){
+        request = new HttpEntity<>(registrationDetails, headers);
     }
 
     public void setRequest(ExecutionAutDetails details){
@@ -94,10 +90,6 @@ public abstract class BaseApiCall {
         setBaseURI();
         setRequest(jsonData);
         responseBody = restTemplate.exchange(uri, HttpMethod.POST, request, void.class);
-    }
-
-    public void setRequest(Class<?> jsonObject){
-        request = new HttpEntity<>(jsonObject, headers);
     }
 
 }

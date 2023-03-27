@@ -24,19 +24,19 @@ public class GrafanaController {
 
     private final ExecutedTestCaseRepository executedTestCaseRepository;
 
+    /*@PostMapping("/test-result")
+    public EExecutedTestCase createTestResult(@RequestBody EExecutedTestCase testResult) {
+
+        testResult.setCreatedAt(ZonedDateTime.now().minusDays(0));
+        return testResultRepository.save(testResult);
+    }*/
+
 
     @GetMapping()
     public List<ExecutedTestCase> getTestsResults() {
         return executedTestCaseRepository.findAll();
     }
 
-    /**
-     * @Description returns list test result tables
-     * @param autName aut name
-     * @param testCaseVersion aut version
-     * @param fromTime range of time start time
-     * @param toTime range of end time
-     * */
     @GetMapping("/table/{autName}/{testCaseVersion}/{fromTime}/{toTime}")
     public List<TestResultTable> getTestsResultsTable(@PathVariable String autName, @PathVariable Integer testCaseVersion, @PathVariable ZonedDateTime fromTime, @PathVariable ZonedDateTime toTime) {
         System.out.println("TestTest");
@@ -49,47 +49,24 @@ public class GrafanaController {
         return executedTestCaseRepository.getTestsResults(autName, testCaseVersion, from, to);
     }
 
-    /**
-     * @Description returns list of aut's those linked with executed test cases
-     * */
     @GetMapping("/aut")
     public List<String> getAuts() {
         return executedTestCaseRepository.getAllAUTNames();
     }
 
-
-    /**
-     * @Description returns list of versions those linked with executed test cases
-     * @param autName aut name
-     * */
     @GetMapping("/version/{autName}")
     public List<Integer> getVersions(@PathVariable String autName) {
         return executedTestCaseRepository.getAllVersions(autName);
     }
 
-    /**
-     * @Description returns list test result tables of time response
-     * @param autName aut name
-     * @param result result of test case
-     * @param testCaseVersion aut version
-     * @param fromTime range of time start time
-     * @param toTime range of end time
-     * */
     @GetMapping("/countByTimeForResult/{autName}/{result}/{testCaseVersion}/{fromTime}/{toTime}")
     public List<TestCaseTimeResponse> countByTimeForResult(@PathVariable String autName, @PathVariable String result, @PathVariable Integer testCaseVersion, @PathVariable ZonedDateTime fromTime, @PathVariable ZonedDateTime toTime) {
+
         ZonedDateTime from = fromTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
         ZonedDateTime to = toTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
         return executedTestCaseRepository.countByTimeForResult(autName, result, testCaseVersion, from, to);
     }
 
-    /**
-     * @Description returns list test result tables of count response
-     * @param autName aut name
-     * @param result result of test case
-     * @param testCaseVersion aut version
-     * @param fromTime range of time start time
-     * @param toTime range of end time
-     * */
     @GetMapping("/countByName/{autName}/{result}/{testCaseVersion}/{fromTime}/{toTime}")
     public List<TestCaseCountResponse> countByName(@PathVariable String autName, @PathVariable String result, @PathVariable Integer testCaseVersion, @PathVariable ZonedDateTime fromTime, @PathVariable ZonedDateTime toTime) {
 
@@ -99,13 +76,6 @@ public class GrafanaController {
         return executedTestCaseRepository.countByName(autName, result, testCaseVersion, from, to);
     }
 
-    /**
-     * @Description returns list test result tables of time response
-     * @param autName aut name
-     * @param testCaseVersion aut version
-     * @param fromTime range of time start time
-     * @param toTime range of end time
-     * */
     @GetMapping("/countByTime/{autName}/{testCaseVersion}/{fromTime}/{toTime}")
     public List<TestCaseTimeResponse> countByTime(@PathVariable String autName, @PathVariable Integer testCaseVersion, @PathVariable ZonedDateTime fromTime, @PathVariable ZonedDateTime toTime) {
 
@@ -113,5 +83,41 @@ public class GrafanaController {
         ZonedDateTime to = toTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
         return executedTestCaseRepository.countByTime(autName, testCaseVersion, from, to);
     }
+
+
 }
+
+/*@GetMapping("/test-result/count-by-test-name/{autName}/{result}/{version}/{fromTime}/{toTime}")
+    public List<TestNameCountResponse> count(@PathVariable String autName, @PathVariable String result, @PathVariable Integer version, @PathVariable ZonedDateTime fromTime, @PathVariable ZonedDateTime toTime) {
+
+        ZonedDateTime from = fromTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
+        ZonedDateTime to = toTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
+        return executedTestCaseRepository.findResultCount(autName, result, version, from, to);
+    }
+
+    @GetMapping("/test-result/count/{autName}/{result}/{version}/{fromTime}/{toTime}")
+    public List<ITestsCountResponse> count2(@PathVariable String autName, @PathVariable String result, @PathVariable Integer version, @PathVariable ZonedDateTime fromTime, @PathVariable ZonedDateTime toTime) {
+
+        ZonedDateTime from = fromTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
+        ZonedDateTime to = toTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
+        return executedTestCaseRepository.findNameCountttt(autName, result, version, from, to);
+    }
+
+    @GetMapping("/test-result/{autName}/{version}/{fromTime}/{toTime}")
+    public List<EExecutedTestCase> getResults(@PathVariable String autName, @PathVariable Integer version, @PathVariable ZonedDateTime fromTime, @PathVariable ZonedDateTime toTime) {
+
+        ZonedDateTime from = fromTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
+        ZonedDateTime to = toTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
+        return executedTestCaseRepository.findByAutNameAndTestCaseVersionAndCreatedAtBetweenOrderByCreatedAtDesc(autName, version, from, to);
+    }
+
+    @GetMapping("/test-result/aut-name")
+    public List<String> getAutNames() {
+        return executedTestCaseRepository.findAutNames();
+    }
+
+    @GetMapping("/test-result/version")
+    public List<String> getResults() {
+        return executedTestCaseRepository.findVersions();
+    }*/
 

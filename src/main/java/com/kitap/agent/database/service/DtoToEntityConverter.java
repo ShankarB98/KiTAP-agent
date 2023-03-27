@@ -13,17 +13,6 @@ import java.util.List;
 
 @Component
 public class DtoToEntityConverter {
-
-    /**
-     * This class converts provided dto objects to entity object for database operation purpose
-     * */
-
-    /**
-     * @Description converts executed test case dto into entity object
-     * @param tcase - dto object
-     * @param details - aut details which need for entity object
-     * @return a test case entity
-     * */
     public ExecutedTestCase convertDtoToEntity(com.kitap.testresult.dto.ExecutedTestCase tcase, ExecutionAutDetails details) {
         ExecutedTestCase etc = new ExecutedTestCase();
         etc.setTestCaseName(tcase.getTestCaseName());
@@ -56,13 +45,6 @@ public class DtoToEntityConverter {
         }
     }
 
-
-    /**
-     * @Description converts the step dto to step entity
-     * @param steps - list of steps to be converted
-     * @param version - version to use reference in steps
-     * @return a list of step entities
-     * */
     public List<ExecutedTestStep> getExecutedTestSteps(List<com.kitap.testresult.dto.ExecutedTestStep> steps, String version) {
         List<ExecutedTestStep> list = new ArrayList<>();
         for (com.kitap.testresult.dto.ExecutedTestStep step : steps) {
@@ -79,37 +61,25 @@ public class DtoToEntityConverter {
         return list;
     }
 
-
-    /**
-     * @Description converts own zoned date time object to Java's zoned date time object
-     * @param zonedDateTimeObject - our own zoned date time object
-     * @return a java's zoned date time object
-     * */
-    public java.time.ZonedDateTime getZonedDatetime(ZonedDateTime zonedDateTimeObject) {
+    public java.time.ZonedDateTime getZonedDatetime(ZonedDateTime bean) {
         //System.out.println("2016-10-05T08:20:10+05:30[Asia/Kolkata]");
-        return java.time.ZonedDateTime.parse(zonedDateTimeObject.toString());
+        return java.time.ZonedDateTime.parse(bean.toString());
     }
 
-
-    /**
-     * @Description used to convert aut dto to aut entity
-     * @param autdto - aut dto object
-     * @return a aut entity
-     * */
-    public ApplicationUnderTest convertDtoToEntity(com.kitap.testresult.dto.ApplicationUnderTest autdto) {
+    public ApplicationUnderTest convertDtoToEntity(com.kitap.testresult.dto.ApplicationUnderTest ad) {
         ApplicationUnderTest aut = new ApplicationUnderTest();
-        aut.setName(autdto.getName());
-        aut.setDisplayName(autdto.getDisplayName());
-        aut.setDescription(autdto.getDescription());
-        aut.setUrl(autdto.getUrl());
-        aut.setExecutableFilePath(autdto.getExecutableFilePath());
-        aut.setType(autdto.getType());
-        aut.setVersion(autdto.getVersion());
+        aut.setName(ad.getName());
+        aut.setDisplayName(ad.getDisplayName());
+        aut.setDescription(ad.getDescription());
+        aut.setUrl(ad.getUrl());
+        aut.setExecutableFilePath(ad.getExecutableFilePath());
+        aut.setType(ad.getType());
+        aut.setVersion(ad.getVersion());
 //        aut.setCreatedBy(ad.getCreatedBy());
 //        aut.setCreatedAt(ad.getCreatedAt());
 //        aut.setModifiedBy(ad.getModifiedBy());
 //        aut.setModifiedAt(ad.getModifiedAt());
-        aut.setIsActive(autdto.getIsActive());
+        aut.setIsActive(ad.getIsActive());
         return aut;
     }
 }

@@ -1,6 +1,6 @@
 package com.kitap.agent.generate.flow;
 
-import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.generate.base.BaseClass;
 import com.kitap.testresult.dto.agent.GenerationDetails;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,10 +15,9 @@ import java.util.List;
 import java.util.Objects;
 
 @Slf4j
-public class FileOperations {
+public class FileOperations extends BaseClass {
 
-    final String separator = File.separator;
-    final String destinationPath = BaseClass.properties.getProperty("destinationpath");
+    final String destinationPath = properties.getProperty("destinationpath");
 
     /** method for copying files to kitap destination path */
     public String copyFiles(GenerationDetails details){

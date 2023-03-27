@@ -1,7 +1,6 @@
 package com.kitap.agent.ui.machineInfo;
 
-import com.kitap.agent.database.model.dto.AgentDto;
-import com.kitap.agent.util.PropertyReader;
+import com.kitap.testresult.dto.agent.RegistrationDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -20,37 +19,35 @@ import java.net.UnknownHostException;
  */
 @Slf4j
 @Component
-public class MachineInformation{
-    final PropertyReader reader = new PropertyReader();
-    public final InetAddress inetAddress;
-    public final String osName;
-    public final String osVersion;
-    public final String adminUser;
+public class MachineInformation {
 
-    public final String macAddress;
+    public RegistrationDetails getMachineInformation(String registrationKey, String agentName) {
 
-    public MachineInformation(){
-        this.inetAddress = getInetAddress();
-        this.osName = System.getProperty("os.name");
-        this.osVersion = System.getProperty("os.version");
-        this.adminUser = System.getProperty("user.name");
-        this.macAddress = getMacAddress();
-    }
+        String macAddress;
+        // Get Host Name and Get IP Address
+        InetAddress inetAddress = getInetAddress();
+        String hostName = inetAddress.getHostName();
+        String ipAddress = inetAddress.getHostAddress();
 
-    public AgentDto getAgentDto(String agentName){
-        AgentDto agentDto = new AgentDto();
-        agentDto.setName(agentName);
-        agentDto.setIpAddress(inetAddress.getHostAddress());
-        agentDto.setOsName(osName);
-        agentDto.setOsVersion(osVersion);
-        agentDto.setDeviceType(osName);
-        agentDto.setMacAddress(getMacAddress());
-        agentDto.setHostName(adminUser);
-        String portNumber = reader.getProperty("server.port");
-        agentDto.setPortNumber(portNumber == null ? 8080 : Integer.parseInt(portNumber));
-        log.info("Host : " + inetAddress.getHostAddress());
-        log.info(agentDto.toString());
-        return agentDto;
+        // Get MAC Address
+        macAddress = getMacAddress();
+
+        String osName = System.getProperty("os.name");
+        String osVersion = System.getProperty("os.version");
+        String adminUser = System.getProperty("user.name");
+
+        RegistrationDetails machineDetails = new RegistrationDetails();
+        machineDetails.setAgentName(agentName);
+        machineDetails.setRegistrationKey(registrationKey);
+        machineDetails.setIpAddress(ipAddress);
+        machineDetails.setOsName(osName);
+        machineDetails.setOsVersion(osVersion);
+        machineDetails.setDeviceType(osName);
+        machineDetails.setMacAddress(macAddress);
+        machineDetails.setHostName(adminUser);
+        log.info("Host : " + hostName);
+        log.info(machineDetails.toString());
+        return machineDetails;
     }
 
     /**
