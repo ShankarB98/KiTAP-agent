@@ -1,5 +1,8 @@
 package com.kitap.agent.ui.menuitem.actions;
 
+import com.kitap.agent.api.apicalls.ApiCalls;
+import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.ui.tray.AgentTrayIcon;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -9,6 +12,7 @@ import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 
@@ -23,6 +27,8 @@ public class ContextMenuItemsAction {
 
 //    @Autowired
 //    CallDeregisterApi callDeregisterApi;
+    ApiCalls apiCalls = new ApiCalls();
+    AgentTrayIcon agentTrayIcon= new AgentTrayIcon();
 
     /**
      * @Description Action performed when register menuitem from context menu is clicked
@@ -47,29 +53,6 @@ public class ContextMenuItemsAction {
     }
 
     /**
-     * @Description Action performed when Generate/Execute menuitem from context menu is clicked;
-     * Displaying different UI in single Pane using JavaFX TabPane
-     */
-    public void genExeMenuItemAction(Stage stage) {
-        URL xmlUrl = getClass().getResource("/menuItems/genOrExe.fxml");
-        FXMLLoader loader = new FXMLLoader(xmlUrl);
-        Parent root;
-        try {
-            root = loader.load();
-        } catch (IOException ex) {
-            log.error(ex.toString());
-            throw new RuntimeException(ex);
-        }
-        Scene scene = new Scene(root);
-        stage.setTitle("Generate/Execute Page");
-        javafx.scene.image.Image icon = new javafx.scene.image.Image("images/KairosIcon.png");
-        stage.getIcons().add((icon));
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
-    }
-
-    /**
      * @Description Action performed when deRegister menuitem from context menu is clicked
      */
     public void deregisterMenuItemAction() {
@@ -79,12 +62,13 @@ public class ContextMenuItemsAction {
         confirmationAlert.setContentText("Are you sure ??");
         confirmationAlert.showAndWait().ifPresent((btnType) -> {
             if (btnType == ButtonType.OK) {
-                //callDeregisterApi.deRegisterAgent();
+                apiCalls.deRegister(BaseClass.machineInformation.macAddress);
                 Alert informationAlert = new Alert(Alert.AlertType.INFORMATION);
                 informationAlert.setTitle("Deregistration");
                 informationAlert.setContentText("Agent is Deregistered");
                 informationAlert.showAndWait();
                 log.info("Agent is Deregistered");
+                agentTrayIcon.addMenuToTrayIcon();
             } else if (btnType == ButtonType.CANCEL) {
                 log.info("Agent is NOT Deregistered");
             }
@@ -106,7 +90,7 @@ public class ContextMenuItemsAction {
         }
         Scene scene = new Scene(root);
         stage.setTitle("Execute Tests");
-        javafx.scene.image.Image icon = new javafx.scene.image.Image("images/KairosIcon.png");
+        javafx.scene.image.Image icon = new javafx.scene.image.Image("images/kitapTrayIcon.png");
         stage.getIcons().add((icon));
         stage.setScene(scene);
         stage.setResizable(false);
@@ -145,11 +129,43 @@ public class ContextMenuItemsAction {
         }
         Scene scene = new Scene(root);
         stage.setTitle("Generate Tests");
-        javafx.scene.image.Image icon = new javafx.scene.image.Image("images/KairosIcon.png");
+        javafx.scene.image.Image icon = new javafx.scene.image.Image("images/kitapTrayIcon.png");
         stage.getIcons().add((icon));
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+    }
+
+
+    /**
+     * Funtionality when restart MenuItem clicked
+     *
+     * @param agentTrayIcon
+     */
+
+    public void restartAgent(AgentTrayIcon agentTrayIcon) {
+        log.info("agent is restarting");
+        agentTrayIcon.removeAgentTrayIconFromTray("Agent is Shutting Down!!", "Please Wait!!", TrayIcon.MessageType.INFO);
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            log.error(e.toString());
+            throw new RuntimeException(e);
+        }
+        agentTrayIcon.addMenuToTrayIcon();
+        agentTrayIcon.addAgentTrayIconToTray("Agent is Starting", "Please Wait!!", TrayIcon.MessageType.NONE);
+    }
+
+    /**
+     * Functionality when quit MenuItem clicked
+     *
+     * @param agentTrayIcon
+     */
+    public void quitAgent(AgentTrayIcon agentTrayIcon) {
+        agentTrayIcon.removeAgentTrayIconFromTray("Agent is Shutting Down!!", "", TrayIcon.MessageType.NONE);
+        log.info("calling api to inform agent is shutting down");
+        apiCalls.quit(BaseClass.machineInformation.macAddress);
+        System.exit(0);
     }
 }
 

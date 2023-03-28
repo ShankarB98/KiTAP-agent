@@ -13,23 +13,47 @@ import java.util.List;
 public interface ApplicationUnderTestRepo extends JpaRepository<ApplicationUnderTest, Long> {
 
     //@Transactional
+    /**
+     * @Description  fetches all details of an aut from aut table
+     * @param autName - uses to get that aut details
+     * @return aut object
+     * */
     @Query(value = "SELECT * FROM application_under_test WHERE name = ?1", nativeQuery = true)
     ApplicationUnderTest isExists(String autName);
 
+    /**
+     * @Description  fetches all details of an aut from aut table
+     * @param autName - uses to get that aut details
+     * @param autType - uses to filter from different aut types
+     * @return aut object
+     * */
     @Query(value = "SELECT * FROM application_under_test WHERE name = ?1 AND type = ?2", nativeQuery = true)
     ApplicationUnderTest isExists(String autName, String autType);
 
 
+    /**
+     * @Description  fetches all aut names from aut table under a single aut type
+     * @param autType - uses to get from same aut type
+     * @return list of aut names
+     * */
     @Query(value = "SELECT name FROM application_under_test WHERE type = ?1", nativeQuery = true)
     List<String> getAllAUTNames(String autType);
 
+    /**
+     * @Description  fetches all aut types from aut table
+     * @return list of aut types
+     * */
     @Query(value = "SELECT DISTINCT type FROM application_under_test", nativeQuery = true)
     List<String> getAutTypes();
 
 
+    /**
+     * @Description  fetches all aut names from aut table under a single aut type
+     * @param autName - uses to delete an aut from aut table
+     * */
+    //TODO need to verify based on aut type also
     @Modifying
     @Query(value = "DELETE FROM application_under_test WHERE NAME = ?1", nativeQuery = true)
     void deleteAUT(String autName);
-
 
 }

@@ -14,14 +14,14 @@ import java.util.List;
 public class FindClassesFromJarService {
 
     /** parse the jar file and generates the data */
-    public String parseJar(GenerationDetails details){
+    public String parseJar(File jarFile, GenerationDetails details){
         AUT aut = new AUT();
 
         JarDetailsService jds = new JarDetailsService();
         JarParserService jps = new JarParserService();
 
-        jds.getMetaData(aut, details.getProjectPath());
-        List<Clazz> classes = jps.getAllClassData(details.getProjectPath(), details.getAutName(), details.getVersion());
+        jds.getMetaData(aut, jarFile);
+        List<Clazz> classes = jps.getAllClassData(jarFile, details);
 
         aut.setName(details.getAutName());
         aut.setDescription(details.getAutName());

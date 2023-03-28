@@ -1,5 +1,6 @@
 package com.kitap.agent;
 
+import com.kitap.agent.base.BaseClass;
 import com.kitap.agent.ui.initializer.AgentFxApplication;
 import javafx.application.Application;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

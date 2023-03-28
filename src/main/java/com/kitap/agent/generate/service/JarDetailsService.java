@@ -1,6 +1,5 @@
 package com.kitap.agent.generate.service;
 
-import com.kitap.testresult.dto.dateandtime.*;
 import com.kitap.testresult.dto.generate.AUT;
 import lombok.extern.slf4j.Slf4j;
 

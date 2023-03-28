@@ -1,6 +1,6 @@
 package com.kitap.agent.generate.flow;
 
-import com.kitap.agent.generate.base.BaseClass;
+import com.kitap.agent.base.BaseClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
@@ -9,7 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 @Slf4j
-public class ProjectValidator extends BaseClass {
+public class ProjectValidator {
 
     //String propertiesPath = reader.getProperty(ProjectType.TESTEXECUTION);
 
@@ -26,10 +26,6 @@ public class ProjectValidator extends BaseClass {
                 arr[0] = "invalid";
                 break;
             case "Web":
-                arr[0] = "valid";
-                arr[1] = value;
-                System.out.println(arr[0]);
-                break;
             case "Sales Force":
             case "Desktop":
             case "Mobile":
@@ -43,10 +39,10 @@ public class ProjectValidator extends BaseClass {
 
     private String isValidProject(File projectPath){
         File dir = projectPath.getAbsoluteFile();
-        File subDirMain = new File(dir, properties.getProperty("mainapplicationpath"));
-        File subDirTest = new File(dir,properties.getProperty("testapplicationpath"));
+        File subDirMain = new File(dir, BaseClass.properties.getProperty("mainapplicationpath"));
+        File subDirTest = new File(dir, BaseClass.properties.getProperty("testapplicationpath"));
         if(subDirMain.isDirectory()&&subDirTest.isDirectory()){
-            File pomFile = new File(dir+separator+"pom.xml");
+            File pomFile = new File(dir+BaseClass.separator+"pom.xml");
             if (pomFile.exists()) {
                 return projectAutType(pomFile);
             }else return "pom file does not exists";
@@ -116,8 +112,6 @@ public class ProjectValidator extends BaseClass {
                 }
             }
             if (isKitapCore && containsPlatform){
-                System.out.println("contains both");
-                System.out.println(value);
                 return value;
             }
         } catch (IOException ex) {

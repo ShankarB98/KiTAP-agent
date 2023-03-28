@@ -1,7 +1,6 @@
 package com.kitap.agent.execute;
 
 import com.kitap.agent.base.BaseClass;
-import com.kitap.agent.util.PropertyReader;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;

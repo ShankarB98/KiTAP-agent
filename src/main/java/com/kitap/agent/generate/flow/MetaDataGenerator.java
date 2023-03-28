@@ -2,7 +2,7 @@ package com.kitap.agent.generate.flow;
 
 
 import com.kitap.agent.api.apicalls.ApiCalls;
-import com.kitap.agent.generate.base.BaseClass;
+import com.kitap.agent.base.BaseClass;
 import com.kitap.agent.generate.service.FindClassesFromJarService;
 import com.kitap.testresult.dto.agent.GenerationDetails;
 import lombok.extern.slf4j.Slf4j;
@@ -12,22 +12,26 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 @Slf4j
-public class MetaDataGenerator extends BaseClass {
+public class MetaDataGenerator {
     
     /** method to generate test cases
      * jar path is jar file path
      * version Path is which version to create test cases
      * */
 
+    final String separator = File.separator;
+
     ApiCalls apiCalls = new ApiCalls();
 
     public void generateMetaData(GenerationDetails details){
-        String qualifiedPath = properties.getProperty("destinationpath")+separator+details.getAutType()+separator+details.getAutName()+separator+details.getVersion()+separator+"target";
+        //String qualifiedPath = properties.getProperty("destinationpath")+separator+details.getAutType()+separator+details.getAutName()+separator+details.getVersion()+separator+"target";
+        String qualifiedPath = details.getProjectPath()+separator+"target";
         File [] jarFiles = new File(qualifiedPath).listFiles();
+        File jarFile = null;
         if (jarFiles != null){
             for (File file:jarFiles) {
                 if (file.getName().endsWith("-tests.jar")) {
-                    details.setProjectPath(new File(file.getAbsolutePath()));
+                    jarFile = file;
                 }
 //                if (file.getName().endsWith("-jar-with-dependencies.jar")) {
 //                    details.setProjectPath(new File(file.getAbsolutePath()));
@@ -35,7 +39,7 @@ public class MetaDataGenerator extends BaseClass {
             }
         }
 
-        String result = new FindClassesFromJarService().parseJar(details);
+        String result = new FindClassesFromJarService().parseJar(jarFile, details);
         System.out.println(result);
 
         File jsonFile = new File(generateJsonFileName(details));
@@ -46,7 +50,7 @@ public class MetaDataGenerator extends BaseClass {
         try {
             jsonFile.createNewFile();
             Files.writeString(jsonFile.toPath(), result);
-            apiCalls.saveJsonFileInServer(result);
+            //apiCalls.saveJsonFileInServer(result);
         } catch (IOException e) {
             log.error(e.toString());
             throw new RuntimeException(e);
@@ -54,7 +58,7 @@ public class MetaDataGenerator extends BaseClass {
     }
 
     private String generateJsonFileName(GenerationDetails details){
-        return properties.getProperty("destinationpath")+separator
+        return BaseClass.properties.getProperty("destinationpath")+separator
                             +details.getAutType()+separator
                             +details.getAutName()+separator
                             +details.getVersion()+separator
