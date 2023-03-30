@@ -85,11 +85,12 @@ public class ExecuteMenu {
     @FXML
     public void displayTestResults(ActionEvent actionEvent) {
         try{
-            URI htmlFileUri = new URI(reader.getProperty("destinationpath")+separator+
+            String reportsPath = reader.getProperty("destinationpath")+separator+
                     autType.getValue()+separator+executeAutCombo.getValue()+separator+
-                    versionCombo.getValue()+separator+"target"+separator+"site"+separator+"serenity"+separator+"index.html");
-            Desktop.getDesktop().browse(htmlFileUri);
-        }catch (URISyntaxException | IOException e) {
+                    versionCombo.getValue()+separator+"target"+separator+"site"+separator+"serenity"+separator+"index.html";
+            File file = new File(reportsPath);
+            Desktop.getDesktop().browse(file.toURI());
+        }catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

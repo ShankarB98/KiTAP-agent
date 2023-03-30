@@ -164,7 +164,7 @@ public class ContextMenuItemsAction {
     public void quitAgent(AgentTrayIcon agentTrayIcon) {
         agentTrayIcon.removeAgentTrayIconFromTray("Agent is Shutting Down!!", "", TrayIcon.MessageType.NONE);
         log.info("calling api to inform agent is shutting down");
-        apiCalls.quit(BaseClass.machineInformation.macAddress);
+        //apiCalls.quit(BaseClass.machineInformation.macAddress);
         System.exit(0);
     }
 }
