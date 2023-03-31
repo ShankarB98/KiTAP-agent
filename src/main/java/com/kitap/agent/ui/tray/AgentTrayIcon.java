@@ -161,11 +161,11 @@ public class AgentTrayIcon {
             if (!isRegistered) {
                 //remove
                 menu.getItems().remove(deRegister);
-                menu.getItems().remove(generateTests);
-                menu.getItems().remove(executeTests);
                 //add
                 menu.getItems().add(runStatus);
                 menu.getItems().add(register);
+                menu.getItems().add(generateTests);
+                menu.getItems().add(executeTests);
                 menu.getItems().add(reStart);
                 menu.getItems().add(seperatorLine);
                 menu.getItems().add(quit);
