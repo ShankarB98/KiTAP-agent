@@ -2,6 +2,7 @@ package com.kitap.agent.ui.controllers;
 
 import com.kitap.agent.api.apicalls.ApiCalls;
 import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.ui.initializer.TrayIconAndMenuInitializer;
 import com.kitap.agent.ui.tray.AgentTrayIcon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -61,7 +62,10 @@ public class RegisterMenu {
         } else {
             log.info("calling api to register agent");
             apiCalls.register(BaseClass.machineInformation.getAgentDto(agentName), agentKey);
-            agentTrayIcon.addMenuToTrayIcon();
+
+            TrayIconAndMenuInitializer.updateMenu(new Stage());
+
+            //agentTrayIcon.addMenuToTrayIcon();
             Stage registrationStage = (Stage) registrationAnchorPane.getScene().getWindow();
             registrationStage.close();
         }

@@ -17,6 +17,7 @@ import java.awt.*;
 @Component
 public class TrayIconAndMenuInitializer {
 
+    static TrayIcon oldIconWithMenu;
     static ContextMenuItemsAction contextMenuItemsActionImpl = new ContextMenuItemsAction();
 
     /**
@@ -28,7 +29,21 @@ public class TrayIconAndMenuInitializer {
 
         AgentTrayIcon agentTrayIcon = new AgentTrayIcon();
 
-        agentTrayIcon.createAndAddAgentTrayIconWithMenuToTray();
+        oldIconWithMenu = agentTrayIcon.createAndAddAgentTrayIconWithMenuToTray();
+
+        registerOnAction(stage, agentTrayIcon);
+        deRegisterOnAction(agentTrayIcon);
+        generateOnAction(stage, agentTrayIcon);
+        restartOnAction(agentTrayIcon);
+        quitOnAction(agentTrayIcon);
+        executeTestsOnAction(stage, agentTrayIcon);
+    }
+    public static void updateMenu(Stage stage) {
+        SystemTray.getSystemTray().remove(oldIconWithMenu);
+
+        AgentTrayIcon agentTrayIcon = new AgentTrayIcon();
+
+        oldIconWithMenu = agentTrayIcon.changeAndAddAgentTrayIconWithMenuToTray();
 
         registerOnAction(stage, agentTrayIcon);
         deRegisterOnAction(agentTrayIcon);

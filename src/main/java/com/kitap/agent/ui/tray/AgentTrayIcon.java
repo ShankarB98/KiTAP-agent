@@ -38,7 +38,7 @@ public class AgentTrayIcon {
      * @Author: KT1497
      * @Description: TrayIcon adding to systemtray,Adding ContextMenu to our TrayIcon
      */
-    public void createAndAddAgentTrayIconWithMenuToTray() {
+    public TrayIcon createAndAddAgentTrayIconWithMenuToTray() {
 
         final javafx.scene.image.Image runningShow = new javafx.scene.image.Image(
                 Objects.requireNonNull(AgentTrayIcon.class.getResource("/images/green.png")).toExternalForm());
@@ -83,6 +83,58 @@ public class AgentTrayIcon {
         icon = new AddEffectsToMenuAndMenuItems(image, menu);
         addMenuToTrayIcon();
         addAgentTrayIconToTray("Agent is Starting", "Please Wait!!", TrayIcon.MessageType.NONE);
+        return icon;
+    }
+    public TrayIcon changeAndAddAgentTrayIconWithMenuToTray() {
+
+        final javafx.scene.image.Image runningShow = new javafx.scene.image.Image(
+                Objects.requireNonNull(AgentTrayIcon.class.getResource("/images/green.png")).toExternalForm());
+
+        try {
+            System.setProperty("java.awt.headless", "false");
+        } catch (Exception e) {
+            log.error(e.toString());
+            throw new RuntimeException(e);
+        }
+        //Checking whether Machine Tray is supported or not
+        if (!SystemTray.isSupported()) {
+            log.info("system tray is not supported for this PC, please contact admin");
+            System.exit(0);
+        }
+        //create process status displaying in Menu
+        runStatus = new javafx.scene.control.MenuItem("Agent is Running...");
+
+        //Create JavaFX MenuItems
+        register = new javafx.scene.control.MenuItem("Register");
+
+        genOrExe = new MenuItem("Generate/Execute");
+
+        generateTests = new javafx.scene.control.MenuItem("Generate");
+
+        executeTests = new javafx.scene.control.MenuItem("Execute");
+
+        deRegister = new javafx.scene.control.MenuItem("Deregister");
+
+        reStart = new javafx.scene.control.MenuItem("Restart");
+
+        quit = new MenuItem("Quit");
+
+        //Adding suitable Image beside MenuItem
+        runStatus.setGraphic(new ImageView(runningShow));
+
+        //Create Seperator in Context Menu
+        seperatorLine = new SeparatorMenuItem();
+
+        Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/images/kitapTrayIcon.png"));
+        icon = new AddEffectsToMenuAndMenuItems(image,menu);
+        try {
+            SystemTray.getSystemTray().add(icon);//Add icon to SystemTray
+            icon.setToolTip("KiTAP Agent");
+        } catch (AWTException e) {
+            throw new RuntimeException(e);
+        }
+        addMenuToTrayIcon();
+        return icon;
     }
 
     /**

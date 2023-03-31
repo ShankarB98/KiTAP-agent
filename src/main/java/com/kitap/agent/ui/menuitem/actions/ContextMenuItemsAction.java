@@ -2,6 +2,7 @@ package com.kitap.agent.ui.menuitem.actions;
 
 import com.kitap.agent.api.apicalls.ApiCalls;
 import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.ui.initializer.TrayIconAndMenuInitializer;
 import com.kitap.agent.ui.tray.AgentTrayIcon;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -45,7 +46,7 @@ public class ContextMenuItemsAction {
         }
         Scene scene = new Scene(root);
         stage.setTitle("Registration");
-        javafx.scene.image.Image icon = new javafx.scene.image.Image("images/KairosIcon.png");
+        javafx.scene.image.Image icon = new javafx.scene.image.Image("images/kitapTrayIcon.png");
         stage.getIcons().add((icon));
         stage.setScene(scene);
         stage.setResizable(false);
@@ -68,7 +69,10 @@ public class ContextMenuItemsAction {
                 informationAlert.setContentText("Agent is Deregistered");
                 informationAlert.showAndWait();
                 log.info("Agent is Deregistered");
-                agentTrayIcon.addMenuToTrayIcon();
+
+                TrayIconAndMenuInitializer.updateMenu(new Stage());
+
+                //agentTrayIcon.addMenuToTrayIcon();
             } else if (btnType == ButtonType.CANCEL) {
                 log.info("Agent is NOT Deregistered");
             }
@@ -152,8 +156,10 @@ public class ContextMenuItemsAction {
             log.error(e.toString());
             throw new RuntimeException(e);
         }
-        agentTrayIcon.addMenuToTrayIcon();
-        agentTrayIcon.addAgentTrayIconToTray("Agent is Starting", "Please Wait!!", TrayIcon.MessageType.NONE);
+        TrayIconAndMenuInitializer.startTrigger(new Stage());
+
+        //agentTrayIcon.addMenuToTrayIcon();
+        //agentTrayIcon.addAgentTrayIconToTray("Agent is Starting", "Please Wait!!", TrayIcon.MessageType.NONE);
     }
 
     /**
