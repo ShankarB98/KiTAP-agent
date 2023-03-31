@@ -32,6 +32,8 @@ public class ApiCalls extends BaseApiCall {
     public boolean amIRegistered(String macAddress) {
         macAddress = macAddress.replace(" ", "%20");
         baseUrl = baseServerUrl+properties.getProperty("am.i.registered") + "?macAddress=" + macAddress + "";
+        log.info("mac address {}", macAddress);
+        log.info("api call url {}", baseUrl);
         getResponse(macAddress, HttpMethod.GET);
         log.info("agent registration status {}", responseBody.getBody());
         return (boolean) responseBody.getBody();
