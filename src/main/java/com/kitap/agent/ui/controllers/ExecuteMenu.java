@@ -73,6 +73,7 @@ public class ExecuteMenu {
 
     @FXML
     public void initialize() {
+        log.info("Initializing the execution UI");
         autType.getItems().removeAll(autType.getItems());
         autType.getItems().addAll(apiCalls.getAutTypes());
     }
@@ -84,6 +85,7 @@ public class ExecuteMenu {
      */
     @FXML
     public void displayTestResults(ActionEvent actionEvent) {
+        log.info("Clicked on viewtestresults button");
         try{
             String reportsPath = reader.getProperty("destinationpath")+separator+
                     autType.getValue()+separator+executeAutCombo.getValue()+separator+
@@ -91,6 +93,7 @@ public class ExecuteMenu {
             File file = new File(reportsPath);
             Desktop.getDesktop().browse(file.toURI());
         }catch (IOException e) {
+            log.error(e.toString());
             throw new RuntimeException(e);
         }
     }
@@ -102,6 +105,7 @@ public class ExecuteMenu {
      */
     @FXML
     public void testExecution(ActionEvent actionEvent) {
+        log.info("clicked on executetests button");
         new Thread() {
             public void run() {
                 Platform.runLater(new Runnable() {
@@ -136,6 +140,7 @@ public class ExecuteMenu {
                 details.setAut(executeAutCombo.getValue());
                 details.setVersion(versionCombo.getValue());
                 details.setTestCases(null);
+                log.info("api call to execute tests");
                 apiCalls.executeTests(details);
 
                 Platform.runLater(new Runnable() {
@@ -179,15 +184,17 @@ public class ExecuteMenu {
     public void cancelClicked(ActionEvent actionEvent) {
         Stage executeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
         executeStage.close();
-        log.info("Clicked Cancel Button");
+        log.info("Clicked Cancel Button of execution UI");
     }
 
     public void onChangeOfAutType(ActionEvent actionEvent) {
+        log.info("on change of aut type,updating the auts present");
         executeAutCombo.getItems().removeAll(executeAutCombo.getItems());
         executeAutCombo.getItems().addAll(apiCalls.getAllAUT(autType.getValue()));
     }
 
     public void onAutSelection(ActionEvent actionEvent) {
+        log.info("on change of aut name selection, updating the versions present");
         versionCombo.getItems().removeAll(versionCombo.getItems());
         versionCombo.getItems().addAll(operations.getListOfFolders(autType.getValue() + File.separator + executeAutCombo.getValue()));
     }

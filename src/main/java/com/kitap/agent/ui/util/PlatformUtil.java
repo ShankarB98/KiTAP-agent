@@ -1,9 +1,11 @@
 package com.kitap.agent.ui.util;
 
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author KT1497
  */
+@Slf4j
 public final class PlatformUtil {
 
     /**
@@ -18,6 +20,7 @@ public final class PlatformUtil {
      * @return boolean
      */
     public static boolean isWindow() {
+        log.info("Check if windows OS or not and return boolean");
         return System.getProperty("os.name").toLowerCase().contains("win");
     }
 
@@ -27,6 +30,7 @@ public final class PlatformUtil {
      * @return boolean
      */
     public static boolean isMac() {
+        log.info("Check if Mac OS or not and return boolean");
         return System.getProperty("os.name").toLowerCase().contains("mac");
     }
 
@@ -36,6 +40,7 @@ public final class PlatformUtil {
      * @return boolean
      */
     public static boolean isLinux() {
+        log.info("Check if Linux OS or not and return boolean");
         String os = System.getProperty("os.name").toLowerCase();
         return os.contains("nix") || os.contains("nux") || os.indexOf("aix") > 0;
     }

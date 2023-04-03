@@ -23,15 +23,14 @@ public class AgentTrayIcon {
     private AddEffectsToMenuAndMenuItems icon;
 
     //Creating ContextMenu and MenuItems
-    private MenuItem runStatus;
-    private SeparatorMenuItem seperatorLine;
-    private MenuItem deRegister;
-    private MenuItem register;
-    private MenuItem reStart;
-    private MenuItem quit;
-    private MenuItem generateTests;
-    private MenuItem executeTests;
-    private MenuItem genOrExe;
+    private MenuItem runStatus = new javafx.scene.control.MenuItem("Agent is Running...");
+    private SeparatorMenuItem seperatorLine = new SeparatorMenuItem();
+    private MenuItem deRegister = new javafx.scene.control.MenuItem("Deregister");
+    private MenuItem register = new javafx.scene.control.MenuItem("Register");
+    private MenuItem reStart = new javafx.scene.control.MenuItem("Restart");
+    private MenuItem quit = new MenuItem("Quit");
+    private MenuItem generateTests = new javafx.scene.control.MenuItem("Generate");
+    private MenuItem executeTests = new javafx.scene.control.MenuItem("Execute");
     public ContextMenu menu = new ContextMenu();
 
     /**
@@ -39,7 +38,7 @@ public class AgentTrayIcon {
      * @Description: TrayIcon adding to systemtray,Adding ContextMenu to our TrayIcon
      */
     public TrayIcon createAndAddAgentTrayIconWithMenuToTray() {
-
+        log.info("Creating and adding Agent trayicon along with menu");
         final javafx.scene.image.Image runningShow = new javafx.scene.image.Image(
                 Objects.requireNonNull(AgentTrayIcon.class.getResource("/images/green.png")).toExternalForm());
 
@@ -51,42 +50,22 @@ public class AgentTrayIcon {
         }
         //Checking whether Machine Tray is supported or not
         if (!SystemTray.isSupported()) {
-            log.info("system tray is not supported for this PC, please contact admin");
+            log.error("system tray is not supported for this PC, please contact admin");
             System.exit(0);
         }
-        //create process status displaying in Menu
-        runStatus = new javafx.scene.control.MenuItem("Agent is Running...");
-
-        //Create JavaFX MenuItems
-        register = new javafx.scene.control.MenuItem("Register");
-
-        genOrExe = new MenuItem("Generate/Execute");
-
-        generateTests = new javafx.scene.control.MenuItem("Generate");
-
-        executeTests = new javafx.scene.control.MenuItem("Execute");
-
-        deRegister = new javafx.scene.control.MenuItem("Deregister");
-
-        reStart = new javafx.scene.control.MenuItem("Restart");
-
-        quit = new MenuItem("Quit");
-
         //Adding suitable Image beside MenuItem
         runStatus.setGraphic(new ImageView(runningShow));
-
-        //Create Seperator in Context Menu
-        seperatorLine = new SeparatorMenuItem();
 
         Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/images/kitapTrayIcon.png"));
 
         icon = new AddEffectsToMenuAndMenuItems(image, menu);
         addMenuToTrayIcon();
         addAgentTrayIconToTray("Agent is Starting", "Please Wait!!", TrayIcon.MessageType.NONE);
+        log.info("Added Trayicon along with menu to system tray");
         return icon;
     }
     public TrayIcon changeAndAddAgentTrayIconWithMenuToTray() {
-
+        log.info("Updating and adding Agent trayicon along with menu");
         final javafx.scene.image.Image runningShow = new javafx.scene.image.Image(
                 Objects.requireNonNull(AgentTrayIcon.class.getResource("/images/green.png")).toExternalForm());
 
@@ -98,32 +77,12 @@ public class AgentTrayIcon {
         }
         //Checking whether Machine Tray is supported or not
         if (!SystemTray.isSupported()) {
-            log.info("system tray is not supported for this PC, please contact admin");
+            log.error("system tray is not supported for this PC, please contact admin");
             System.exit(0);
         }
-        //create process status displaying in Menu
-        runStatus = new javafx.scene.control.MenuItem("Agent is Running...");
-
-        //Create JavaFX MenuItems
-        register = new javafx.scene.control.MenuItem("Register");
-
-        genOrExe = new MenuItem("Generate/Execute");
-
-        generateTests = new javafx.scene.control.MenuItem("Generate");
-
-        executeTests = new javafx.scene.control.MenuItem("Execute");
-
-        deRegister = new javafx.scene.control.MenuItem("Deregister");
-
-        reStart = new javafx.scene.control.MenuItem("Restart");
-
-        quit = new MenuItem("Quit");
 
         //Adding suitable Image beside MenuItem
         runStatus.setGraphic(new ImageView(runningShow));
-
-        //Create Seperator in Context Menu
-        seperatorLine = new SeparatorMenuItem();
 
         Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/images/kitapTrayIcon.png"));
         icon = new AddEffectsToMenuAndMenuItems(image,menu);
@@ -131,9 +90,11 @@ public class AgentTrayIcon {
             SystemTray.getSystemTray().add(icon);//Add icon to SystemTray
             icon.setToolTip("KiTAP Agent");
         } catch (AWTException e) {
+            log.error(e.toString());
             throw new RuntimeException(e);
         }
         addMenuToTrayIcon();
+        log.info("Added Trayicon along with updated menu to system tray");
         return icon;
     }
 
@@ -142,12 +103,14 @@ public class AgentTrayIcon {
      * @Description: Adding ContextMenu to our TrayIcon
      */
     public void addMenuToTrayIcon() {
+        log.info("Adding menu to trayicon");
         ApiCalls apiCalls = new ApiCalls();
 
-        String isServerless = BaseClass.properties.getProperty("isServerLess");
-        Boolean serverCheck = Boolean.parseBoolean(isServerless);
+        String serverCheck = BaseClass.properties.getProperty("isServerLess");
+        Boolean serverLess = Boolean.parseBoolean(serverCheck);
 
-        if (serverCheck) {
+        if (serverLess) {
+            log.info("Menu for serverless is adding");
             menu.getItems().add(runStatus);
             menu.getItems().add(generateTests);
             menu.getItems().add(executeTests);
@@ -155,10 +118,12 @@ public class AgentTrayIcon {
             menu.getItems().add(seperatorLine);
             menu.getItems().add(quit);
         } else {
+            log.info("Menu for server is adding");
             log.info("calling api to know registration status of agent");
             boolean isRegistered = apiCalls.amIRegistered(BaseClass.machineInformation.macAddress);
-            log.info("calling api to know registration status of agent {}", isRegistered);
+            log.info("Registration status of agent is {}", isRegistered);
             if (!isRegistered) {
+                log.info("Menu if agent is - Not Registered");
                 //remove
                 menu.getItems().remove(deRegister);
                 //add
@@ -169,11 +134,8 @@ public class AgentTrayIcon {
                 menu.getItems().add(reStart);
                 menu.getItems().add(seperatorLine);
                 menu.getItems().add(quit);
-                //remove
-               /* menu.getItems().remove(deRegister);
-                menu.getItems().remove(generateTests);
-                menu.getItems().remove(executeTests);*/
             } else {
+                log.info("Menu if agent is - Registered");
                 menu.getItems().remove(register);
                 //add
                 menu.getItems().add(runStatus);
@@ -183,12 +145,8 @@ public class AgentTrayIcon {
                 menu.getItems().add(reStart);
                 menu.getItems().add(seperatorLine);
                 menu.getItems().add(quit);
-                //remove
-               /* menu.getItems().remove(register);*/
             }
         }
-
-
     }
 
     /**
@@ -198,6 +156,7 @@ public class AgentTrayIcon {
      * messagetype is the type of message
      */
     public void addAgentTrayIconToTray(String caption, String text, TrayIcon.MessageType messageType) {
+        log.info("Trayicon adding with a popup message");
         try {
             SystemTray.getSystemTray().add(icon);//Add icon to SystemTray
             icon.setToolTip("KiTAP Agent"); //Displaying Text when hover
@@ -216,6 +175,7 @@ public class AgentTrayIcon {
      * messagetype is the type of message
      */
     public void removeAgentTrayIconFromTray(String caption, String text, TrayIcon.MessageType messageType) {
+        log.info("TrayIcon removing with a popup message");
         icon.displayMessage(caption, text, messageType);
         try {
             SystemTray.getSystemTray().remove(icon);//Remove icon from SystemTray

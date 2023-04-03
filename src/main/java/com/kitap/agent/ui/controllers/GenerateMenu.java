@@ -30,10 +30,7 @@ import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -77,6 +74,7 @@ public class GenerateMenu {
 
     @FXML
     public void initialize() {
+        log.info("Initializing the generation UI");
         generateTestsButton.setDisable(true);
         createAutButton.setDisable(true);
         folderTextField.textProperty().addListener(new ChangeListener<String>() {
@@ -101,11 +99,16 @@ public class GenerateMenu {
      */
     @FXML
     public void choosingFolder(ActionEvent actionEvent) {
+        log.info("Choosing the test project directory");
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Select Folder");
         selectedDir = directoryChooser.showDialog(new Stage());
-        log.info(selectedDir.toString());
-        folderTextField.setText(selectedDir.toString());
+        if(selectedDir!=null) {
+            log.info(selectedDir.toString());
+            folderTextField.setText(selectedDir.toString());
+        }else{
+            log.info("No project selected");
+        }
     }
 
     public void onClickAnchorPane(MouseEvent mouseEvent) {
@@ -125,16 +128,7 @@ public class GenerateMenu {
      */
     @FXML
     public void enterNewAut(ActionEvent actionEvent) {
-        /*TextInputDialog inputDialog = new TextInputDialog();
-        inputDialog.setTitle("Input");
-        inputDialog.setHeaderText("New AUT");
-        inputDialog.setContentText("Enter AUT:");
-        Optional<String> result = inputDialog.showAndWait();
-        log.info(result.toString());
-        result.ifPresent(aut -> {
-            autCombo.setValue(aut);
-            autCombo.getItems().add(aut);
-        });*/
+        log.info(" Creating UI for new AUT");
         Stage newAutStage = new Stage();
         Group root = new Group();
         Scene scene = new Scene(root);
@@ -169,6 +163,7 @@ public class GenerateMenu {
         okButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                log.info("Action performing Onclick of OK button");
                 String autNameString = autNameField.getText();
 
                 String result = apiCalls.saveAUT(autNameString, autTypeResult.getText());
@@ -180,8 +175,6 @@ public class GenerateMenu {
                     operations.createAut(autNameString, autTypeResult.getText());
                 }
                 //new SaveAut().saveAut(autNameString, autTypeResult.getText());
-
-
                 newAutStage.close();
             }
         });
@@ -189,6 +182,7 @@ public class GenerateMenu {
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                log.info("clicked on cancel button from UI of new AUT");
                 newAutStage.close();
             }
         });
@@ -202,6 +196,7 @@ public class GenerateMenu {
 
         newAutStage.setScene(scene);
         newAutStage.show();
+        log.info("New AUT UI is shown");
     }
 
     /**
@@ -213,7 +208,7 @@ public class GenerateMenu {
     public void clickedCancelButton(ActionEvent actionEvent) {
         Stage generateStage = (Stage) anchorPane.getScene().getWindow();
         generateStage.close();
-        log.info("Clicked Cancel Button");
+        log.info("Clicked Cancel Button of generation UI");
     }
 
     /**
@@ -223,7 +218,7 @@ public class GenerateMenu {
      */
     @FXML
     public void generateTests(ActionEvent actionEvent) {
-
+        log.info("Clicked on generate tests");
         new Thread() {
             public void run() {
                 Platform.runLater(new Runnable() {
@@ -262,12 +257,18 @@ public class GenerateMenu {
                 details.setCreateNewVersion(true);
                 details.setPublishToServer(false);
                 log.info(details.getAutName());
+                log.info("validating the test project");
                 validateProject();
                 Validator validator = new Validator();
+                log.info("compiling and packaging the test project");
                 validator.compileAndPackage(selectedDir);
+                log.info("Copying the files");
                 String version = validator.copyFiles(details);
                 details.setVersion(Long.parseLong(version));
+                log.info("Generating...");
                 new Generator().generate(details);
+
+                log.info("Generation Completed");
 
                 Platform.runLater(new Runnable() {
                     @Override
@@ -295,36 +296,42 @@ public class GenerateMenu {
      */
 
     private void validateProject() {
+        log.info("selected project is validating");
         new Thread() {
             public void run() {
-                String[] checker = new Validator().checkValidation(selectedDir);
-                System.out.println(Arrays.toString(checker));
-                if (checker[0].equals("invalid")) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Invalid Project");
-                    alert.setContentText("Please select valid project");
-                    alert.showAndWait();
-                    log.info("invalid project");
+                if (selectedDir != null) {
+                    String[] checker = new Validator().checkValidation(selectedDir);
+                    System.out.println(Arrays.toString(checker));
+                    if (checker[0].equals("invalid")) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Invalid Project");
+                        alert.setContentText("Please select valid project");
+                        alert.showAndWait();
+                        log.info("invalid project");
 
-                    Platform.runLater(
-                            () -> {
-                                autTypeResult.setText("Invalid");
-                                createAutButton.setDisable(true);
-                                generateTestsButton.setDisable(true);
-                            }
-                    );
-                } else {
-                    Platform.runLater(
-                            () -> {
-                                autTypeResult.setText(checker[1]);
-                                createAutButton.setDisable(false);
-                                generateTestsButton.setDisable(false);
-                                createAutButton.setDisable(false);
-                                autCombo.getItems().removeAll(autCombo.getItems());
-                                //autCombo.getItems().addAll(operations.getListOfFolders(checker[1]));
-                                autCombo.getItems().addAll(apiCalls.getAllAUT(checker[1]));
-                            }
-                    );
+                        Platform.runLater(
+                                () -> {
+                                    autTypeResult.setText("Invalid");
+                                    createAutButton.setDisable(true);
+                                    generateTestsButton.setDisable(true);
+                                }
+                        );
+                    } else {
+                        Platform.runLater(
+                                () -> {
+                                    autTypeResult.setText(checker[1]);
+                                    createAutButton.setDisable(false);
+                                    generateTestsButton.setDisable(false);
+                                    createAutButton.setDisable(false);
+                                    autCombo.getItems().removeAll(autCombo.getItems());
+                                    //autCombo.getItems().addAll(operations.getListOfFolders(checker[1]));
+                                    autCombo.getItems().addAll(apiCalls.getAllAUT(checker[1]));
+                                }
+                        );
+                    }
+                }
+                else{
+                    log.info("Test project directory not selected");
                 }
             }
         }.start();

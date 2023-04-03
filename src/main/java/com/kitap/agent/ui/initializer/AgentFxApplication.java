@@ -6,7 +6,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
-import net.thucydides.core.webdriver.DriverSource;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -28,6 +27,7 @@ public class AgentFxApplication extends Application {
      */
     @Override
     public void init() {
+        log.info("Initializing the springboot application");
         applicationContext = new SpringApplicationBuilder(KitapAgentApplication.class).run();
     }
 
@@ -36,6 +36,7 @@ public class AgentFxApplication extends Application {
      */
     @Override
     public void stop() {
+        log.info("Closing the application context");
         applicationContext.close();
         Platform.exit();
     }
@@ -49,15 +50,20 @@ public class AgentFxApplication extends Application {
      */
     @Override
     public void start(Stage stage) {
+        log.info("JavaFX start method");
+        log.info("Check KiTAP folder in ProgramData folder of C drive exists or not");
         File file = new File(reader.getProperty("destinationpath"));
         if(!file.exists()){
             try{
+                log.info("creating KiTAP folder");
                 file.mkdir();
             }catch (Exception e){
                 log.error(e.toString());
                 throw new RuntimeException(e);
             }
         }
+        log.info("KiTAP folder present in ProgramData folder of C drive");
+        log.info("Calling method to start addition of trayicon and menu");
         TrayIconAndMenuInitializer.startTrigger(stage);
     }
 

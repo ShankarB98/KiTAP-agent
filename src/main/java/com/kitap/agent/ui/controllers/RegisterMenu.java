@@ -23,11 +23,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class RegisterMenu {
-//    @Autowired
-//    ApiCalls apiCalls;
-//    @Autowired
-//    MachineInformation machineInformation;
-
     ApiCalls apiCalls = new ApiCalls();
     @FXML
     public TextField nameTextField;
@@ -45,8 +40,7 @@ public class RegisterMenu {
      */
     @FXML
     public void registerAgent(ActionEvent actionEvent) {
-
-        AgentTrayIcon agentTrayIcon = new AgentTrayIcon();
+        log.info("Registering the agent");
 
         String agentName = nameTextField.getText();
         log.info("Agent Name : " + agentName);
@@ -63,11 +57,12 @@ public class RegisterMenu {
             log.info("calling api to register agent");
             apiCalls.register(BaseClass.machineInformation.getAgentDto(agentName), agentKey);
 
+            log.info("Updating the menu");
             TrayIconAndMenuInitializer.updateMenu(new Stage());
 
-            //agentTrayIcon.addMenuToTrayIcon();
             Stage registrationStage = (Stage) registrationAnchorPane.getScene().getWindow();
             registrationStage.close();
+            log.info("Closed the Registration UI");
         }
     }
 }

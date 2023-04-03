@@ -35,6 +35,7 @@ public class ContextMenuItemsAction {
      * @Description Action performed when register menuitem from context menu is clicked
      */
     public void registerMenuItemAction(Stage stage) {
+        log.info("Loading the FXML page for Registration");
         URL xmlUrl = getClass().getResource("/menuItems/registerMenu.fxml");
         FXMLLoader loader = new FXMLLoader(xmlUrl);
         Parent root;
@@ -51,12 +52,14 @@ public class ContextMenuItemsAction {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+        log.info("UI for Registration shown");
     }
 
     /**
      * @Description Action performed when deRegister menuitem from context menu is clicked
      */
     public void deregisterMenuItemAction() {
+        log.info("Agent is trying to deregister");
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Deregistration");
         confirmationAlert.setHeaderText("Confirmation Alert");
@@ -70,11 +73,12 @@ public class ContextMenuItemsAction {
                 informationAlert.showAndWait();
                 log.info("Agent is Deregistered");
 
+                log.info("Updating the menu");
                 TrayIconAndMenuInitializer.updateMenu(new Stage());
 
                 //agentTrayIcon.addMenuToTrayIcon();
             } else if (btnType == ButtonType.CANCEL) {
-                log.info("Agent is NOT Deregistered");
+                log.info("Clicked on cancel button and Agent is NOT Deregistered");
             }
         });
     }
@@ -83,6 +87,7 @@ public class ContextMenuItemsAction {
      * @Description Action performed when execute menuitem from context menu is clicked
      */
     public void executeMenuItemAction(Stage stage) {
+        log.info("Loading the FXML page for Execution");
         URL xmlUrl = getClass().getResource("/menuItems/executeMenu.fxml");
         FXMLLoader loader = new FXMLLoader(xmlUrl);
         Parent root;
@@ -99,29 +104,14 @@ public class ContextMenuItemsAction {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+        log.info("UI for execution shown");
     }
 
     /**
      * @Description Action performed when generate menuitem from context menu is clicked
      */
     public void generateMenuItemAction(Stage stage) {
-
-/* ConfigurableApplicationContext applicationContext = null;
-        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(GenerateMenu.class);*//*
-         */
-/* FXMLLoader loader = new FXMLLoader(getClass().getResource("/menuItems/generateMenu.fxml"));
-
-        ConfigurableApplicationContext context = null;
-        loader.setControllerFactory(context::getBean);
-
-        Parent root;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }*/
-
+        log.info("Loading the FXML page for Generation");
         URL xmlUrl = getClass().getResource("/menuItems/generateMenu.fxml");
         FXMLLoader loader = new FXMLLoader(xmlUrl);
         Parent root;
@@ -138,6 +128,7 @@ public class ContextMenuItemsAction {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+        log.info("UI for generation shown");
     }
 
 
@@ -157,9 +148,6 @@ public class ContextMenuItemsAction {
             throw new RuntimeException(e);
         }
         TrayIconAndMenuInitializer.startTrigger(new Stage());
-
-        //agentTrayIcon.addMenuToTrayIcon();
-        //agentTrayIcon.addAgentTrayIconToTray("Agent is Starting", "Please Wait!!", TrayIcon.MessageType.NONE);
     }
 
     /**
@@ -168,9 +156,8 @@ public class ContextMenuItemsAction {
      * @param agentTrayIcon
      */
     public void quitAgent(AgentTrayIcon agentTrayIcon) {
+        log.info("Agent is quitting");
         agentTrayIcon.removeAgentTrayIconFromTray("Agent is Shutting Down!!", "", TrayIcon.MessageType.NONE);
-        log.info("calling api to inform agent is shutting down");
-        //apiCalls.quit(BaseClass.machineInformation.macAddress);
         System.exit(0);
     }
 }

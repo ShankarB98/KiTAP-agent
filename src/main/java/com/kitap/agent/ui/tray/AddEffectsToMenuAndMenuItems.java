@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -18,6 +19,7 @@ import java.util.Objects;
  *
  * @Description: Creating JavaFX ContextMenu with CSS Styling along with MenuItems
  */
+@Slf4j
 public class AddEffectsToMenuAndMenuItems extends TrayIcon {
     private static Stage iconStage;
     public static javafx.scene.control.Button button;
@@ -44,6 +46,7 @@ public class AddEffectsToMenuAndMenuItems extends TrayIcon {
      * Initialize
      */
     private void init() {
+        log.info("Initializing the menu and adding CSS styles");
         setImageAutoSize(true);
         addMouseListener(new MouseAdapter() {
             @Override
@@ -86,7 +89,7 @@ public class AddEffectsToMenuAndMenuItems extends TrayIcon {
                 }
             }
         });
-
+        log.info("Added CSS styling to trayicon menu");
     }
 }
 

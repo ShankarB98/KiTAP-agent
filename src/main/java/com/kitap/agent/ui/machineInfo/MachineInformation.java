@@ -38,6 +38,7 @@ public class MachineInformation{
     }
 
     public AgentDto getAgentDto(String agentName){
+        log.info("Getting Agent Dto");
         AgentDto agentDto = new AgentDto();
         agentDto.setName(agentName);
         agentDto.setIpAddress(inetAddress.getHostAddress());
@@ -59,6 +60,7 @@ public class MachineInformation{
      * @return InetAddress
      */
     public InetAddress getInetAddress() {
+        log.info("Getting Inet Address");
         InetAddress inetAddress;
         try {
             inetAddress = InetAddress.getLocalHost();
@@ -75,6 +77,7 @@ public class MachineInformation{
      * @return String(MAC Address)
      */
     public String getMacAddress() {
+        log.info("Getting Mac Address");
         NetworkInterface network;
         StringBuilder macAddressStringBuilder;
         try {
