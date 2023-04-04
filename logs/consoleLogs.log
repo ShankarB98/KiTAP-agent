@@ -1,0 +1,132 @@
+2023-04-03T18:08:53.048+05:30  INFO 6872 --- [JavaFX-Launcher] o.s.boot.SpringApplication               : Starting application using Java 18.0.2.1 with PID 6872 (started by AlekhyaKaka-Kairos in D:\Kairos Kitap-agent github\kitap-agent)
+2023-04-03T18:08:53.050+05:30  INFO 6872 --- [JavaFX-Launcher] o.s.boot.SpringApplication               : No active profile set, falling back to 1 default profile: "default"
+2023-04-03T18:08:53.231+05:30  INFO 6872 --- [JavaFX-Launcher] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-04-03T18:08:53.788+05:30  INFO 6872 --- [JavaFX-Launcher] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-04-03T18:08:53.855+05:30  INFO 6872 --- [JavaFX-Launcher] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 49 ms. Found 3 JPA repository interfaces.
+2023-04-03T18:08:54.396+05:30  INFO 6872 --- [JavaFX-Launcher] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 6587 (http)
+2023-04-03T18:08:54.404+05:30  INFO 6872 --- [JavaFX-Launcher] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-04-03T18:08:54.404+05:30  INFO 6872 --- [JavaFX-Launcher] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-04-03T18:08:54.503+05:30  INFO 6872 --- [JavaFX-Launcher] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-04-03T18:08:54.504+05:30  INFO 6872 --- [JavaFX-Launcher] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1272 ms
+2023-04-03T18:08:54.532+05:30  INFO 6872 --- [JavaFX-Launcher] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-04-03T18:08:54.750+05:30  INFO 6872 --- [JavaFX-Launcher] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:file:~/spring-boot-h2-db user=KITAP
+2023-04-03T18:08:54.752+05:30  INFO 6872 --- [JavaFX-Launcher] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-04-03T18:08:54.764+05:30  INFO 6872 --- [JavaFX-Launcher] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:file:~/spring-boot-h2-db'
+2023-04-03T18:08:54.949+05:30  INFO 6872 --- [JavaFX-Launcher] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-04-03T18:08:55.014+05:30  INFO 6872 --- [JavaFX-Launcher] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
+2023-04-03T18:08:55.165+05:30  WARN 6872 --- [JavaFX-Launcher] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
+2023-04-03T18:08:55.284+05:30  INFO 6872 --- [JavaFX-Launcher] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2023-04-03T18:08:55.967+05:30  INFO 6872 --- [JavaFX-Launcher] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-04-03T18:08:55.973+05:30  INFO 6872 --- [JavaFX-Launcher] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-04-03T18:08:55.990+05:30  INFO 6872 --- [JavaFX-Launcher] com.kitap.agent.util.PropertyReader      : property reader constructor loaded
+2023-04-03T18:08:55.991+05:30  INFO 6872 --- [JavaFX-Launcher] com.kitap.agent.util.PropertyReader      : property reader constructor loaded
+2023-04-03T18:08:55.991+05:30  INFO 6872 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Getting Inet Address
+2023-04-03T18:08:55.997+05:30  INFO 6872 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Getting Mac Address
+2023-04-03T18:08:55.997+05:30  INFO 6872 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Getting Inet Address
+2023-04-03T18:08:56.549+05:30  INFO 6872 --- [JavaFX-Launcher] com.kitap.agent.util.PropertyReader      : property reader constructor loaded
+2023-04-03T18:08:56.549+05:30  INFO 6872 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Getting Inet Address
+2023-04-03T18:08:56.549+05:30  INFO 6872 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Getting Mac Address
+2023-04-03T18:08:56.549+05:30  INFO 6872 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Getting Inet Address
+2023-04-03T18:08:56.582+05:30  INFO 6872 --- [JavaFX-Launcher] com.kitap.agent.util.PropertyReader      : property reader constructor loaded
+2023-04-03T18:08:56.702+05:30  INFO 6872 --- [JavaFX-Launcher] com.kitap.agent.util.PropertyReader      : property reader constructor loaded
+2023-04-03T18:08:56.702+05:30  INFO 6872 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Getting Inet Address
+2023-04-03T18:08:56.702+05:30  INFO 6872 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Getting Mac Address
+2023-04-03T18:08:56.702+05:30  INFO 6872 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Getting Inet Address
+2023-04-03T18:08:56.747+05:30  WARN 6872 --- [JavaFX-Launcher] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-04-03T18:08:57.079+05:30  INFO 6872 --- [JavaFX-Launcher] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 6587 (http) with context path ''
+2023-04-03T18:08:57.088+05:30  INFO 6872 --- [JavaFX-Launcher] o.s.boot.SpringApplication               : Started application in 4.549 seconds (process running for 5.324)
+2023-04-03T18:08:57.095+05:30  INFO 6872 --- [JavaFX Application Thread] c.k.a.ui.initializer.AgentFxApplication  : JavaFX start method
+2023-04-03T18:08:57.095+05:30  INFO 6872 --- [JavaFX Application Thread] c.k.a.ui.initializer.AgentFxApplication  : Check KiTAP folder in ProgramData folder of C drive exists or not
+2023-04-03T18:08:57.095+05:30  INFO 6872 --- [JavaFX Application Thread] c.k.a.ui.initializer.AgentFxApplication  : KiTAP folder present in ProgramData folder of C drive
+2023-04-03T18:08:57.095+05:30  INFO 6872 --- [JavaFX Application Thread] c.k.a.ui.initializer.AgentFxApplication  : Calling method to start addition of trayicon and menu
+2023-04-03T18:08:57.096+05:30  INFO 6872 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : calling method to create and add agenttrayicon
+2023-04-03T18:08:57.096+05:30  INFO 6872 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Creating and adding Agent trayicon along with menu
+2023-04-03T18:08:57.136+05:30  INFO 6872 --- [JavaFX Application Thread] c.k.a.u.t.AddEffectsToMenuAndMenuItems   : Initializing the menu and adding CSS styles
+2023-04-03T18:08:57.137+05:30  INFO 6872 --- [JavaFX Application Thread] c.k.a.u.t.AddEffectsToMenuAndMenuItems   : Added CSS styling to trayicon menu
+2023-04-03T18:08:57.137+05:30  INFO 6872 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Adding menu to trayicon
+2023-04-03T18:08:57.139+05:30  INFO 6872 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Menu for server is adding
+2023-04-03T18:08:57.139+05:30  INFO 6872 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : calling api to know registration status of agent
+2023-04-03T18:08:57.139+05:30  INFO 6872 --- [JavaFX Application Thread] com.kitap.agent.api.apicalls.ApiCalls    : mac address 70%20A6%20CC%2031%205A%2015
+2023-04-03T18:08:57.139+05:30  INFO 6872 --- [JavaFX Application Thread] com.kitap.agent.api.apicalls.ApiCalls    : api call url http://192.168.1.126:8383/v1/agents/am-i-registered?macAddress=70%20A6%20CC%2031%205A%2015
+2023-04-03T18:08:57.180+05:30  INFO 6872 --- [JavaFX Application Thread] com.kitap.agent.api.apicalls.ApiCalls    : agent registration status false
+2023-04-03T18:08:57.180+05:30  INFO 6872 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Registration status of agent is false
+2023-04-03T18:08:57.180+05:30  INFO 6872 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Menu if agent is - Not Registered
+2023-04-03T18:08:57.181+05:30  INFO 6872 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Trayicon adding with a popup message
+2023-04-03T18:08:57.249+05:30  INFO 6872 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : added tray icon to system tray
+2023-04-03T18:08:57.249+05:30  INFO 6872 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Added Trayicon along with menu to system tray
+2023-04-03T18:08:57.249+05:30  INFO 6872 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : calling methods for all menuitem actions
+2023-04-03T18:08:57.249+05:30  INFO 6872 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : setting action for register menuitem
+2023-04-03T18:08:57.250+05:30  INFO 6872 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : setting action for deregister menuitem
+2023-04-03T18:08:57.251+05:30  INFO 6872 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : setting action for generate menuitem
+2023-04-03T18:08:57.251+05:30  INFO 6872 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : setting action for restart menuitem
+2023-04-03T18:08:57.251+05:30  INFO 6872 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : setting action for quit menuitem
+2023-04-03T18:08:57.251+05:30  INFO 6872 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : setting action for execute menuitem
+2023-04-03T18:10:08.127+05:30  INFO 6872 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-04-03T18:10:08.130+05:30  INFO 6872 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-04-03T18:10:08.131+05:30  INFO 6872 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2023-04-03T18:17:49.995+05:30  INFO 12476 --- [JavaFX-Launcher] o.s.boot.SpringApplication               : Starting application using Java 18.0.2.1 with PID 12476 (started by AlekhyaKaka-Kairos in D:\Kairos Kitap-agent github\kitap-agent)
+2023-04-03T18:17:49.997+05:30  INFO 12476 --- [JavaFX-Launcher] o.s.boot.SpringApplication               : No active profile set, falling back to 1 default profile: "default"
+2023-04-03T18:17:50.206+05:30  INFO 12476 --- [JavaFX-Launcher] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-04-03T18:17:50.715+05:30  INFO 12476 --- [JavaFX-Launcher] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-04-03T18:17:50.780+05:30  INFO 12476 --- [JavaFX-Launcher] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 56 ms. Found 3 JPA repository interfaces.
+2023-04-03T18:17:51.291+05:30  INFO 12476 --- [JavaFX-Launcher] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 6587 (http)
+2023-04-03T18:17:51.299+05:30  INFO 12476 --- [JavaFX-Launcher] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-04-03T18:17:51.299+05:30  INFO 12476 --- [JavaFX-Launcher] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-04-03T18:17:51.413+05:30  INFO 12476 --- [JavaFX-Launcher] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-04-03T18:17:51.413+05:30  INFO 12476 --- [JavaFX-Launcher] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1206 ms
+2023-04-03T18:17:51.446+05:30  INFO 12476 --- [JavaFX-Launcher] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-04-03T18:17:51.653+05:30  INFO 12476 --- [JavaFX-Launcher] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:file:~/spring-boot-h2-db user=KITAP
+2023-04-03T18:17:51.655+05:30  INFO 12476 --- [JavaFX-Launcher] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-04-03T18:17:51.669+05:30  INFO 12476 --- [JavaFX-Launcher] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:file:~/spring-boot-h2-db'
+2023-04-03T18:17:51.813+05:30  INFO 12476 --- [JavaFX-Launcher] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-04-03T18:17:51.890+05:30  INFO 12476 --- [JavaFX-Launcher] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
+2023-04-03T18:17:52.078+05:30  WARN 12476 --- [JavaFX-Launcher] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
+2023-04-03T18:17:52.205+05:30  INFO 12476 --- [JavaFX-Launcher] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2023-04-03T18:17:52.921+05:30  INFO 12476 --- [JavaFX-Launcher] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-04-03T18:17:52.929+05:30  INFO 12476 --- [JavaFX-Launcher] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-04-03T18:17:52.947+05:30  INFO 12476 --- [JavaFX-Launcher] com.kitap.agent.util.PropertyReader      : property reader constructor loaded
+2023-04-03T18:17:52.948+05:30  INFO 12476 --- [JavaFX-Launcher] com.kitap.agent.util.PropertyReader      : property reader constructor loaded
+2023-04-03T18:17:52.948+05:30  INFO 12476 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Getting Inet Address
+2023-04-03T18:17:52.956+05:30  INFO 12476 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Getting Mac Address
+2023-04-03T18:17:52.956+05:30  INFO 12476 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Getting Inet Address
+2023-04-03T18:17:53.548+05:30  INFO 12476 --- [JavaFX-Launcher] com.kitap.agent.util.PropertyReader      : property reader constructor loaded
+2023-04-03T18:17:53.548+05:30  INFO 12476 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Getting Inet Address
+2023-04-03T18:17:53.548+05:30  INFO 12476 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Getting Mac Address
+2023-04-03T18:17:53.548+05:30  INFO 12476 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Getting Inet Address
+2023-04-03T18:17:53.581+05:30  INFO 12476 --- [JavaFX-Launcher] com.kitap.agent.util.PropertyReader      : property reader constructor loaded
+2023-04-03T18:17:53.713+05:30  INFO 12476 --- [JavaFX-Launcher] com.kitap.agent.util.PropertyReader      : property reader constructor loaded
+2023-04-03T18:17:53.713+05:30  INFO 12476 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Getting Inet Address
+2023-04-03T18:17:53.714+05:30  INFO 12476 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Getting Mac Address
+2023-04-03T18:17:53.714+05:30  INFO 12476 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Getting Inet Address
+2023-04-03T18:17:53.759+05:30  WARN 12476 --- [JavaFX-Launcher] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-04-03T18:17:54.107+05:30  INFO 12476 --- [JavaFX-Launcher] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 6587 (http) with context path ''
+2023-04-03T18:17:54.115+05:30  INFO 12476 --- [JavaFX-Launcher] o.s.boot.SpringApplication               : Started application in 4.742 seconds (process running for 5.585)
+2023-04-03T18:17:54.121+05:30  INFO 12476 --- [JavaFX Application Thread] c.k.a.ui.initializer.AgentFxApplication  : JavaFX start method
+2023-04-03T18:17:54.122+05:30  INFO 12476 --- [JavaFX Application Thread] c.k.a.ui.initializer.AgentFxApplication  : Check KiTAP folder in ProgramData folder of C drive exists or not
+2023-04-03T18:17:54.122+05:30  INFO 12476 --- [JavaFX Application Thread] c.k.a.ui.initializer.AgentFxApplication  : KiTAP folder present in ProgramData folder of C drive
+2023-04-03T18:17:54.122+05:30  INFO 12476 --- [JavaFX Application Thread] c.k.a.ui.initializer.AgentFxApplication  : Calling method to start addition of trayicon and menu
+2023-04-03T18:17:54.123+05:30  INFO 12476 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : calling method to create and add agenttrayicon
+2023-04-03T18:17:54.123+05:30  INFO 12476 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Creating and adding Agent trayicon along with menu
+2023-04-03T18:17:54.163+05:30  INFO 12476 --- [JavaFX Application Thread] c.k.a.u.t.AddEffectsToMenuAndMenuItems   : Initializing the menu and adding CSS styles
+2023-04-03T18:17:54.164+05:30  INFO 12476 --- [JavaFX Application Thread] c.k.a.u.t.AddEffectsToMenuAndMenuItems   : Added CSS styling to trayicon menu
+2023-04-03T18:17:54.164+05:30  INFO 12476 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Adding menu to trayicon
+2023-04-03T18:17:54.165+05:30  INFO 12476 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Menu for server is adding
+2023-04-03T18:17:54.165+05:30  INFO 12476 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : calling api to know registration status of agent
+2023-04-03T18:17:54.165+05:30  INFO 12476 --- [JavaFX Application Thread] com.kitap.agent.api.apicalls.ApiCalls    : mac address 70%20A6%20CC%2031%205A%2015
+2023-04-03T18:17:54.165+05:30  INFO 12476 --- [JavaFX Application Thread] com.kitap.agent.api.apicalls.ApiCalls    : api call url http://192.168.1.126:8383/v1/agents/am-i-registered?macAddress=70%20A6%20CC%2031%205A%2015
+2023-04-03T18:17:54.205+05:30  INFO 12476 --- [JavaFX Application Thread] com.kitap.agent.api.apicalls.ApiCalls    : agent registration status false
+2023-04-03T18:17:54.206+05:30  INFO 12476 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Registration status of agent is false
+2023-04-03T18:17:54.206+05:30  INFO 12476 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Menu if agent is - Not Registered
+2023-04-03T18:17:54.206+05:30  INFO 12476 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Trayicon adding with a popup message
+2023-04-03T18:17:54.298+05:30  INFO 12476 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : added tray icon to system tray
+2023-04-03T18:17:54.299+05:30  INFO 12476 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Added Trayicon along with menu to system tray
+2023-04-03T18:17:54.299+05:30  INFO 12476 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : calling methods for all menuitem actions
+2023-04-03T18:17:54.299+05:30  INFO 12476 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : setting action for register menuitem
+2023-04-03T18:17:54.300+05:30  INFO 12476 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : setting action for deregister menuitem
+2023-04-03T18:17:54.300+05:30  INFO 12476 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : setting action for generate menuitem
+2023-04-03T18:17:54.301+05:30  INFO 12476 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : setting action for restart menuitem
+2023-04-03T18:17:54.301+05:30  INFO 12476 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : setting action for quit menuitem
+2023-04-03T18:17:54.301+05:30  INFO 12476 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : setting action for execute menuitem
+2023-04-03T18:27:16.282+05:30  INFO 12476 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-04-03T18:27:16.285+05:30  INFO 12476 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-04-03T18:27:16.286+05:30  INFO 12476 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

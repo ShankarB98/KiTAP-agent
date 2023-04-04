@@ -4,6 +4,7 @@ import com.kitap.agent.database.model.dto.AgentDto;
 import com.kitap.agent.util.PropertyReader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -38,7 +39,9 @@ public class MachineInformation{
     }
 
     public AgentDto getAgentDto(String agentName){
-        log.info("Getting Agent Dto");
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("method getAgentDto started");
         AgentDto agentDto = new AgentDto();
         agentDto.setName(agentName);
         agentDto.setIpAddress(inetAddress.getHostAddress());
@@ -51,6 +54,10 @@ public class MachineInformation{
         agentDto.setPortNumber(portNumber == null ? 8080 : Integer.parseInt(portNumber));
         log.info("Host : " + inetAddress.getHostAddress());
         log.info(agentDto.toString());
+        log.info("completed getAgentDto method by returning agentDto");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return agentDto;
     }
 
@@ -60,7 +67,9 @@ public class MachineInformation{
      * @return InetAddress
      */
     public InetAddress getInetAddress() {
-        log.info("Getting Inet Address");
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("method getInetAddress started");
         InetAddress inetAddress;
         try {
             inetAddress = InetAddress.getLocalHost();
@@ -68,6 +77,10 @@ public class MachineInformation{
             log.error(e.toString());
             throw new RuntimeException(e);
         }
+        log.info("completed getInetAddress method by returning inetAddress");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return inetAddress;
     }
 
@@ -77,7 +90,9 @@ public class MachineInformation{
      * @return String(MAC Address)
      */
     public String getMacAddress() {
-        log.info("Getting Mac Address");
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("method getMacAddress started");
         NetworkInterface network;
         StringBuilder macAddressStringBuilder;
         try {
@@ -92,6 +107,10 @@ public class MachineInformation{
             log.error(e.toString());
             throw new RuntimeException(e);
         }
+        log.info("completed getMacAddress method by returning macAddress as string");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return macAddressStringBuilder.toString();
     }
 }

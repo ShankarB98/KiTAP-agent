@@ -13,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 
 /**
  * @Author KT1497
@@ -40,7 +41,9 @@ public class RegisterMenu {
      */
     @FXML
     public void registerAgent(ActionEvent actionEvent) {
-        log.info("Registering the agent");
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("clicked register button from Register UI");
 
         String agentName = nameTextField.getText();
         log.info("Agent Name : " + agentName);
@@ -63,6 +66,9 @@ public class RegisterMenu {
             Stage registrationStage = (Stage) registrationAnchorPane.getScene().getWindow();
             registrationStage.close();
             log.info("Closed the Registration UI");
+            stopWatch.stop();
+            log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                    " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         }
     }
 }

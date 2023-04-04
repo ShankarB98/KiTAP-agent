@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.util.StopWatch;
 
 import java.io.File;
 
@@ -39,6 +40,7 @@ public class AgentFxApplication extends Application {
         log.info("Closing the application context");
         applicationContext.close();
         Platform.exit();
+        log.info("stopped application context");
     }
 
     /**
@@ -50,7 +52,10 @@ public class AgentFxApplication extends Application {
      */
     @Override
     public void start(Stage stage) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         log.info("JavaFX start method");
+
         log.info("Check KiTAP folder in ProgramData folder of C drive exists or not");
         File file = new File(reader.getProperty("destinationpath"));
         if(!file.exists()){
@@ -65,6 +70,9 @@ public class AgentFxApplication extends Application {
         log.info("KiTAP folder present in ProgramData folder of C drive");
         log.info("Calling method to start addition of trayicon and menu");
         TrayIconAndMenuInitializer.startTrigger(stage);
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
 }

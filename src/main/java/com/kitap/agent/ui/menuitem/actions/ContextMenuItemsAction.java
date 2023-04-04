@@ -2,8 +2,10 @@ package com.kitap.agent.ui.menuitem.actions;
 
 import com.kitap.agent.api.apicalls.ApiCalls;
 import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.ui.controllers.GenerateMenu;
 import com.kitap.agent.ui.initializer.TrayIconAndMenuInitializer;
 import com.kitap.agent.ui.tray.AgentTrayIcon;
+import com.sun.javafx.stage.StageHelper;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,6 +14,7 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 
 import java.awt.*;
 import java.io.IOException;
@@ -35,6 +38,8 @@ public class ContextMenuItemsAction {
      * @Description Action performed when register menuitem from context menu is clicked
      */
     public void registerMenuItemAction(Stage stage) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         log.info("Loading the FXML page for Registration");
         URL xmlUrl = getClass().getResource("/menuItems/registerMenu.fxml");
         FXMLLoader loader = new FXMLLoader(xmlUrl);
@@ -53,13 +58,18 @@ public class ContextMenuItemsAction {
         stage.setResizable(false);
         stage.show();
         log.info("UI for Registration shown");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     /**
      * @Description Action performed when deRegister menuitem from context menu is clicked
      */
     public void deregisterMenuItemAction() {
-        log.info("Agent is trying to deregister");
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("trying to deregister agent");
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Deregistration");
         confirmationAlert.setHeaderText("Confirmation Alert");
@@ -81,12 +91,17 @@ public class ContextMenuItemsAction {
                 log.info("Clicked on cancel button and Agent is NOT Deregistered");
             }
         });
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     /**
      * @Description Action performed when execute menuitem from context menu is clicked
      */
     public void executeMenuItemAction(Stage stage) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         log.info("Loading the FXML page for Execution");
         URL xmlUrl = getClass().getResource("/menuItems/executeMenu.fxml");
         FXMLLoader loader = new FXMLLoader(xmlUrl);
@@ -105,12 +120,17 @@ public class ContextMenuItemsAction {
         stage.setResizable(false);
         stage.show();
         log.info("UI for execution shown");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     /**
      * @Description Action performed when generate menuitem from context menu is clicked
      */
     public void generateMenuItemAction(Stage stage) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         log.info("Loading the FXML page for Generation");
         URL xmlUrl = getClass().getResource("/menuItems/generateMenu.fxml");
         FXMLLoader loader = new FXMLLoader(xmlUrl);
@@ -129,6 +149,9 @@ public class ContextMenuItemsAction {
         stage.setResizable(false);
         stage.show();
         log.info("UI for generation shown");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
 
@@ -139,6 +162,8 @@ public class ContextMenuItemsAction {
      */
 
     public void restartAgent(AgentTrayIcon agentTrayIcon) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         log.info("agent is restarting");
         agentTrayIcon.removeAgentTrayIconFromTray("Agent is Shutting Down!!", "Please Wait!!", TrayIcon.MessageType.INFO);
         try {
@@ -148,6 +173,10 @@ public class ContextMenuItemsAction {
             throw new RuntimeException(e);
         }
         TrayIconAndMenuInitializer.startTrigger(new Stage());
+        log.info("agent restarted");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     /**
@@ -156,9 +185,15 @@ public class ContextMenuItemsAction {
      * @param agentTrayIcon
      */
     public void quitAgent(AgentTrayIcon agentTrayIcon) {
-        log.info("Agent is quitting");
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("agent is quitting");
         agentTrayIcon.removeAgentTrayIconFromTray("Agent is Shutting Down!!", "", TrayIcon.MessageType.NONE);
         System.exit(0);
+        log.info("agent stopped");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 }
 

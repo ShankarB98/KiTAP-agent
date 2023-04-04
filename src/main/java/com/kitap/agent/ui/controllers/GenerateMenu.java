@@ -29,6 +29,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 
 import java.io.File;
 import java.util.Arrays;
@@ -74,7 +75,9 @@ public class GenerateMenu {
 
     @FXML
     public void initialize() {
-        log.info("Initializing the generation UI");
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("method initializing the generation UI");
         generateTestsButton.setDisable(true);
         createAutButton.setDisable(true);
         folderTextField.textProperty().addListener(new ChangeListener<String>() {
@@ -91,6 +94,10 @@ public class GenerateMenu {
                 }
             }
         });
+        log.info("method initialize for generation UI completed");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     /**
@@ -99,7 +106,9 @@ public class GenerateMenu {
      */
     @FXML
     public void choosingFolder(ActionEvent actionEvent) {
-        log.info("Choosing the test project directory");
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("choosing the test project directory from generation UI");
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Select Folder");
         selectedDir = directoryChooser.showDialog(new Stage());
@@ -109,6 +118,10 @@ public class GenerateMenu {
         }else{
             log.info("No project selected");
         }
+        log.info("method choosingFolder completed from generation UI");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     public void onClickAnchorPane(MouseEvent mouseEvent) {
@@ -128,7 +141,9 @@ public class GenerateMenu {
      */
     @FXML
     public void enterNewAut(ActionEvent actionEvent) {
-        log.info(" Creating UI for new AUT");
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("clicked on CreateNewAut button from generation UI");
         Stage newAutStage = new Stage();
         Group root = new Group();
         Scene scene = new Scene(root);
@@ -163,9 +178,9 @@ public class GenerateMenu {
         okButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                log.info("Action performing Onclick of OK button");
+                log.info("Onclick of OK button from NewAut UI");
                 String autNameString = autNameField.getText();
-
+                log.info("calling api to save AUT");
                 String result = apiCalls.saveAUT(autNameString, autTypeResult.getText());
                 if (result.equals("Duplicated AUT")) {
                     //TODO need to show alert
@@ -176,14 +191,16 @@ public class GenerateMenu {
                 }
                 //new SaveAut().saveAut(autNameString, autTypeResult.getText());
                 newAutStage.close();
+                log.info("closed the NewAut UI");
             }
         });
 
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                log.info("clicked on cancel button from UI of new AUT");
+                log.info("clicked on cancel button from NewAUT UI");
                 newAutStage.close();
+                log.info("closed the NewAut UI");
             }
         });
 
@@ -197,6 +214,9 @@ public class GenerateMenu {
         newAutStage.setScene(scene);
         newAutStage.show();
         log.info("New AUT UI is shown");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     /**
@@ -206,9 +226,15 @@ public class GenerateMenu {
      */
     @FXML
     public void clickedCancelButton(ActionEvent actionEvent) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("Clicked Cancel Button of generation UI");
         Stage generateStage = (Stage) anchorPane.getScene().getWindow();
         generateStage.close();
-        log.info("Clicked Cancel Button of generation UI");
+        log.info("closed the generation UI");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     /**
@@ -218,7 +244,9 @@ public class GenerateMenu {
      */
     @FXML
     public void generateTests(ActionEvent actionEvent) {
-        log.info("Clicked on generate tests");
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("clicked on GenerateTests button from generation UI");
         new Thread() {
             public void run() {
                 Platform.runLater(new Runnable() {
@@ -270,6 +298,11 @@ public class GenerateMenu {
 
                 log.info("Generation Completed");
 
+                log.info("closed the generation UI");
+                stopWatch.stop();
+                log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                        " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
+
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -289,6 +322,7 @@ public class GenerateMenu {
                 });
             }
         }.start();
+
     }
 
     /**
@@ -296,7 +330,9 @@ public class GenerateMenu {
      */
 
     private void validateProject() {
-        log.info("selected project is validating");
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("started the validation of selected test project");
         new Thread() {
             public void run() {
                 if (selectedDir != null) {
@@ -329,9 +365,17 @@ public class GenerateMenu {
                                 }
                         );
                     }
+                    log.info("method validateProject completed");
+                    stopWatch.stop();
+                    log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                            " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
                 }
                 else{
                     log.info("Test project directory not selected");
+                    log.info("method validateProject completed");
+                    stopWatch.stop();
+                    log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                            " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
                 }
             }
         }.start();

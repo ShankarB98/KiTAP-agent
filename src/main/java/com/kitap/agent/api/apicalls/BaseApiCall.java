@@ -6,12 +6,14 @@ import com.kitap.agent.database.model.dto.AgentDto;
 import com.kitap.agent.util.PropertyReader;
 import com.kitap.testresult.dto.agent.RegistrationDetails;
 import com.kitap.testresult.dto.execute.ExecutionAutDetails;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
+import org.springframework.util.StopWatch;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+@Slf4j
 public abstract class BaseApiCall {
     RestTemplate restTemplate = new RestTemplate();
     URI uri;
@@ -27,11 +29,18 @@ public abstract class BaseApiCall {
     }
 
     public void setBaseURI(){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("setBaseURI method started");
         try {
             uri = new URI(baseUrl);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
+        log.info("setBaseURI method completed");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     protected void getResponse(String reqValue, HttpMethod httpMethod){

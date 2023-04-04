@@ -9,6 +9,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StopWatch;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -46,6 +47,8 @@ public class AddEffectsToMenuAndMenuItems extends TrayIcon {
      * Initialize
      */
     private void init() {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         log.info("Initializing the menu and adding CSS styles");
         setImageAutoSize(true);
         addMouseListener(new MouseAdapter() {
@@ -90,6 +93,9 @@ public class AddEffectsToMenuAndMenuItems extends TrayIcon {
             }
         });
         log.info("Added CSS styling to trayicon menu");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 }
 

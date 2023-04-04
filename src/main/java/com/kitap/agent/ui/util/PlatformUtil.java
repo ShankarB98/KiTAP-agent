@@ -1,6 +1,7 @@
 package com.kitap.agent.ui.util;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StopWatch;
 
 /**
  * @author KT1497
@@ -20,7 +21,12 @@ public final class PlatformUtil {
      * @return boolean
      */
     public static boolean isWindow() {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         log.info("Check if windows OS or not and return boolean");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return System.getProperty("os.name").toLowerCase().contains("win");
     }
 
@@ -30,7 +36,12 @@ public final class PlatformUtil {
      * @return boolean
      */
     public static boolean isMac() {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         log.info("Check if Mac OS or not and return boolean");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return System.getProperty("os.name").toLowerCase().contains("mac");
     }
 
@@ -40,8 +51,13 @@ public final class PlatformUtil {
      * @return boolean
      */
     public static boolean isLinux() {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         log.info("Check if Linux OS or not and return boolean");
         String os = System.getProperty("os.name").toLowerCase();
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return os.contains("nix") || os.contains("nux") || os.indexOf("aix") > 0;
     }
 

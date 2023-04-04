@@ -22,6 +22,7 @@ import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 
 import java.awt.*;
 import java.io.File;
@@ -69,13 +70,17 @@ public class ExecuteMenu {
 
     @FXML
     public ComboBox<String> autType;
-
-
     @FXML
     public void initialize() {
-        log.info("Initializing the execution UI");
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("method initializing the execution UI");
         autType.getItems().removeAll(autType.getItems());
         autType.getItems().addAll(apiCalls.getAutTypes());
+        log.info("method completed by updating AutTypes from api call in execution UI");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     /**
@@ -85,7 +90,9 @@ public class ExecuteMenu {
      */
     @FXML
     public void displayTestResults(ActionEvent actionEvent) {
-        log.info("Clicked on viewtestresults button");
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("clicked on viewtestresults button from execution UI");
         try{
             String reportsPath = reader.getProperty("destinationpath")+separator+
                     autType.getValue()+separator+executeAutCombo.getValue()+separator+
@@ -96,6 +103,10 @@ public class ExecuteMenu {
             log.error(e.toString());
             throw new RuntimeException(e);
         }
+        log.info("displaying test results completed");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     /**
@@ -105,7 +116,9 @@ public class ExecuteMenu {
      */
     @FXML
     public void testExecution(ActionEvent actionEvent) {
-        log.info("clicked on executetests button");
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("clicked on executetests button from execution UI");
         new Thread() {
             public void run() {
                 Platform.runLater(new Runnable() {
@@ -142,6 +155,11 @@ public class ExecuteMenu {
                 details.setTestCases(null);
                 log.info("api call to execute tests");
                 apiCalls.executeTests(details);
+
+                log.info("testExecution method completed");
+                stopWatch.stop();
+                log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                        " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
 
                 Platform.runLater(new Runnable() {
                     @Override
@@ -182,20 +200,38 @@ public class ExecuteMenu {
      */
     @FXML
     public void cancelClicked(ActionEvent actionEvent) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("clicked on cancel button from execution UI");
         Stage executeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
         executeStage.close();
-        log.info("Clicked Cancel Button of execution UI");
+        log.info("closed the execution UI");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     public void onChangeOfAutType(ActionEvent actionEvent) {
-        log.info("on change of aut type,updating the auts present");
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("on change of autType,updating the auts present");
         executeAutCombo.getItems().removeAll(executeAutCombo.getItems());
         executeAutCombo.getItems().addAll(apiCalls.getAllAUT(autType.getValue()));
+        log.info("method onChangeOfAurType completed");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     public void onAutSelection(ActionEvent actionEvent) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         log.info("on change of aut name selection, updating the versions present");
         versionCombo.getItems().removeAll(versionCombo.getItems());
         versionCombo.getItems().addAll(operations.getListOfFolders(autType.getValue() + File.separator + executeAutCombo.getValue()));
+        log.info("method onAutSelection completed");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 }

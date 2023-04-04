@@ -8,6 +8,7 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.image.ImageView;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StopWatch;
 
 import java.awt.*;
 import java.util.Objects;
@@ -38,6 +39,8 @@ public class AgentTrayIcon {
      * @Description: TrayIcon adding to systemtray,Adding ContextMenu to our TrayIcon
      */
     public TrayIcon createAndAddAgentTrayIconWithMenuToTray() {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         log.info("Creating and adding Agent trayicon along with menu");
         final javafx.scene.image.Image runningShow = new javafx.scene.image.Image(
                 Objects.requireNonNull(AgentTrayIcon.class.getResource("/images/green.png")).toExternalForm());
@@ -61,10 +64,15 @@ public class AgentTrayIcon {
         icon = new AddEffectsToMenuAndMenuItems(image, menu);
         addMenuToTrayIcon();
         addAgentTrayIconToTray("Agent is Starting", "Please Wait!!", TrayIcon.MessageType.NONE);
-        log.info("Added Trayicon along with menu to system tray");
+        log.info("Added Trayicon along with menu to system tray and returning that icon");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return icon;
     }
     public TrayIcon changeAndAddAgentTrayIconWithMenuToTray() {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         log.info("Updating and adding Agent trayicon along with menu");
         final javafx.scene.image.Image runningShow = new javafx.scene.image.Image(
                 Objects.requireNonNull(AgentTrayIcon.class.getResource("/images/green.png")).toExternalForm());
@@ -94,7 +102,10 @@ public class AgentTrayIcon {
             throw new RuntimeException(e);
         }
         addMenuToTrayIcon();
-        log.info("Added Trayicon along with updated menu to system tray");
+        log.info("Added Trayicon along with updated menu to system tray and returning that icon");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return icon;
     }
 
@@ -103,6 +114,8 @@ public class AgentTrayIcon {
      * @Description: Adding ContextMenu to our TrayIcon
      */
     public void addMenuToTrayIcon() {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         log.info("Adding menu to trayicon");
         ApiCalls apiCalls = new ApiCalls();
 
@@ -147,6 +160,9 @@ public class AgentTrayIcon {
                 menu.getItems().add(quit);
             }
         }
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     /**
@@ -156,6 +172,8 @@ public class AgentTrayIcon {
      * messagetype is the type of message
      */
     public void addAgentTrayIconToTray(String caption, String text, TrayIcon.MessageType messageType) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         log.info("Trayicon adding with a popup message");
         try {
             SystemTray.getSystemTray().add(icon);//Add icon to SystemTray
@@ -166,6 +184,9 @@ public class AgentTrayIcon {
             log.error(e.toString());
             throw new RuntimeException(e);
         }
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     /**
@@ -175,6 +196,8 @@ public class AgentTrayIcon {
      * messagetype is the type of message
      */
     public void removeAgentTrayIconFromTray(String caption, String text, TrayIcon.MessageType messageType) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         log.info("TrayIcon removing with a popup message");
         icon.displayMessage(caption, text, messageType);
         try {
@@ -184,5 +207,8 @@ public class AgentTrayIcon {
             log.error(ex.toString());
             throw new RuntimeException(ex);
         }
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 }
