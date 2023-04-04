@@ -34,6 +34,6 @@ build/
 
 
 ###log files###
-/logs/*
+logs/*
 *.log
 *.gz
