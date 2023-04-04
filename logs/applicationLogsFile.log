@@ -1571,3 +1571,193 @@
 2023-04-04T18:56:08.511+05:30  INFO 17340 --- [Thread-7] c.k.agent.ui.controllers.GenerateMenu    : Generation Completed
 2023-04-04T18:56:08.511+05:30  INFO 17340 --- [Thread-7] c.k.agent.ui.controllers.GenerateMenu    : closed the generation UI
 2023-04-04T18:56:08.511+05:30  INFO 17340 --- [Thread-7] c.k.agent.ui.controllers.GenerateMenu    : Execution time for run method is 16.71 seconds
+2023-04-04T19:04:50.597+05:30  INFO 17340 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-04-04T19:04:50.600+05:30  INFO 17340 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-04-04T19:04:50.601+05:30  INFO 17340 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2023-04-04T19:17:18.379+05:30  INFO 5728 --- [JavaFX-Launcher] o.s.boot.SpringApplication               : Starting application using Java 18.0.2.1 with PID 5728 (started by AlekhyaKaka-Kairos in D:\Kairos Kitap-agent github\kitap-agent)
+2023-04-04T19:17:18.382+05:30  INFO 5728 --- [JavaFX-Launcher] o.s.boot.SpringApplication               : No active profile set, falling back to 1 default profile: "default"
+2023-04-04T19:17:18.551+05:30  INFO 5728 --- [JavaFX-Launcher] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-04-04T19:17:19.006+05:30  INFO 5728 --- [JavaFX-Launcher] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-04-04T19:17:19.068+05:30  INFO 5728 --- [JavaFX-Launcher] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 53 ms. Found 3 JPA repository interfaces.
+2023-04-04T19:17:19.506+05:30  INFO 5728 --- [JavaFX-Launcher] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 6587 (http)
+2023-04-04T19:17:19.514+05:30  INFO 5728 --- [JavaFX-Launcher] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-04-04T19:17:19.514+05:30  INFO 5728 --- [JavaFX-Launcher] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-04-04T19:17:19.620+05:30  INFO 5728 --- [JavaFX-Launcher] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-04-04T19:17:19.620+05:30  INFO 5728 --- [JavaFX-Launcher] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1069 ms
+2023-04-04T19:17:19.641+05:30  INFO 5728 --- [JavaFX-Launcher] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-04-04T19:17:19.844+05:30  INFO 5728 --- [JavaFX-Launcher] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:file:~/spring-boot-h2-db user=KITAP
+2023-04-04T19:17:19.845+05:30  INFO 5728 --- [JavaFX-Launcher] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-04-04T19:17:19.853+05:30  INFO 5728 --- [JavaFX-Launcher] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:file:~/spring-boot-h2-db'
+2023-04-04T19:17:19.961+05:30  INFO 5728 --- [JavaFX-Launcher] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-04-04T19:17:20.002+05:30  INFO 5728 --- [JavaFX-Launcher] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
+2023-04-04T19:17:20.140+05:30  WARN 5728 --- [JavaFX-Launcher] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
+2023-04-04T19:17:20.242+05:30  INFO 5728 --- [JavaFX-Launcher] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2023-04-04T19:17:20.826+05:30  INFO 5728 --- [JavaFX-Launcher] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-04-04T19:17:20.832+05:30  INFO 5728 --- [JavaFX-Launcher] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-04-04T19:17:20.851+05:30  INFO 5728 --- [JavaFX-Launcher] com.kitap.agent.util.PropertyReader      : property reader constructor loaded
+2023-04-04T19:17:20.851+05:30  INFO 5728 --- [JavaFX-Launcher] com.kitap.agent.util.PropertyReader      : property reader constructor loaded
+2023-04-04T19:17:20.851+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : method getInetAddress started
+2023-04-04T19:17:20.858+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : completed getInetAddress method by returning inetAddress
+2023-04-04T19:17:20.859+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Execution time for getInetAddress method is 0.01 seconds
+2023-04-04T19:17:20.860+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : method getMacAddress started
+2023-04-04T19:17:20.860+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : method getInetAddress started
+2023-04-04T19:17:20.860+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : completed getInetAddress method by returning inetAddress
+2023-04-04T19:17:20.860+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Execution time for getInetAddress method is 0.00 seconds
+2023-04-04T19:17:20.870+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : completed getMacAddress method by returning macAddress as string
+2023-04-04T19:17:20.871+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Execution time for getMacAddress method is 0.01 seconds
+2023-04-04T19:17:21.409+05:30  INFO 5728 --- [JavaFX-Launcher] com.kitap.agent.util.PropertyReader      : property reader constructor loaded
+2023-04-04T19:17:21.409+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : method getInetAddress started
+2023-04-04T19:17:21.409+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : completed getInetAddress method by returning inetAddress
+2023-04-04T19:17:21.410+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Execution time for getInetAddress method is 0.00 seconds
+2023-04-04T19:17:21.410+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : method getMacAddress started
+2023-04-04T19:17:21.410+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : method getInetAddress started
+2023-04-04T19:17:21.410+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : completed getInetAddress method by returning inetAddress
+2023-04-04T19:17:21.410+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Execution time for getInetAddress method is 0.00 seconds
+2023-04-04T19:17:21.421+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : completed getMacAddress method by returning macAddress as string
+2023-04-04T19:17:21.422+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Execution time for getMacAddress method is 0.01 seconds
+2023-04-04T19:17:21.442+05:30  INFO 5728 --- [JavaFX-Launcher] com.kitap.agent.util.PropertyReader      : property reader constructor loaded
+2023-04-04T19:17:21.555+05:30  INFO 5728 --- [JavaFX-Launcher] com.kitap.agent.util.PropertyReader      : property reader constructor loaded
+2023-04-04T19:17:21.555+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : method getInetAddress started
+2023-04-04T19:17:21.555+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : completed getInetAddress method by returning inetAddress
+2023-04-04T19:17:21.555+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Execution time for getInetAddress method is 0.00 seconds
+2023-04-04T19:17:21.555+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : method getMacAddress started
+2023-04-04T19:17:21.555+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : method getInetAddress started
+2023-04-04T19:17:21.555+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : completed getInetAddress method by returning inetAddress
+2023-04-04T19:17:21.555+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Execution time for getInetAddress method is 0.00 seconds
+2023-04-04T19:17:21.566+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : completed getMacAddress method by returning macAddress as string
+2023-04-04T19:17:21.566+05:30  INFO 5728 --- [JavaFX-Launcher] c.k.a.ui.machineInfo.MachineInformation  : Execution time for getMacAddress method is 0.01 seconds
+2023-04-04T19:17:21.594+05:30  WARN 5728 --- [JavaFX-Launcher] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-04-04T19:17:21.907+05:30  INFO 5728 --- [JavaFX-Launcher] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 6587 (http) with context path ''
+2023-04-04T19:17:21.914+05:30  INFO 5728 --- [JavaFX-Launcher] o.s.boot.SpringApplication               : Started application in 4.032 seconds (process running for 4.786)
+2023-04-04T19:17:21.920+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.ui.initializer.AgentFxApplication  : JavaFX start method
+2023-04-04T19:17:21.920+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.ui.initializer.AgentFxApplication  : Check KiTAP folder in ProgramData folder of C drive exists or not
+2023-04-04T19:17:21.921+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.ui.initializer.AgentFxApplication  : KiTAP folder present in ProgramData folder of C drive
+2023-04-04T19:17:21.921+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.ui.initializer.AgentFxApplication  : Calling method to start addition of trayicon and menu
+2023-04-04T19:17:21.921+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : calling method to create and add agentTrayicon
+2023-04-04T19:17:21.922+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Creating and adding Agent trayicon along with menu
+2023-04-04T19:17:21.961+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.t.AddEffectsToMenuAndMenuItems   : Initializing the menu and adding CSS styles
+2023-04-04T19:17:21.963+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.t.AddEffectsToMenuAndMenuItems   : Added CSS styling to trayicon menu
+2023-04-04T19:17:21.964+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.t.AddEffectsToMenuAndMenuItems   : Execution time for init method is 0.00 seconds
+2023-04-04T19:17:21.964+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Adding menu to trayicon
+2023-04-04T19:17:21.965+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Menu for server is adding
+2023-04-04T19:17:21.965+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : calling api to know registration status of agent
+2023-04-04T19:17:21.965+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.api.apicalls.ApiCalls    : amIRegistered apicall started
+2023-04-04T19:17:21.965+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.api.apicalls.ApiCalls    : mac address 70%20A6%20CC%2031%205A%2015
+2023-04-04T19:17:21.966+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.api.apicalls.ApiCalls    : api call url http://192.168.1.126:8383/v1/agents/am-i-registered?macAddress=70%20A6%20CC%2031%205A%2015
+2023-04-04T19:17:21.966+05:30  INFO 5728 --- [JavaFX Application Thread] c.kitap.agent.api.apicalls.BaseApiCall   : setBaseURI method started
+2023-04-04T19:17:21.966+05:30  INFO 5728 --- [JavaFX Application Thread] c.kitap.agent.api.apicalls.BaseApiCall   : setBaseURI method completed
+2023-04-04T19:17:21.966+05:30  INFO 5728 --- [JavaFX Application Thread] c.kitap.agent.api.apicalls.BaseApiCall   : Execution time for setBaseURI method is 0.00 seconds
+2023-04-04T19:17:22.005+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.api.apicalls.ApiCalls    : agent registration status false
+2023-04-04T19:17:22.006+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.api.apicalls.ApiCalls    : amIRegistered apicall completed with returning boolean
+2023-04-04T19:17:22.007+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.api.apicalls.ApiCalls    : Execution time for amIRegistered method is 0.04 seconds
+2023-04-04T19:17:22.007+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Registration status of agent is false
+2023-04-04T19:17:22.007+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Menu if agent is - Not Registered
+2023-04-04T19:17:22.008+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Execution time for addMenuToTrayIcon method is 0.04 seconds
+2023-04-04T19:17:22.008+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Trayicon adding with a popup message
+2023-04-04T19:17:22.079+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : added tray icon to system tray
+2023-04-04T19:17:22.081+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Execution time for addAgentTrayIconToTray method is 0.07 seconds
+2023-04-04T19:17:22.081+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Added Trayicon along with menu to system tray and returning that icon
+2023-04-04T19:17:22.081+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.ui.tray.AgentTrayIcon    : Execution time for createAndAddAgentTrayIconWithMenuToTray method is 0.16 seconds
+2023-04-04T19:17:22.082+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : calling methods for all menuitem actions
+2023-04-04T19:17:22.082+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : setting action for register menuitem
+2023-04-04T19:17:22.082+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : completed setting action for register menuitem
+2023-04-04T19:17:22.083+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : Execution time for registerOnAction method is 0.00 seconds
+2023-04-04T19:17:22.083+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : setting action for deregister menuitem
+2023-04-04T19:17:22.083+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : completed setting action for deregister menuitem
+2023-04-04T19:17:22.084+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : Execution time for deRegisterOnAction method is 0.00 seconds
+2023-04-04T19:17:22.084+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : setting action for generate menuitem
+2023-04-04T19:17:22.085+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : completed setting action for generate menuitem
+2023-04-04T19:17:22.085+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : Execution time for generateOnAction method is 0.00 seconds
+2023-04-04T19:17:22.085+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : setting action for restart menuitem
+2023-04-04T19:17:22.085+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : completed setting action for restart menuitem
+2023-04-04T19:17:22.086+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : Execution time for restartOnAction method is 0.00 seconds
+2023-04-04T19:17:22.086+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : setting action for quit menuitem
+2023-04-04T19:17:22.086+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : completed setting action for quit menuitem
+2023-04-04T19:17:22.087+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : Execution time for quitOnAction method is 0.00 seconds
+2023-04-04T19:17:22.088+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : setting action for execute menuitem
+2023-04-04T19:17:22.088+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : completed setting action for execute menuitem
+2023-04-04T19:17:22.089+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : Execution time for executeOnAction method is 0.00 seconds
+2023-04-04T19:17:22.089+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.i.TrayIconAndMenuInitializer     : Execution time for startTrigger method is 0.17 seconds
+2023-04-04T19:17:22.089+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.ui.initializer.AgentFxApplication  : Execution time for start method is 0.17 seconds
+2023-04-04T19:17:38.144+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.ui.util.PlatformUtil     : Check if Mac OS or not and return boolean
+2023-04-04T19:17:38.145+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.ui.util.PlatformUtil     : Execution time for isMac method is 0.00 seconds
+2023-04-04T19:17:39.638+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.m.a.ContextMenuItemsAction       : Loading the FXML page for Generation
+2023-04-04T19:17:39.728+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.agent.ui.controllers.GenerateMenu    : method initializing the generation UI
+2023-04-04T19:17:39.728+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.agent.ui.controllers.GenerateMenu    : method initialize for generation UI completed
+2023-04-04T19:17:39.729+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.agent.ui.controllers.GenerateMenu    : Execution time for initialize method is 0.00 seconds
+2023-04-04T19:17:39.868+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.m.a.ContextMenuItemsAction       : UI for generation shown
+2023-04-04T19:17:39.869+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.a.u.m.a.ContextMenuItemsAction       : Execution time for generateMenuItemAction method is 0.23 seconds
+2023-04-04T19:17:41.227+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.agent.ui.controllers.GenerateMenu    : choosing the test project directory from generation UI
+2023-04-04T19:17:52.668+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.agent.ui.controllers.GenerateMenu    : D:\WorkingAgentandTestProjectsAlongwithAgentInstallation\KitapWeb
+2023-04-04T19:17:52.669+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.agent.ui.controllers.GenerateMenu    : started the validation of selected test project
+2023-04-04T19:17:52.670+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.agent.ui.controllers.GenerateMenu    : method choosingFolder completed from generation UI
+2023-04-04T19:17:52.671+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.agent.ui.controllers.GenerateMenu    : Execution time for choosingFolder method is 11.44 seconds
+2023-04-04T19:17:52.672+05:30  INFO 5728 --- [Thread-6] c.k.agent.ui.controllers.GenerateMenu    : method validateProject completed
+2023-04-04T19:17:52.673+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.api.apicalls.ApiCalls    : getAllAUT apicall started
+2023-04-04T19:17:52.673+05:30  INFO 5728 --- [JavaFX Application Thread] c.kitap.agent.api.apicalls.BaseApiCall   : setBaseURI method started
+2023-04-04T19:17:52.673+05:30  INFO 5728 --- [JavaFX Application Thread] c.kitap.agent.api.apicalls.BaseApiCall   : setBaseURI method completed
+2023-04-04T19:17:52.673+05:30  INFO 5728 --- [JavaFX Application Thread] c.kitap.agent.api.apicalls.BaseApiCall   : Execution time for setBaseURI method is 0.00 seconds
+2023-04-04T19:17:52.673+05:30  INFO 5728 --- [Thread-6] c.k.agent.ui.controllers.GenerateMenu    : Execution time for run method is 0.00 seconds
+2023-04-04T19:17:52.716+05:30  INFO 5728 --- [http-nio-6587-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-04-04T19:17:52.716+05:30  INFO 5728 --- [http-nio-6587-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-04-04T19:17:52.717+05:30  INFO 5728 --- [http-nio-6587-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-04-04T19:17:52.744+05:30  INFO 5728 --- [http-nio-6587-exec-2] com.kitap.agent.util.PropertyReader      : property reader constructor loaded
+2023-04-04T19:17:52.745+05:30  INFO 5728 --- [http-nio-6587-exec-2] c.k.a.ui.machineInfo.MachineInformation  : method getInetAddress started
+2023-04-04T19:17:52.745+05:30  INFO 5728 --- [http-nio-6587-exec-2] c.k.a.ui.machineInfo.MachineInformation  : completed getInetAddress method by returning inetAddress
+2023-04-04T19:17:52.745+05:30  INFO 5728 --- [http-nio-6587-exec-2] c.k.a.ui.machineInfo.MachineInformation  : Execution time for getInetAddress method is 0.00 seconds
+2023-04-04T19:17:52.745+05:30  INFO 5728 --- [http-nio-6587-exec-2] c.k.a.ui.machineInfo.MachineInformation  : method getMacAddress started
+2023-04-04T19:17:52.745+05:30  INFO 5728 --- [http-nio-6587-exec-2] c.k.a.ui.machineInfo.MachineInformation  : method getInetAddress started
+2023-04-04T19:17:52.745+05:30  INFO 5728 --- [http-nio-6587-exec-2] c.k.a.ui.machineInfo.MachineInformation  : completed getInetAddress method by returning inetAddress
+2023-04-04T19:17:52.745+05:30  INFO 5728 --- [http-nio-6587-exec-2] c.k.a.ui.machineInfo.MachineInformation  : Execution time for getInetAddress method is 0.00 seconds
+2023-04-04T19:17:52.756+05:30  INFO 5728 --- [http-nio-6587-exec-2] c.k.a.ui.machineInfo.MachineInformation  : completed getMacAddress method by returning macAddress as string
+2023-04-04T19:17:52.757+05:30  INFO 5728 --- [http-nio-6587-exec-2] c.k.a.ui.machineInfo.MachineInformation  : Execution time for getMacAddress method is 0.01 seconds
+2023-04-04T19:17:52.820+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.api.apicalls.ApiCalls    : getAllAUT apicall completed with returning array of strings
+2023-04-04T19:17:52.821+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.api.apicalls.ApiCalls    : Execution time for getAllAUT method is 0.15 seconds
+2023-04-04T19:18:03.861+05:30  INFO 5728 --- [JavaFX Application Thread] c.k.agent.ui.controllers.GenerateMenu    : clicked on GenerateTests button from generation UI
+2023-04-04T19:18:03.865+05:30  INFO 5728 --- [Thread-7] c.k.agent.ui.controllers.GenerateMenu    : april4th
+2023-04-04T19:18:03.865+05:30  INFO 5728 --- [Thread-7] c.k.agent.ui.controllers.GenerateMenu    : validating the test project
+2023-04-04T19:18:03.865+05:30  INFO 5728 --- [Thread-7] c.k.agent.ui.controllers.GenerateMenu    : started the validation of selected test project
+2023-04-04T19:18:03.865+05:30  INFO 5728 --- [Thread-7] c.k.agent.ui.controllers.GenerateMenu    : compiling and packaging the test project
+2023-04-04T19:18:03.867+05:30  INFO 5728 --- [Thread-8] c.k.agent.ui.controllers.GenerateMenu    : method validateProject completed
+2023-04-04T19:18:03.867+05:30  INFO 5728 --- [Thread-8] c.k.agent.ui.controllers.GenerateMenu    : Execution time for run method is 0.00 seconds
+2023-04-04T19:18:03.874+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.api.apicalls.ApiCalls    : getAllAUT apicall started
+2023-04-04T19:18:03.874+05:30  INFO 5728 --- [JavaFX Application Thread] c.kitap.agent.api.apicalls.BaseApiCall   : setBaseURI method started
+2023-04-04T19:18:03.874+05:30  INFO 5728 --- [JavaFX Application Thread] c.kitap.agent.api.apicalls.BaseApiCall   : setBaseURI method completed
+2023-04-04T19:18:03.874+05:30  INFO 5728 --- [JavaFX Application Thread] c.kitap.agent.api.apicalls.BaseApiCall   : Execution time for setBaseURI method is 0.00 seconds
+2023-04-04T19:18:03.877+05:30  INFO 5728 --- [http-nio-6587-exec-1] com.kitap.agent.util.PropertyReader      : property reader constructor loaded
+2023-04-04T19:18:03.877+05:30  INFO 5728 --- [http-nio-6587-exec-1] c.k.a.ui.machineInfo.MachineInformation  : method getInetAddress started
+2023-04-04T19:18:03.877+05:30  INFO 5728 --- [http-nio-6587-exec-1] c.k.a.ui.machineInfo.MachineInformation  : completed getInetAddress method by returning inetAddress
+2023-04-04T19:18:03.878+05:30  INFO 5728 --- [http-nio-6587-exec-1] c.k.a.ui.machineInfo.MachineInformation  : Execution time for getInetAddress method is 0.00 seconds
+2023-04-04T19:18:03.879+05:30  INFO 5728 --- [http-nio-6587-exec-1] c.k.a.ui.machineInfo.MachineInformation  : method getMacAddress started
+2023-04-04T19:18:03.879+05:30  INFO 5728 --- [http-nio-6587-exec-1] c.k.a.ui.machineInfo.MachineInformation  : method getInetAddress started
+2023-04-04T19:18:03.879+05:30  INFO 5728 --- [http-nio-6587-exec-1] c.k.a.ui.machineInfo.MachineInformation  : completed getInetAddress method by returning inetAddress
+2023-04-04T19:18:03.879+05:30  INFO 5728 --- [http-nio-6587-exec-1] c.k.a.ui.machineInfo.MachineInformation  : Execution time for getInetAddress method is 0.00 seconds
+2023-04-04T19:18:03.892+05:30  INFO 5728 --- [http-nio-6587-exec-1] c.k.a.ui.machineInfo.MachineInformation  : completed getMacAddress method by returning macAddress as string
+2023-04-04T19:18:03.892+05:30  INFO 5728 --- [http-nio-6587-exec-1] c.k.a.ui.machineInfo.MachineInformation  : Execution time for getMacAddress method is 0.01 seconds
+2023-04-04T19:18:03.896+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.api.apicalls.ApiCalls    : getAllAUT apicall completed with returning array of strings
+2023-04-04T19:18:03.896+05:30  INFO 5728 --- [JavaFX Application Thread] com.kitap.agent.api.apicalls.ApiCalls    : Execution time for getAllAUT method is 0.02 seconds
+2023-04-04T19:18:05.235+05:30  INFO 5728 --- [Thread-7] c.k.a.g.flow.CompileAndGenerateJarFile   : processor exited code is 0
+2023-04-04T19:18:10.217+05:30  INFO 5728 --- [Thread-7] c.k.a.g.flow.CompileAndGenerateJarFile   : processor exited code is 0
+2023-04-04T19:18:19.734+05:30  INFO 5728 --- [Thread-7] c.k.a.g.flow.CompileAndGenerateJarFile   : processor exited code is 0
+2023-04-04T19:18:19.735+05:30  INFO 5728 --- [Thread-7] c.k.agent.ui.controllers.GenerateMenu    : Copying the files
+2023-04-04T19:18:19.736+05:30  INFO 5728 --- [Thread-7] c.k.agent.generate.flow.FileOperations   : aut folder path exists C:\ProgramData\KiTAP\Web\april4th
+2023-04-04T19:18:19.737+05:30  INFO 5728 --- [Thread-7] c.k.agent.generate.flow.FileOperations   : folder created at path C:\ProgramData\KiTAP\Web\april4th\2
+2023-04-04T19:18:19.738+05:30  INFO 5728 --- [Thread-7] c.k.agent.generate.flow.FileOperations   : created new version folder with version number 2 at path C:\ProgramData\KiTAP\Web\april4th\2
+2023-04-04T19:18:20.555+05:30  INFO 5728 --- [Thread-7] c.k.agent.ui.controllers.GenerateMenu    : Generating...
+2023-04-04T19:18:20.558+05:30  INFO 5728 --- [Thread-7] c.k.a.g.s.FindClassesFromJarService      : method parseJar started
+2023-04-04T19:18:20.565+05:30  INFO 5728 --- [Thread-7] com.kitap.agent.util.PropertyReader      : property reader constructor loaded
+2023-04-04T19:18:20.566+05:30  INFO 5728 --- [Thread-7] c.k.a.g.service.JarDetailsService        : method getMetaData started with aut and jarfile
+2023-04-04T19:18:20.566+05:30  INFO 5728 --- [Thread-7] c.k.agent.generate.service.JarValidator  : method isJarValid started with jarfile name and path
+2023-04-04T19:18:20.658+05:30  INFO 5728 --- [Thread-7] c.k.agent.generate.service.JarValidator  :  The Given Jar File is valid 
+2023-04-04T19:18:20.659+05:30  INFO 5728 --- [Thread-7] c.k.agent.generate.service.JarValidator  : method isJarValid completed with returning true
+2023-04-04T19:18:20.659+05:30  INFO 5728 --- [Thread-7] c.k.agent.generate.service.JarValidator  : Execution time for isJarValid method is 0.09 seconds
+2023-04-04T19:18:20.659+05:30  INFO 5728 --- [Thread-7] c.k.a.g.service.JarDetailsService        : method getMetaData completed
+2023-04-04T19:18:20.660+05:30  INFO 5728 --- [Thread-7] c.k.a.g.service.JarDetailsService        : Execution time for getMetaData method is 0.09 seconds
+2023-04-04T19:18:20.790+05:30  INFO 5728 --- [Thread-7] c.k.a.g.s.FindClassesFromJarService      : method parseJar completed with returning Json as string
+2023-04-04T19:18:20.792+05:30  INFO 5728 --- [Thread-7] c.k.a.g.s.FindClassesFromJarService      : Execution time for parseJar method is 0.23 seconds
+2023-04-04T19:18:20.807+05:30  INFO 5728 --- [Thread-7] c.k.agent.ui.controllers.GenerateMenu    : Generation Completed
+2023-04-04T19:18:20.807+05:30  INFO 5728 --- [Thread-7] c.k.agent.ui.controllers.GenerateMenu    : closed the generation UI
+2023-04-04T19:18:20.808+05:30  INFO 5728 --- [Thread-7] c.k.agent.ui.controllers.GenerateMenu    : Execution time for run method is 16.95 seconds
+2023-04-04T19:19:09.141+05:30  INFO 5728 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-04-04T19:19:09.144+05:30  INFO 5728 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-04-04T19:19:09.145+05:30  INFO 5728 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

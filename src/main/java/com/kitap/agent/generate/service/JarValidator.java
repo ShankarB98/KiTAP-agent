@@ -1,6 +1,7 @@
 package com.kitap.agent.generate.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StopWatch;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,23 +14,42 @@ public class JarValidator /*extends BaseClass*/ {
 
     /** checks a jar file is valid or not */
     public boolean isJarValid(String name, String path) throws IOException {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("method isJarValid started with jarfile name and path");
         Process process = Runtime.getRuntime().exec("java -jar " + name, null, new File(path));
         InputStreamReader inputStreamReader = new InputStreamReader(process.getErrorStream());
         BufferedReader reader = new BufferedReader(inputStreamReader);
         String line;
         line = reader.readLine();
         if (line == null) {
+            log.error("null");
             throw new NullPointerException();
         } else {
             if (line.contains("no main manifest attribute")) {
-                System.out.println(" The Given Jar File is valid ");
+                log.info(" The Given Jar File is valid ");
+                log.info("method isJarValid completed with returning true");
+
+                stopWatch.stop();
+                log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                        " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
                 return true;
             } else if (line.contains("Error: Invalid or corrupt jarfile")) {
-                System.out.println(" The Given Jar File in INVALID, Pls Check");
+                log.info(" The Given Jar File in INVALID, Pls Check");
                 log.error(line);
+                log.info("method isJarValid completed with returning false");
+
+                stopWatch.stop();
+                log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                        " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
                 return false;
             } else {
                 log.error(" Something went wrong ");
+                log.info("method isJarValid completed with returning false");
+
+                stopWatch.stop();
+                log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                        " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
                 return false;
             }
         }

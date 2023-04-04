@@ -6,6 +6,7 @@ import com.kitap.testresult.dto.agent.GenerationDetails;
 import com.kitap.testresult.dto.generate.AUT;
 import com.kitap.testresult.dto.generate.Clazz;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StopWatch;
 
 import java.io.File;
 import java.util.List;
@@ -15,6 +16,9 @@ public class FindClassesFromJarService {
 
     /** parse the jar file and generates the data */
     public String parseJar(File jarFile, GenerationDetails details){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("method parseJar started");
         AUT aut = new AUT();
 
         JarDetailsService jds = new JarDetailsService();
@@ -32,6 +36,10 @@ public class FindClassesFromJarService {
         aut.setType(details.getAutType());
         aut.setTestCases(classes);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        log.info("method parseJar completed with returning Json as string");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return gson.toJson(aut);
     }
 }

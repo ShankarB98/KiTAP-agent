@@ -2,6 +2,7 @@ package com.kitap.agent.generate.service;
 
 import com.kitap.testresult.dto.generate.AUT;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StopWatch;
 
 import java.time.ZonedDateTime;
 
@@ -14,6 +15,9 @@ public class JarDetailsService {
 
     /** generates basic details about jar file */
     public void getMetaData(AUT aut, File jarFile){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("method getMetaData started with aut and jarfile");
         String jarFileName = jarFile.getName();
         String jarFilePath = jarFile.getAbsolutePath();
         JarValidator jarValidator = new JarValidator();
@@ -28,5 +32,9 @@ public class JarDetailsService {
         }
         aut.setScanDate(ZonedDateTime.now().toString());
         aut.setLastModified(ZonedDateTime.now().toString());
+        log.info("method getMetaData completed");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 }

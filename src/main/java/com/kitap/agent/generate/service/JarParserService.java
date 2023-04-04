@@ -10,6 +10,7 @@ import javassist.*;
 import javassist.expr.ExprEditor;
 import javassist.expr.MethodCall;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StopWatch;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +44,9 @@ public class JarParserService{
      * method which provides all the info about classes and packages of jar
      */
     public List<Clazz> getAllClassData(File jarFile, GenerationDetails details) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("method getAllClassData started with jarfile and generationdetails");
         try {
             //String jarsPath = reader.getProperty("destinationpath") + File.separator + details.getAutType() + File.separator + details.getAutName() + File.separator + details.getVersion() + File.separator + "target" + File.separator + "test-jars";
             String jarsPath = details.getProjectPath().getAbsolutePath()+ File.separator + "target" + File.separator + "test-jars";
@@ -65,6 +69,10 @@ public class JarParserService{
         } catch (NotFoundException e) {
             throw new RuntimeException(e);
         }
+        log.info("method getAllClassData completed with returning list of Clazz objects");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return scanJar(jarFile);
     }
 

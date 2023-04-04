@@ -140,7 +140,7 @@ public class ApiCalls extends BaseApiCall {
      * @Description saves aut in in-memory data base
      * @param details aut object
      * */
-    public String saveAUT(ApplicationUnderTest details) {
+    private String saveAUT(ApplicationUnderTest details) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         log.info("saveAUT apicall started");
