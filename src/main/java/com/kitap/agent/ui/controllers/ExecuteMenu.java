@@ -11,10 +11,9 @@ import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -93,17 +92,31 @@ public class ExecuteMenu {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         log.info("clicked on viewtestresults button from execution UI");
-        try{
-            String reportsPath = reader.getProperty("destinationpath")+separator+
-                    autType.getValue()+separator+executeAutCombo.getValue()+separator+
-                    versionCombo.getValue()+separator+"target"+separator+"site"+separator+"serenity"+separator+"index.html";
-            File file = new File(reportsPath);
-            Desktop.getDesktop().browse(file.toURI());
-        }catch (IOException e) {
-            log.error(e.toString());
-            throw new RuntimeException(e);
+        if(autType.getValue()!=null&&executeAutCombo.getValue()!=null&&versionCombo.getValue()!=null) {
+            try {
+                String reportsPath = reader.getProperty("destinationpath") + separator +
+                        autType.getValue() + separator + executeAutCombo.getValue() + separator +
+                        versionCombo.getValue() + separator + "target" + separator + "site" + separator + "serenity" + separator + "index.html";
+                File file = new File(reportsPath);
+                Desktop.getDesktop().browse(file.toURI());
+            } catch (IOException e) {
+                log.error(e.toString());
+                throw new RuntimeException(e);
+            }
+            log.info("displaying test results completed");
         }
-        log.info("displaying test results completed");
+        else{
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    log.error("Field not selected");
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Field not selected");
+                    alert.setContentText("Please select all the fields");
+                    alert.showAndWait();
+                }
+            });
+        }
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
@@ -121,74 +134,88 @@ public class ExecuteMenu {
         log.info("clicked on executetests button from execution UI");
         new Thread() {
             public void run() {
-                Platform.runLater(new Runnable() {
-                    public void run() {
-                        //Giving ExecutingTests Status and disabling contextmenu Items
-                        AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(executingColour));
-                        AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setText("Executing Tests");
-                        for (int i = 1; i <= AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().size() - 1; i++) {
-                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(i).setDisable(true);
+                if(autType.getValue()!=null&&executeAutCombo.getValue()!=null&&versionCombo.getValue()!=null) {
+                    Platform.runLater(new Runnable() {
+                        public void run() {
+                            //Giving ExecutingTests Status and disabling contextmenu Items
+                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(executingColour));
+                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setText("Executing Tests");
+                            for (int i = 1; i <= AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().size() - 1; i++) {
+                                AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(i).setDisable(true);
+                            }
+
+                            //Progress Indicator
+                            executeTestsProgressIndicator.setVisible(true);
+
+                            //Blinking Text
+                            FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), blinkLabel);
+                            fadeTransition.setFromValue(1.0);
+                            fadeTransition.setToValue(0.0);
+                            fadeTransition.setCycleCount(Animation.INDEFINITE);
+                            fadeTransition.play();
+                            blinkLabel.setVisible(true);
+
+                            //Disabling all the buttons in UI Page
+                            executeTestButton.setDisable(true);
+                            viewTestResults.setDisable(true);
+                            cancelButton.setDisable(true);
                         }
+                    });
 
-                        //Progress Indicator
-                        executeTestsProgressIndicator.setVisible(true);
+                    ExecutionAutDetails details = new ExecutionAutDetails();
+                    details.setTestType(autType.getValue());
+                    details.setAut(executeAutCombo.getValue());
+                    details.setVersion(versionCombo.getValue());
+                    details.setTestCases(null);
+                    log.info("api call to execute tests");
+                    apiCalls.executeTests(details);
 
-                        //Blinking Text
-                        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), blinkLabel);
-                        fadeTransition.setFromValue(1.0);
-                        fadeTransition.setToValue(0.0);
-                        fadeTransition.setCycleCount(Animation.INDEFINITE);
-                        fadeTransition.play();
-                        blinkLabel.setVisible(true);
+                    log.info("testExecution method completed");
+                    stopWatch.stop();
+                    log.info("Execution time for " + new Object() {
+                    }.getClass().getEnclosingMethod().getName() +
+                            " method is " + String.format("%.2f", stopWatch.getTotalTimeSeconds()) + " seconds");
 
-                        //Disabling all the buttons in UI Page
-                        executeTestButton.setDisable(true);
-                        viewTestResults.setDisable(true);
-                        cancelButton.setDisable(true);
-                    }
-                });
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Enabling all the contextmenu Items
+                            executeTestsProgressIndicator.setVisible(false); //stopping progressIndicator
+                            blinkLabel.setVisible(false); // stopping Blinking Text
 
-                ExecutionAutDetails details = new ExecutionAutDetails();
-                details.setTestType(autType.getValue());
-                details.setAut(executeAutCombo.getValue());
-                details.setVersion(versionCombo.getValue());
-                details.setTestCases(null);
-                log.info("api call to execute tests");
-                apiCalls.executeTests(details);
+                            //Closing Stage after process completion
+                            //Stage executeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
+                            //executeStage.close();
 
-                log.info("testExecution method completed");
-                stopWatch.stop();
-                log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
-                        " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
-
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        //Enabling all the contextmenu Items
-                        executeTestsProgressIndicator.setVisible(false); //stopping progressIndicator
-                        blinkLabel.setVisible(false); // stopping Blinking Text
-
-                        //Closing Stage after process completion
-                        //Stage executeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
-                        //executeStage.close();
-
-                        /**
-                         * Enabling all the buttons in UI
-                         * */
-                        executeTestButton.setDisable(false);
-                        viewTestResults.setDisable(false);
-                        cancelButton.setDisable(false);
+                            /**
+                             * Enabling all the buttons in UI
+                             * */
+                            executeTestButton.setDisable(false);
+                            viewTestResults.setDisable(false);
+                            cancelButton.setDisable(false);
 
 
-                        //Enabling all the contextmenu Items
-                        AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(agentRunningColour));
-                        AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setText("Agent is running");
-                        for (int i = 1; i <= AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().size() - 1; i++) {
-                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(i).setDisable(false);
+                            //Enabling all the contextmenu Items
+                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(agentRunningColour));
+                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setText("Agent is running");
+                            for (int i = 1; i <= AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().size() - 1; i++) {
+                                AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(i).setDisable(false);
+                            }
                         }
-                    }
-                });
-
+                    });
+                }
+                else{
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            log.error("Field not selected");
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Field not selected");
+                            alert.setContentText("Please select all the fields");
+                            alert.showAndWait();
+                        }
+                    });
+                }
             }
         }.start();
     }
@@ -217,6 +244,7 @@ public class ExecuteMenu {
         log.info("on change of autType,updating the auts present");
         executeAutCombo.getItems().removeAll(executeAutCombo.getItems());
         executeAutCombo.getItems().addAll(apiCalls.getAllAUT(autType.getValue()));
+        executeAutCombo.getItems().remove("");
         log.info("method onChangeOfAurType completed");
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+

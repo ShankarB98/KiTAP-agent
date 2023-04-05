@@ -1,17 +1,17 @@
 package com.kitap.agent.util;
 
 import com.kitap.testresult.dto.agent.MachineDetails;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StopWatch;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-
+@Slf4j
 public class MachineInfo {
-    Logger logger = LoggerFactory.getLogger(MachineInfo.class);
-
     public MachineDetails getMachineInformation() {
 
         MachineDetails details = new MachineDetails();
@@ -35,17 +35,25 @@ public class MachineInfo {
     }
 
     public InetAddress getInetAddress(){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         InetAddress inetAddress;
         try {
             inetAddress = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
-            logger.error(e.toString());
+            log.error(e.toString());
             throw new RuntimeException(e);
         }
+        log.info("getting InetAddress and returning it");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return inetAddress;
     }
 
     public String getMacAddress(){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         NetworkInterface network;
         StringBuilder macAddressStringBuilder;
         try {
@@ -56,9 +64,13 @@ public class MachineInfo {
                 macAddressStringBuilder.append(String.format("%02X%s", macArray[i], (i < macArray.length - 1) ? " " : ""));
             }
         } catch (SocketException e) {
-            logger.error(e.toString());
+            log.error(e.toString());
             throw new RuntimeException(e);
         }
+        log.info("getting macAddress and returning it");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return macAddressStringBuilder.toString();
     }
 }

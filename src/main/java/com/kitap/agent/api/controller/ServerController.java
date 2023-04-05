@@ -5,11 +5,13 @@ import com.kitap.agent.database.service.ResultSaver;
 import com.kitap.agent.execute.TestRunner;
 import com.kitap.agent.generate.util.FileOperations;
 import com.kitap.testresult.dto.execute.ExecutionAutDetails;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
-
+@Slf4j
 @RestController
 @RequestMapping("/v1")
 public class ServerController {
@@ -25,9 +27,16 @@ public class ServerController {
      * */
     @PostMapping("/executeTests")
     public String execute(@RequestBody ExecutionAutDetails details) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("execution API started with executionAutDetails");
         TestRunner runner = new TestRunner(details);
         ResultSaver saver = new ResultSaver(executedTestCaseRepository);
         saver.save(runner.executeTests(), details);
+        log.info("execution API completed with returning saved to database message");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return "saved to database";
     }
 

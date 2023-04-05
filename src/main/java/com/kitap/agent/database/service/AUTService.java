@@ -6,6 +6,7 @@ import com.kitap.agent.database.repository.ApplicationUnderTestRepo;
 import com.kitap.agent.ui.machineInfo.MachineInformation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 
 import java.io.File;
 import java.time.ZonedDateTime;
@@ -35,13 +36,22 @@ public class AUTService{
      * @return returns the response of about aut creation
      * */
     public String saveAutDetails(ApplicationUnderTest aut){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("saving aut details with aut as input");
         ApplicationUnderTest applicationUnderTest = repo.isExists(aut.getName(), aut.getType());
         if (applicationUnderTest == null){
             repo.save(aut);
             log.info("New AUT created");
+            stopWatch.stop();
+            log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                    " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
             return "New AUT created";
         }else {
             log.warn("Duplicated AUT");
+            stopWatch.stop();
+            log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                    " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
             return "Duplicated AUT";
         }
     }
@@ -52,7 +62,13 @@ public class AUTService{
      * @return list of count response test result table
      * */
     public String [] getAllAUT(String autType){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         List<String> allAutList = repo.getAllAUTNames(autType);
+        log.info("returning array of auts by using autType as input");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return GetLitOfAutsThatAreOnFilesystem(allAutList, autType);
     }
 
@@ -61,8 +77,9 @@ public class AUTService{
      * @param autType - aut type to get all aut's
      * @return returns list of auts from file system
      * */
-    private String[] GetLitOfAutsThatAreOnFilesystem(List<String> auts, String autType)
-    {
+    private String[] GetLitOfAutsThatAreOnFilesystem(List<String> auts, String autType) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         ArrayList<String> validAuts = new ArrayList<>();
         // Check if the corresponding AUTs have code in the file system
         String baseAutPath = BaseClass.properties.getProperty("destinationpath")+BaseClass.separator+autType;
@@ -84,6 +101,10 @@ public class AUTService{
             return new String [0];
         }
         String [] validAutsArr = new String [validAuts.size()];
+        log.info("returning array of auts that are on filesystem");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return validAuts.toArray(validAutsArr);
     }
 
@@ -94,6 +115,8 @@ public class AUTService{
      * @return returns aut object
      * */
     public ApplicationUnderTest getAUT(String autName, String autType){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         ApplicationUnderTest aut = new ApplicationUnderTest();
         aut.setName(autName);
         aut.setDisplayName(autName);
@@ -104,6 +127,10 @@ public class AUTService{
         aut.setCreatedBy(BaseClass.machineInformation.inetAddress.getHostName());
         aut.setCreatedAt(ZonedDateTime.now());
         aut.setIsActive(true);
+        log.info("returning AUT by using autName and autType as inputs");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return aut;
     }
 
@@ -112,11 +139,18 @@ public class AUTService{
      * @return A String of array contains aut types
      * */
     public String [] getAutTypes(){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         List<String> allAutTypes = repo.getAutTypes();
         if (allAutTypes.isEmpty()){
+            log.info("No autType present");
             return new String [0];
         }
         String [] autTypes = new String [allAutTypes.size()];
+        log.info("returning array of autTypes");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return allAutTypes.toArray(autTypes);
     }
 }

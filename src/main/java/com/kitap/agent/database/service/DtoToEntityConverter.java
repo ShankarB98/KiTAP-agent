@@ -6,11 +6,13 @@ import com.kitap.agent.database.model.ExecutedTestCase;
 import com.kitap.agent.database.model.ExecutedTestStep;
 import com.kitap.testresult.dto.dateandtime.ZonedDateTime;
 import com.kitap.testresult.dto.execute.ExecutionAutDetails;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Slf4j
 @Component
 public class DtoToEntityConverter {
 
@@ -25,6 +27,8 @@ public class DtoToEntityConverter {
      * @return a test case entity
      * */
     public ExecutedTestCase convertDtoToEntity(com.kitap.testresult.dto.ExecutedTestCase tcase, ExecutionAutDetails details) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         ExecutedTestCase etc = new ExecutedTestCase();
         etc.setTestCaseName(tcase.getTestCaseName());
         etc.setTestCaseVersion(tcase.getTestCaseVersion());
@@ -39,6 +43,10 @@ public class DtoToEntityConverter {
         etc.setOsVersion("windows 10");
         etc.setAutName(details.getAut());
         etc.setExecutedTestStepList(getExecutedTestSteps(tcase.getTestSteps(), details.getVersion()));
+        log.info("converting dto to entity and returning executedTestCase entity");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return etc;
     }
 
@@ -64,6 +72,8 @@ public class DtoToEntityConverter {
      * @return a list of step entities
      * */
     public List<ExecutedTestStep> getExecutedTestSteps(List<com.kitap.testresult.dto.ExecutedTestStep> steps, String version) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         List<ExecutedTestStep> list = new ArrayList<>();
         for (com.kitap.testresult.dto.ExecutedTestStep step : steps) {
             ExecutedTestStep ets = new ExecutedTestStep();
@@ -76,6 +86,10 @@ public class DtoToEntityConverter {
             ets.setTestStepVersion(Integer.parseInt(version));
             list.add(ets);
         }
+        log.info("getting list of executedTestSteps using executedTestSteps dto and version as inputs");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return list;
     }
 
@@ -86,6 +100,7 @@ public class DtoToEntityConverter {
      * @return a java's zoned date time object
      * */
     public java.time.ZonedDateTime getZonedDatetime(ZonedDateTime zonedDateTimeObject) {
+        log.info("getting zonedDateTime");
         //System.out.println("2016-10-05T08:20:10+05:30[Asia/Kolkata]");
         return java.time.ZonedDateTime.parse(zonedDateTimeObject.toString());
     }

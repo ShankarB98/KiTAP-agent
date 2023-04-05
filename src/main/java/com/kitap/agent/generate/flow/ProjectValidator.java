@@ -2,6 +2,7 @@ package com.kitap.agent.generate.flow;
 
 import com.kitap.agent.base.BaseClass;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StopWatch;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,8 +16,11 @@ public class ProjectValidator {
 
     /** method for check project validation */
     public String[] check(File projectPath){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("checking project by using projectPath as input");
         String value = isValidProject(projectPath);
-        System.out.println("value at"+value);
+        log.info("value at"+value);
         String [] arr = new String[2];
         switch (value) {
             case "main and test java does not exists":
@@ -34,19 +38,38 @@ public class ProjectValidator {
                 arr[1] = value;
                 break;
         }
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return arr;
     }
 
     private String isValidProject(File projectPath){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("checking valid project or not by using projectpath as input");
         File dir = projectPath.getAbsoluteFile();
         File subDirMain = new File(dir, BaseClass.properties.getProperty("mainapplicationpath"));
         File subDirTest = new File(dir, BaseClass.properties.getProperty("testapplicationpath"));
         if(subDirMain.isDirectory()&&subDirTest.isDirectory()){
             File pomFile = new File(dir+BaseClass.separator+"pom.xml");
             if (pomFile.exists()) {
+                stopWatch.stop();
+                log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                        " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
                 return projectAutType(pomFile);
-            }else return "pom file does not exists";
-        }else return "main and test java does not exists";
+            }else{
+                stopWatch.stop();
+                log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                        " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
+                return "pom file does not exists";
+            }
+        }else{
+            stopWatch.stop();
+            log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                    " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
+            return "main and test java does not exists";
+        }
     }
 
     private String isKiTAPProject(File pomFile){
@@ -71,6 +94,9 @@ public class ProjectValidator {
     }
 
     private String projectAutType(File pomFile){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("getting project autType by using pomfile as input");
         final String GROUPID_WEB =  "<groupId>com.kitap.fw.web</groupId>";
         final String GROUPID_SF = "<groupId>com.kitap.fw.salesforce</groupId>";
         final String GROUPID_MOBILE = "<groupId>com.kitap.fw.mobile</groupId>";
@@ -112,14 +138,20 @@ public class ProjectValidator {
                 }
             }
             if (isKitapCore && containsPlatform){
+                log.info("returned project autType");
+                stopWatch.stop();
+                log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                        " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
                 return value;
             }
         } catch (IOException ex) {
             log.error(ex.toString());
             throw new RuntimeException(ex);
         }
+        log.info("not able to return autType because not a valid kitap project");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return "it is not a valid kitap project";
     }
-
-
 }

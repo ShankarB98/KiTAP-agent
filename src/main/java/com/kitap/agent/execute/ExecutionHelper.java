@@ -2,6 +2,7 @@ package com.kitap.agent.execute;
 
 import com.kitap.agent.base.BaseClass;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StopWatch;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -21,6 +22,9 @@ public class ExecutionHelper {
      * @param file - target folder path
      * */
     protected void deleteTestResults(File file){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("deleting test results by using file as input");
         if (file.exists()) {
             for (File subFile : file.listFiles()) {
                 if (subFile.isDirectory()) {
@@ -29,6 +33,10 @@ public class ExecutionHelper {
                 subFile.delete();
             }
         }
+        log.info("deleting test results completed");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
 
@@ -39,6 +47,9 @@ public class ExecutionHelper {
      * @return Process - created process at a particular location
      * */
     protected Process getProcessor(String command, File directory){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("getting process by using command and filedirectory as inputs");
         Process process = null;
         try {
             process = Runtime.getRuntime().exec(command,null, directory);
@@ -46,6 +57,10 @@ public class ExecutionHelper {
             log.error(e.toString());
             throw new RuntimeException(e);
         }
+        log.info("getting process completed");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return process;
     }
 
@@ -55,6 +70,9 @@ public class ExecutionHelper {
      * @return String - created process at a particular location
      * */
     protected String processOutput(Process process){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("output processing by using process object as input");
         StringBuilder output = new StringBuilder();
         InputStreamReader inputStreamReader = new InputStreamReader(process.getInputStream());
         BufferedReader reader = new BufferedReader(inputStreamReader);
@@ -71,7 +89,10 @@ public class ExecutionHelper {
             throw new RuntimeException(e);
         }
         output.append(LocalDateTime.now());
-        System.out.println(output);
+        log.info("Processed output {}",(output));
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return String.valueOf(output);
     }
 
@@ -81,6 +102,8 @@ public class ExecutionHelper {
      * @param process - Completed process which holding all the information
      * */
     protected void throwError(Process process){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         int exitValue;
         try {
             exitValue = process.waitFor();
@@ -94,6 +117,9 @@ public class ExecutionHelper {
             log.error(e.toString());
             throw new RuntimeException(e);
         }
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     /**
@@ -304,19 +330,30 @@ public class ExecutionHelper {
     }
 
     public static void createFile(StringBuilder output, List<String> classNames){
+        StopWatch stopWatch= new StopWatch();
+        stopWatch.start();
         for (String className: classNames){
             //output.append("\t\t\t<class name=\"base.AT.testscripts." + className + "\"/>\n");
             output.append("\t\t\t<class name=\"com.kitap.testscripts." + className + "\"/>\n");
         }
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     private void createFolders(String path, int number){
+        StopWatch stopWatch= new StopWatch();
+        stopWatch.start();
         File file = new File(path);
         if (number == 0){
             file.mkdir();
         }else {
             file.mkdirs();
         }
+        log.info("created folders by using path and number as input");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     private void createFile(String path){
@@ -329,11 +366,17 @@ public class ExecutionHelper {
     }
 
     private void createFile(File file){
+        StopWatch stopWatch= new StopWatch();
+        stopWatch.start();
         try {
             file.createNewFile();
+            log.info("created new file by using file object as input");
         } catch (IOException e) {
             e.printStackTrace();
         }
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
 }

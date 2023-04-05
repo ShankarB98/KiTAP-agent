@@ -3,6 +3,7 @@ package com.kitap.agent.generate.flow;
 import com.kitap.agent.base.BaseClass;
 import com.kitap.testresult.dto.agent.GenerationDetails;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StopWatch;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +23,8 @@ public class FileOperations {
 
     /** method for copying files to kitap destination path */
     public String copyFiles(GenerationDetails details){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
 
         /** checking and adding kitap destination if not exists */
         createFolder(destinationPath);
@@ -38,6 +41,9 @@ public class FileOperations {
 
         /** copying files to destination path*/
         copy(details.getProjectPath().getAbsolutePath(), destination);
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         //createStructureCopyFiles(details.getProjectPath().getAbsolutePath(), destination);
 //        call(details.getProjectPath().getAbsolutePath(), destination);
         //return qualifiedAutName+separator+version;
@@ -45,6 +51,8 @@ public class FileOperations {
     }
 
     private boolean checkAutExistence(String autType, String autName){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         autType = Objects.requireNonNullElse(autType, "");
         autType = autType.equals("") ? "Web": autType;
 
@@ -52,45 +60,77 @@ public class FileOperations {
         File autFolder = new File(autQualifiedType);
         if (autFolder.exists()){
             log.info("aut folder path exists "+ autQualifiedType);
+            stopWatch.stop();
+            log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                    " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
             return true;
         }
         else {
             log.info("aut folder created at "+ autQualifiedType);
+            stopWatch.stop();
+            log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                    " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
             return autFolder.mkdir();
         }
     }
 
     private String getLastVersionNumber(String autPath, Boolean createNewVersion){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("getting last version number created by using autPath and createNewVersion as boolean");
         File autFolder = new File(autPath);
 
         File [] versions = autFolder.listFiles();
         assert versions != null;
         if (versions.length > 0){
+            stopWatch.stop();
+            log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                    " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
             return getLastVersionNumber(versions, createNewVersion, autPath);
         }else {
-            if(createFolder(autPath+separator+"1"))
+            if(createFolder(autPath+separator+"1")) {
+                stopWatch.stop();
+                log.info("Execution time for " + new Object(){}.getClass().getEnclosingMethod().getName() +
+                        " method is " + String.format("%.2f", stopWatch.getTotalTimeSeconds()) + " seconds");
                 return "1";
+            }
         }
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return "";
     }
 
     private String getLastVersionNumber(File [] versions, Boolean createNewVersion, String autPath){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         Arrays.sort(versions);
         if (createNewVersion){
             Long version = Long.parseLong(versions[versions.length-1].getName());
             version = version+1;
             createFolder(autPath+separator+String.valueOf(version));
             log.info("created new version folder with version number "+ version + " at path "+ autPath+separator+version);
+
+            stopWatch.stop();
+            log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                    " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
             return String.valueOf(version);
         }
         String versionName = versions[versions.length-1].getName();
         File delFile = new File (autPath+separator+versionName);
         deleteFolder(delFile);
         log.info("deleting files in existed version " + delFile);
+
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return versionName;
     }
 
     private void copy(String source, String target) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("copying files by taking source and target paths as inputs");
         File directory = new File(source);
         File[] fList = directory.listFiles();
         if (fList != null) {
@@ -108,15 +148,23 @@ public class FileOperations {
                 }
             }
         }
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     private void copy(Path source, Path target){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         try {
             Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             log.error(e.toString());
             throw new RuntimeException(e);
         }
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     private List<File> getListOfFiles(File sourceDir){
@@ -140,11 +188,21 @@ public class FileOperations {
 
 
     private boolean createFolder(String path){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         File version = new File(path);
         if (!version.exists()){
             log.info("folder created at path "+ path);
+            stopWatch.stop();
+            log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                    " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
             return version.mkdir();
-        }else return false;
+        }else{
+            stopWatch.stop();
+            log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                    " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
+            return false;
+        }
     }
 
     public boolean createAut(String autName){
@@ -166,15 +224,26 @@ public class FileOperations {
 
 
     public String [] getListOfVersions(String autPath){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         File autFolder = new File(autPath);
         if (autFolder.exists()){
+            stopWatch.stop();
+            log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                    " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
             return getListOfVersions(autFolder.listFiles());
         }else{
             log.error("aut folder does not exists");
         }
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return null;
     }
     private String [] getListOfVersions(File [] files){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("getting list of versions by taking array of files as input");
         List<String> list = new ArrayList<>();
         Arrays.sort(files);
         for (File file: files){
@@ -183,6 +252,9 @@ public class FileOperations {
             }
         }
         String [] list1 = new String [list.size()];
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return list.toArray(list1);
     }
 
@@ -197,12 +269,18 @@ public class FileOperations {
     }
 
     private void deleteFolder(File file) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         for (File subfile : Objects.requireNonNull(file.listFiles())) {
             if (subfile.isDirectory()) {
                 deleteFolder(subfile);
             }
             subfile.delete();
         }
+        log.info("deleting folder by using file as input");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     private void call(String source, String destinationPath){
@@ -224,6 +302,9 @@ public class FileOperations {
     }
 
     private void copyJars(String source, String target){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("copying jars by using source and target paths as inputs");
         File targetDir = new File(source);
         File [] jarFiles = targetDir.listFiles();
         for(File file: jarFiles){
@@ -234,6 +315,9 @@ public class FileOperations {
                 }
             }
         }
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
     private void createStructureCopyFiles(String source, String destinationPath){
 
@@ -257,6 +341,9 @@ public class FileOperations {
     }
 
     private void copyResources(String source, String destinationPath){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("copying resources by using source and destination paths as inputs");
         File directory = new File(source);
         File[] resources = directory.listFiles();
         for (File file: resources){
@@ -272,6 +359,9 @@ public class FileOperations {
                 copyResources(file.getAbsolutePath(), destinationFolderAbsolutePath);
             }
         }
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
 }
