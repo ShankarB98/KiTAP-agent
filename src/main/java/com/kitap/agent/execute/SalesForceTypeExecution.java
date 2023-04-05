@@ -3,11 +3,13 @@ package com.kitap.agent.execute;
 import com.kitap.agent.base.BaseClass;
 import com.kitap.testresult.adapter.ConvertedResult;
 import com.kitap.testresult.dto.ExecutedTestCase;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StopWatch;
 
 import java.io.File;
 import java.util.List;
 import java.util.Properties;
-
+@Slf4j
 public class SalesForceTypeExecution {
 
     final ExecutionHelper helper = new ExecutionHelper();
@@ -21,6 +23,8 @@ public class SalesForceTypeExecution {
      * @param tests list of test cases to be executed
      * */
     public List<ExecutedTestCase> sfExecution(String projectDirectory, List<String> tests){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         helper.ifReportsExists(projectDirectory);
         /**
          * commented this because we are not selecting any test cases
@@ -48,6 +52,10 @@ public class SalesForceTypeExecution {
          * extracting final executed reports
          * */
         ConvertedResult adapter = new ConvertedResult();
+        log.info("salesforce execution and returned list of executedTestCase objects");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return adapter.obtainTestNGTestResult(projectDirectory +separator+ properties.getProperty("testngreportsfilepath"));
     }
 }

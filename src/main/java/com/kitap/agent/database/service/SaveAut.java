@@ -6,6 +6,7 @@ import com.kitap.agent.database.repository.ApplicationUnderTestRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 
 import java.time.ZonedDateTime;
 
@@ -33,18 +34,29 @@ public class SaveAut {
 
 
     public String saveAutDetails(ApplicationUnderTest aut){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("saving aut details with aut as input");
         ApplicationUnderTest applicationUnderTest = repo.isExists(aut.getName(), aut.getType());
         if (applicationUnderTest == null){
             repo.save(aut);
             log.info("New AUT created");
+            stopWatch.stop();
+            log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                    " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
             return "New AUT created";
         }else {
             log.warn("Duplicated AUT");
+            stopWatch.stop();
+            log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                    " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
             return "Duplicated AUT";
         }
     }
 
     private ApplicationUnderTest getAUT(String autName, String autType){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         ApplicationUnderTest aut = new ApplicationUnderTest();
         aut.setName(autName);
         aut.setDisplayName(autName);
@@ -59,6 +71,10 @@ public class SaveAut {
         aut.setCreatedBy(BaseClass.machineInformation.inetAddress.getHostName());
         aut.setCreatedAt(ZonedDateTime.now());
         aut.setIsActive(true);
+        log.info("returning AUT by using autName and autType as inputs");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return aut;
     }
 }

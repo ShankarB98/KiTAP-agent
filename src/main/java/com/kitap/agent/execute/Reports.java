@@ -1,6 +1,8 @@
 package com.kitap.agent.execute;
 
 import com.kitap.agent.util.PropertyReader;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StopWatch;
 
 import java.awt.*;
 import java.io.File;
@@ -11,10 +13,13 @@ import java.nio.file.Path;
 import java.util.Date;
 
 import static java.io.File.separator;
-
+@Slf4j
 public class Reports {
 
         public void changeLogo(String path) {
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
+            log.info("changing the logo in report");
             try {
                 File src = new File(path + separator + "serenity-logo.png");
                 //final URL kairosLogo = this.getClass().getResource("/images/serenity-logo.png");
@@ -56,6 +61,10 @@ public class Reports {
                         changeName(file.getAbsolutePath());
                     }
                 }
+                log.info("logo changed in report");
+                stopWatch.stop();
+                log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                        " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
             }
             catch (IOException e){
                 e.printStackTrace();
@@ -65,6 +74,9 @@ public class Reports {
 
 
         private void changeName(String reportFilePath){
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
+            log.info("changing the name by using reportFilePath as input");
             try {
                 Path reportPath = Path.of(reportFilePath);
                 String str = Files.readString(reportPath);
@@ -85,6 +97,10 @@ public class Reports {
                 report.createNewFile();
 
                 Files.writeString(reportPath, str);
+                log.info("name changed for report");
+                stopWatch.stop();
+                log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                        " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

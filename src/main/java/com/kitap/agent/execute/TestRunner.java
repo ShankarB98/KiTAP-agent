@@ -4,6 +4,7 @@ import com.kitap.agent.base.BaseClass;
 import com.kitap.testresult.dto.ExecutedTestCase;
 import com.kitap.testresult.dto.execute.ExecutionAutDetails;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StopWatch;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,6 +33,8 @@ public class TestRunner {
      * @return a list of executed test cases results
      * */
     public List<ExecutedTestCase> executeTests(){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         //TestExecution execution = new TestExecution();
         String testType = this.executionDetails.getTestType();
         String executionPath = BaseClass.properties.getProperty("destinationpath")+
@@ -59,6 +62,10 @@ public class TestRunner {
         //TODO
         Reports reports = new Reports();
         reports.changeLogo(executionPath);
+        log.info("execution completed with returning list of executedtestcase objects");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return result;
     }
 }

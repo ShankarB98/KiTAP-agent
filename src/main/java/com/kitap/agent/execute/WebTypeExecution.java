@@ -3,11 +3,13 @@ package com.kitap.agent.execute;
 import com.kitap.agent.base.BaseClass;
 import com.kitap.testresult.adapter.ConvertedResult;
 import com.kitap.testresult.dto.ExecutedTestCase;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StopWatch;
 
 import java.io.File;
 import java.util.List;
 import java.util.Properties;
-
+@Slf4j
 public class WebTypeExecution {
 
     final ExecutionHelper helper = new ExecutionHelper();
@@ -22,6 +24,9 @@ public class WebTypeExecution {
      * @return a list of processed test result
      * */
     public List<ExecutedTestCase> execute(String executionPath, List<String> tests){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("executing by using executionpath and list of tests as input");
 
         /** deleting previously existed serenity test result */
         helper.deleteTestResults(new File(executionPath+separator+"target"+separator+"site"));
@@ -71,6 +76,10 @@ public class WebTypeExecution {
 
         /** Converting result into base format */
         ConvertedResult adapter = new ConvertedResult();
+        log.info("completed executing");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return adapter.obtainSerenityTestResult(executionPath+separator+"target"+separator+"site"+separator+"serenity");
     }
 }

@@ -115,6 +115,8 @@ public class GenerateMenu {
         if(selectedDir!=null) {
             log.info(selectedDir.toString());
             folderTextField.setText(selectedDir.toString());
+            log.info("validating the test project");
+            validateProject();
         }else{
             log.info("No project selected");
         }
@@ -249,79 +251,90 @@ public class GenerateMenu {
         log.info("clicked on GenerateTests button from generation UI");
         new Thread() {
             public void run() {
-                Platform.runLater(new Runnable() {
-                    public void run() {
+                if(autCombo.getValue()!=null) {
+                    Platform.runLater(new Runnable() {
+                        public void run() {
 
-                        //Giving GeneratingTests Status and disabling contextmenu Items
-                        AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(generatingColour));
-                        AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setText("Generating Tests");
-                        for (int i = 1; i <= AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().size() - 1; i++) {
-                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(i).setDisable(true);
+                            //Giving GeneratingTests Status and disabling contextmenu Items
+                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(generatingColour));
+                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setText("Generating Tests");
+                            for (int i = 1; i <= AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().size() - 1; i++) {
+                                AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(i).setDisable(true);
+                            }
+                            //Progress Indicator
+                            generateTestsProgressIndicator.setVisible(true);
+
+                            //Blinking Text
+                            FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), generatingBlinkLabel);
+                            fadeTransition.setFromValue(1.0);
+                            fadeTransition.setToValue(0.0);
+                            fadeTransition.setCycleCount(Animation.INDEFINITE);
+                            fadeTransition.play();
+                            generatingBlinkLabel.setVisible(true);
+
+                            //Disabling all the buttons in UI Page
+                            browseButton.setDisable(true);
+                            createAutButton.setDisable(true);
+                            generateTestsButton.setDisable(true);
+                            cancelButton.setDisable(true);
                         }
-                        //Progress Indicator
-                        generateTestsProgressIndicator.setVisible(true);
+                    });
 
-                        //Blinking Text
-                        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), generatingBlinkLabel);
-                        fadeTransition.setFromValue(1.0);
-                        fadeTransition.setToValue(0.0);
-                        fadeTransition.setCycleCount(Animation.INDEFINITE);
-                        fadeTransition.play();
-                        generatingBlinkLabel.setVisible(true);
+                    //setting the details for tests generation
+                    GenerationDetails details = new GenerationDetails();
+                    details.setProjectPath(selectedDir);
+                    details.setAutName(autCombo.getValue());
+                    details.setAutType(autTypeResult.getText());
+                    details.setCreateNewVersion(true);
+                    details.setPublishToServer(false);
+                    log.info(details.getAutName());
+                    Validator validator = new Validator();
+                    log.info("compiling and packaging the test project");
+                    validator.compileAndPackage(selectedDir);
+                    log.info("Copying the files");
+                    String version = validator.copyFiles(details);
+                    details.setVersion(Long.parseLong(version));
+                    log.info("Generating...");
+                    new Generator().generate(details);
 
-                        //Disabling all the buttons in UI Page
-                        browseButton.setDisable(true);
-                        createAutButton.setDisable(true);
-                        generateTestsButton.setDisable(true);
-                        cancelButton.setDisable(true);
-                    }
-                });
+                    log.info("Generation Completed");
 
-                //setting the details for tests generation
-                GenerationDetails details = new GenerationDetails();
-                details.setProjectPath(selectedDir);
-                details.setAutName(autCombo.getValue());
-                details.setAutType(autTypeResult.getText());
-                details.setCreateNewVersion(true);
-                details.setPublishToServer(false);
-                log.info(details.getAutName());
-                log.info("validating the test project");
-                validateProject();
-                Validator validator = new Validator();
-                log.info("compiling and packaging the test project");
-                validator.compileAndPackage(selectedDir);
-                log.info("Copying the files");
-                String version = validator.copyFiles(details);
-                details.setVersion(Long.parseLong(version));
-                log.info("Generating...");
-                new Generator().generate(details);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Enabling all the contextmenu Items
+                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(agentRunningColour));
+                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setText("Agent is running");
+                            for (int i = 1; i <= AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().size() - 1; i++) {
+                                AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(i).setDisable(false);
+                            }
+                            generateTestsProgressIndicator.setVisible(false); //stopping progressIndicator
+                            generatingBlinkLabel.setVisible(false);// stopping Blinking Text
 
-                log.info("Generation Completed");
-
-                log.info("closed the generation UI");
-                stopWatch.stop();
-                log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
-                        " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
-
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        //Enabling all the contextmenu Items
-                        AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(agentRunningColour));
-                        AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setText("Agent is running");
-                        for (int i = 1; i <= AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().size() - 1; i++) {
-                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(i).setDisable(false);
+                            //Closing Stage after process completion
+                            Stage generateStage = (Stage) anchorPane.getScene().getWindow();
+                            generateStage.close();
+                            log.info("closed the generation UI");
                         }
-                        generateTestsProgressIndicator.setVisible(false); //stopping progressIndicator
-                        generatingBlinkLabel.setVisible(false);// stopping Blinking Text
-
-                        //Closing Stage after process completion
-                        Stage generateStage = (Stage) anchorPane.getScene().getWindow();
-                        generateStage.close();
-                    }
-                });
+                    });
+                }
+                else{
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("No AUT selected");
+                            alert.setContentText("Please select AUT");
+                            alert.showAndWait();
+                            log.error("No AUT selected");
+                        }
+                    });
+                }
             }
         }.start();
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
 
     }
 
@@ -337,13 +350,13 @@ public class GenerateMenu {
             public void run() {
                 if (selectedDir != null) {
                     String[] checker = new Validator().checkValidation(selectedDir);
-                    System.out.println(Arrays.toString(checker));
+                    log.info(Arrays.toString(checker));
                     if (checker[0].equals("invalid")) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Invalid Project");
                         alert.setContentText("Please select valid project");
                         alert.showAndWait();
-                        log.info("invalid project");
+                        log.error("invalid project");
 
                         Platform.runLater(
                                 () -> {
@@ -356,12 +369,12 @@ public class GenerateMenu {
                         Platform.runLater(
                                 () -> {
                                     autTypeResult.setText(checker[1]);
-                                    createAutButton.setDisable(false);
                                     generateTestsButton.setDisable(false);
                                     createAutButton.setDisable(false);
                                     autCombo.getItems().removeAll(autCombo.getItems());
                                     //autCombo.getItems().addAll(operations.getListOfFolders(checker[1]));
                                     autCombo.getItems().addAll(apiCalls.getAllAUT(checker[1]));
+                                    autCombo.getItems().remove("");
                                 }
                         );
                     }

@@ -77,6 +77,9 @@ public class JarParserService{
     }
 
     private List<Clazz> scanJar(File jarFile) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("scanning the jar by using jarfile as input");
         JarFile jar;
         try {
             jar = new JarFile(jarFile);
@@ -95,6 +98,10 @@ public class JarParserService{
             }
         }
         filterTestClasses1();
+        log.info("scanning the jar completed with returning list of clazz objects");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return constructClazzObjects();
     }
 
@@ -116,6 +123,9 @@ public class JarParserService{
     }
 
     private void filterTestClasses1() {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("filtering test classes");
         HashSet<Class<?>> classes = new HashSet<>();
         for (String clazz : listOfClasses) {
             if (!clazz.contains("$")) {
@@ -128,16 +138,26 @@ public class JarParserService{
             }
         }
         listOfTestClasses = classes.stream().filter(this::hasMethodWithTestAnnotation).collect(Collectors.toSet());
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
     /**
      * getting list of all classes info
      */
     private List<Clazz> constructClazzObjects() {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("constructing Clazz objects");
         List<Clazz> classes = new ArrayList<>();
         for (Class<?> cls : listOfTestClasses) {
             classes.add(getClassObject(cls));
         }
+        log.info("constructed Clazz objects and returning them as list");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return classes;
     }
 
@@ -145,6 +165,8 @@ public class JarParserService{
      * getting single class object
      */
     private Clazz getClassObject(Class<?> clazz) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         Clazz klazz = new Clazz();
         String name = clazz.getName();
         klazz.setName(name.substring(name.lastIndexOf(".") + 1));
@@ -152,6 +174,10 @@ public class JarParserService{
         klazz.setDescription(name.substring(name.lastIndexOf(".") + 1));
         klazz.setVersion(version);
         klazz.setSteps(constructStepsFromTestMethod(clazz));
+        log.info("getting Clazz object");
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return klazz;
     }
 
@@ -159,6 +185,9 @@ public class JarParserService{
      * getting all the required method formats
      */
     private List<Step> constructStepsFromTestMethod(Class<?> clazz) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("constructing steps from test method by using clazz object as input");
         /** getting declared fields and finding which are steps fields */
         Field[] declaredFields = clazz.getDeclaredFields();
         List<String> stepFieldTypes = new ArrayList<>();
@@ -174,8 +203,12 @@ public class JarParserService{
                 testMethod = method;
         }
         assert testMethod != null;
+        log.info("constructed steps from test method are returned as list");
 
         /** constructing steps for each test script */
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return constructSteps(stepFieldTypes, clazz.getName(), testMethod.getName());
     }
 
@@ -183,6 +216,8 @@ public class JarParserService{
      * constructing steps of a single test method
      */
     private List<Step> constructSteps(List<String> stepFieldTypes, String className, String methodName) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         List<Step> steps = getSteps(className, methodName);
         List<Step> finalSteps = new ArrayList<>();
         long count = 1L;
@@ -194,10 +229,15 @@ public class JarParserService{
                 finalSteps.add(step);
             }
         }
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return finalSteps;
     }
 
     private List<Step> getSteps(String className, String methodName) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         CtClass ctClass = null;
         List<Step> steps = new ArrayList<>();
         try {
@@ -217,6 +257,9 @@ public class JarParserService{
         } catch (NotFoundException | CannotCompileException e) {
             throw new RuntimeException(e);
         }
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return steps;
     }
 
