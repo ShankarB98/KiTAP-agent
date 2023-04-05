@@ -2,7 +2,7 @@ package com.kitap.agent.generate.flow;
 
 
 import com.kitap.agent.api.apicalls.ApiCalls;
-import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.util.PropertyReaderHelper;
 import com.kitap.agent.generate.service.FindClassesFromJarService;
 import com.kitap.testresult.dto.agent.GenerationDetails;
 import lombok.extern.slf4j.Slf4j;
@@ -62,7 +62,7 @@ public class MetaDataGenerator {
 
     private String generateJsonFileName(GenerationDetails details){
         log.info("generating json file name is returned from generateJsonFileName method");
-        return BaseClass.properties.getProperty("destinationpath")+separator
+        return PropertyReaderHelper.getProperty("destinationpath")+separator
                             +details.getAutType()+separator
                             +details.getAutName()+separator
                             +details.getVersion()+separator

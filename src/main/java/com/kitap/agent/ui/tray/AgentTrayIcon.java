@@ -1,7 +1,7 @@
 package com.kitap.agent.ui.tray;
 
 import com.kitap.agent.api.apicalls.ApiCalls;
-import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.util.PropertyReaderHelper;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
@@ -119,7 +119,7 @@ public class AgentTrayIcon {
         log.info("Adding menu to trayicon");
         ApiCalls apiCalls = new ApiCalls();
 
-        String serverCheck = BaseClass.properties.getProperty("isServerLess");
+        String serverCheck = PropertyReaderHelper.getProperty("isServerLess");
         Boolean serverLess = Boolean.parseBoolean(serverCheck);
 
         if (serverLess) {
@@ -133,7 +133,7 @@ public class AgentTrayIcon {
         } else {
             log.info("Menu for server is adding");
             log.info("calling api to know registration status of agent");
-            boolean isRegistered = apiCalls.amIRegistered(BaseClass.machineInformation.macAddress);
+            boolean isRegistered = apiCalls.amIRegistered(PropertyReaderHelper.machineInformation.macAddress);
             log.info("Registration status of agent is {}", isRegistered);
             if (!isRegistered) {
                 log.info("Menu if agent is - Not Registered");

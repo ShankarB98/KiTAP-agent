@@ -1,6 +1,6 @@
 package com.kitap.agent.generate.flow;
 
-import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.util.PropertyReaderHelper;
 import com.kitap.testresult.dto.agent.GenerationDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
@@ -19,7 +19,7 @@ import java.util.Objects;
 public class FileOperations {
 
     final String separator = File.separator;
-    final String destinationPath = BaseClass.properties.getProperty("destinationpath");
+    final String destinationPath = PropertyReaderHelper.getProperty("destinationpath");
 
     /** method for copying files to kitap destination path */
     public String copyFiles(GenerationDetails details){

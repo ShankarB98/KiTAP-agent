@@ -1,18 +1,16 @@
-package com.kitap.agent.base;
+package com.kitap.agent.util;
 
 import com.kitap.agent.ui.machineInfo.MachineInformation;
-import com.kitap.agent.util.PropertyReader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 
 @Slf4j
-public class BaseClass{
+public class PropertyReaderHelper {
 
     /**
      * This class will do loading properties from Property reader class and holds those values in a variable
@@ -20,10 +18,7 @@ public class BaseClass{
      * all the time.
      * Holds information and references of classes and information which required over the project.
      * */
-
-    static final public String separator = File.separator;
-    static final public PropertyReader reader = new PropertyReader();
-    static final public Properties properties = reader.loadProperties();
+    static final private Properties properties = new PropertyReader().loadProperties();
     static final public MachineInformation machineInformation = new MachineInformation();
 
     /**
@@ -56,7 +51,7 @@ public class BaseClass{
         log.info("getting properties by using array of propertyNames as input");
         List<String> properties = new ArrayList<>();
         for (String propertyName: propertyNames){
-            String value = BaseClass.properties.getProperty(propertyName);
+            String value = PropertyReaderHelper.properties.getProperty(propertyName);
             if (value != null && !value.equals("")) {
                 properties.add(value);
             }else{

@@ -1,6 +1,6 @@
 package com.kitap.agent.api.apicalls;
 
-import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.util.PropertyReaderHelper;
 import com.kitap.agent.database.model.ApplicationUnderTest;
 import com.kitap.agent.database.model.dto.AgentDto;
 import com.kitap.agent.database.service.AUTService;
@@ -10,17 +10,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
-import java.util.Properties;
-
 @Component
 @Slf4j
 public class ApiCalls extends BaseApiCall {
 
-    Properties properties = BaseClass.properties;
-
     public boolean isActive(String macAddress) {
         macAddress = macAddress.replace(" ", "%20");
-        baseUrl = baseServerUrl+ properties.getProperty("agent.inactive") + "?macAddress=" + macAddress + "";
+        baseUrl = baseServerUrl+ PropertyReaderHelper.getProperty("agent.inactive") + "?macAddress=" + macAddress + "";
         getResponse(macAddress, HttpMethod.POST);
         return Boolean.TRUE.equals(responseBody.getBody());
     }
@@ -35,7 +31,7 @@ public class ApiCalls extends BaseApiCall {
         stopWatch.start();
         log.info("amIRegistered apicall started");
         macAddress = macAddress.replace(" ", "%20");
-        baseUrl = baseServerUrl+properties.getProperty("am.i.registered") + "?macAddress=" + macAddress + "";
+        baseUrl = baseServerUrl+ PropertyReaderHelper.getProperty("am.i.registered") + "?macAddress=" + macAddress + "";
         log.info("mac address {}", macAddress);
         log.info("api call url {}", baseUrl);
         getResponse(macAddress, HttpMethod.GET);
@@ -57,7 +53,7 @@ public class ApiCalls extends BaseApiCall {
         stopWatch.start();
         log.info("register apicall started");
         log.info(String.valueOf(agentDto));
-        baseUrl = baseServerUrl+properties.getProperty("agent.register")+"?key="+agentRegistrationKey+"";
+        baseUrl = baseServerUrl+ PropertyReaderHelper.getProperty("agent.register")+"?key="+agentRegistrationKey+"";
         headers.set("key",agentRegistrationKey);
         getResponse(agentDto);
         log.info("agent registration status {}", responseBody.getStatusCode());
@@ -78,7 +74,7 @@ public class ApiCalls extends BaseApiCall {
         stopWatch.start();
         log.info("deRegister apicall started");
         macAddress = macAddress.replace(" ", "%20");
-        baseUrl = baseServerUrl+properties.getProperty("agent.deregister") + "?macAddress=" + macAddress + "";
+        baseUrl = baseServerUrl+ PropertyReaderHelper.getProperty("agent.deregister") + "?macAddress=" + macAddress + "";
         getResponse(macAddress, HttpMethod.PUT);
         log.info(String.valueOf(responseBody.getStatusCode()));
         log.info("deRegister apicall completed with returning boolean");
@@ -95,7 +91,7 @@ public class ApiCalls extends BaseApiCall {
      * */
     public boolean quit(String macAddress) {
         macAddress = macAddress.replace(" ", "%20");
-        baseUrl = baseServerUrl+properties.getProperty("quitApi") + "?macAddress=" + macAddress + "";
+        baseUrl = baseServerUrl+ PropertyReaderHelper.getProperty("quitApi") + "?macAddress=" + macAddress + "";
         getResponse(macAddress, HttpMethod.GET);
         return Boolean.TRUE.equals(responseBody.getBody());
     }
@@ -106,7 +102,7 @@ public class ApiCalls extends BaseApiCall {
      * @return String
      * */
     public String saveAutInServer(ApplicationUnderTest details){
-        baseUrl = baseServerUrl+properties.getProperty("saveAutInServer");
+        baseUrl = baseServerUrl+ PropertyReaderHelper.getProperty("saveAutInServer");
         getResponse(details);
         return (String) responseBody.getBody();
     }
@@ -118,7 +114,7 @@ public class ApiCalls extends BaseApiCall {
      * */
     public String[] getAllAUTFromServer(String autType) {
         autType = autType.replace(" ", "%20");
-        baseUrl = baseServerUrl+properties.getProperty("getListOfAUT") + "?autType=" + autType + "";
+        baseUrl = baseServerUrl+ PropertyReaderHelper.getProperty("getListOfAUT") + "?autType=" + autType + "";
         getResponse(autType);
         return (String[]) responseBody.getBody();
     }
@@ -128,11 +124,11 @@ public class ApiCalls extends BaseApiCall {
      * @param jsonData json data
      * */
     public void saveJsonFileInServer(String jsonData){
-        baseUrl = baseServerUrl+properties.getProperty("saveJson");
+        baseUrl = baseServerUrl+ PropertyReaderHelper.getProperty("saveJson");
         saveJson(jsonData);
     }
     public void getJsonFileInServer(String jsonData){
-        baseUrl = baseServerUrl+properties.getProperty("getJsonFileFromServer");
+        baseUrl = baseServerUrl+ PropertyReaderHelper.getProperty("getJsonFileFromServer");
         saveJson(jsonData);
     }
 
@@ -144,7 +140,7 @@ public class ApiCalls extends BaseApiCall {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         log.info("saveAUT apicall started");
-        baseUrl = baseAgentUrl+properties.getProperty("saveAUT");
+        baseUrl = baseAgentUrl+ PropertyReaderHelper.getProperty("saveAUT");
         getResponse(details);
         log.info("saveAUT apicall completed with returning string");
         stopWatch.stop();
@@ -164,7 +160,7 @@ public class ApiCalls extends BaseApiCall {
         stopWatch.start();
         log.info("getAllAUT apicall started");
         autType = autType.replace(" ", "%20");
-        baseUrl = baseAgentUrl+properties.getProperty("getListOfAUT") + "?autType=" + autType + "";
+        baseUrl = baseAgentUrl+ PropertyReaderHelper.getProperty("getListOfAUT") + "?autType=" + autType + "";
         getResponse(autType);
         log.info("getAllAUT apicall completed with returning array of strings");
         stopWatch.stop();
@@ -181,7 +177,7 @@ public class ApiCalls extends BaseApiCall {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         log.info("executeTests apicall started");
-        baseUrl = baseAgentUrl+properties.getProperty("executeTests");
+        baseUrl = baseAgentUrl+ PropertyReaderHelper.getProperty("executeTests");
         getResponse(details);
         log.info((String) responseBody.getBody());
         log.info("executeTests apicall completed");
@@ -216,7 +212,7 @@ public class ApiCalls extends BaseApiCall {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         log.info("getAutTypes apicall started");
-        baseUrl = baseAgentUrl+properties.getProperty("getAutTypes");
+        baseUrl = baseAgentUrl+ PropertyReaderHelper.getProperty("getAutTypes");
         getResponse();
         log.info("getAutTypes apicall completed with returning array of AUT types");
         stopWatch.stop();

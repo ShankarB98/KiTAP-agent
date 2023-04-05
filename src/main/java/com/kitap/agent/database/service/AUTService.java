@@ -1,6 +1,6 @@
 package com.kitap.agent.database.service;
 
-import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.util.PropertyReaderHelper;
 import com.kitap.agent.database.model.ApplicationUnderTest;
 import com.kitap.agent.database.repository.ApplicationUnderTestRepo;
 import com.kitap.agent.ui.machineInfo.MachineInformation;
@@ -19,7 +19,7 @@ import java.util.List;
 public class AUTService{
 
     private ApplicationUnderTestRepo repo;
-
+    final String separator = File.separator;
     private final MachineInformation machineInfo = new MachineInformation();
 
     public AUTService(ApplicationUnderTestRepo repo) {
@@ -82,10 +82,10 @@ public class AUTService{
         stopWatch.start();
         ArrayList<String> validAuts = new ArrayList<>();
         // Check if the corresponding AUTs have code in the file system
-        String baseAutPath = BaseClass.properties.getProperty("destinationpath")+BaseClass.separator+autType;
+        String baseAutPath = PropertyReaderHelper.getProperty("destinationpath")+separator+autType;
         for(String aut: auts)
         {
-            String autPath = baseAutPath + BaseClass.separator + aut;
+            String autPath = baseAutPath + separator + aut;
             File f = new File(autPath);
             if (f.exists()) {
                 validAuts.add(aut);
@@ -121,10 +121,10 @@ public class AUTService{
         aut.setName(autName);
         aut.setDisplayName(autName);
         aut.setDescription(autName);
-        aut.setExecutableFilePath(BaseClass.properties.getProperty("destinationpath")+BaseClass.separator+autType+BaseClass.separator+autName);
+        aut.setExecutableFilePath(PropertyReaderHelper.getProperty("destinationpath")+separator+autType+separator+autName);
         aut.setType(autType);
         aut.setVersion(1);
-        aut.setCreatedBy(BaseClass.machineInformation.inetAddress.getHostName());
+        aut.setCreatedBy(PropertyReaderHelper.machineInformation.inetAddress.getHostName());
         aut.setCreatedAt(ZonedDateTime.now());
         aut.setIsActive(true);
         log.info("returning AUT by using autName and autType as inputs");

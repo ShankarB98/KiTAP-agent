@@ -1,6 +1,6 @@
 package com.kitap.agent.execute;
 
-import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.util.PropertyReaderHelper;
 import com.kitap.testresult.dto.ExecutedTestCase;
 import com.kitap.testresult.dto.execute.ExecutionAutDetails;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +37,7 @@ public class TestRunner {
         stopWatch.start();
         //TestExecution execution = new TestExecution();
         String testType = this.executionDetails.getTestType();
-        String executionPath = BaseClass.properties.getProperty("destinationpath")+
+        String executionPath = PropertyReaderHelper.getProperty("destinationpath")+
                 separator+testType+
                 separator+this.executionDetails.getAut()+
                 separator+this.executionDetails.getVersion();

@@ -1,6 +1,6 @@
 package com.kitap.agent.execute;
 
-import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.util.PropertyReaderHelper;
 import com.kitap.testresult.adapter.ConvertedResult;
 import com.kitap.testresult.dto.ExecutedTestCase;
 import lombok.extern.slf4j.Slf4j;
@@ -8,14 +8,12 @@ import org.springframework.util.StopWatch;
 
 import java.io.File;
 import java.util.List;
-import java.util.Properties;
 @Slf4j
 public class WebTypeExecution {
 
     final ExecutionHelper helper = new ExecutionHelper();
     final boolean singleOrMultiCase = true;
     final String separator = File.separator;
-    final Properties properties = BaseClass.properties;
 
     /**
      * @Description executes web type projects
@@ -35,7 +33,7 @@ public class WebTypeExecution {
         //TODO need to implement single test case execution//
         //mvn clean verify -Dtags="name:appLoginTest"
         if(singleOrMultiCase){
-            String command = properties.getProperty("mavenSerenityRunning");
+            String command = PropertyReaderHelper.getProperty("mavenSerenityRunning");
             Process process = helper.getProcessor(command, new File(executionPath));
 
             /**
@@ -55,7 +53,7 @@ public class WebTypeExecution {
         else {
             for (String testCaseName : tests) {
                 // String command = "mvn.cmd verify -Dtags=\"name:"+testCaseName+"\"";
-                String command = properties.getProperty("mavenSerenityRunning");
+                String command = PropertyReaderHelper.getProperty("mavenSerenityRunning");
                 Process process = helper.getProcessor(command, new File(executionPath));
 
                 /**

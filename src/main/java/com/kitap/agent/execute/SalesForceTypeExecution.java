@@ -1,6 +1,6 @@
 package com.kitap.agent.execute;
 
-import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.util.PropertyReaderHelper;
 import com.kitap.testresult.adapter.ConvertedResult;
 import com.kitap.testresult.dto.ExecutedTestCase;
 import lombok.extern.slf4j.Slf4j;
@@ -8,14 +8,12 @@ import org.springframework.util.StopWatch;
 
 import java.io.File;
 import java.util.List;
-import java.util.Properties;
 @Slf4j
 public class SalesForceTypeExecution {
 
     final ExecutionHelper helper = new ExecutionHelper();
     final boolean singleOrMultiCase = true;
     final String separator = File.separator;
-    final Properties properties = BaseClass.properties;
 
     /**
      * @Description executes sales force type projects
@@ -31,7 +29,7 @@ public class SalesForceTypeExecution {
          * */
         //helper.createTestNGFile(projectDirectory, tests, "1");
 
-        String command = properties.getProperty("mavenTestNgRunning");
+        String command = PropertyReaderHelper.getProperty("mavenTestNgRunning");
         Process process = helper.getProcessor(command, new File(projectDirectory));
 
         /**
@@ -56,6 +54,6 @@ public class SalesForceTypeExecution {
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
-        return adapter.obtainTestNGTestResult(projectDirectory +separator+ properties.getProperty("testngreportsfilepath"));
+        return adapter.obtainTestNGTestResult(projectDirectory +separator+ PropertyReaderHelper.getProperty("testngreportsfilepath"));
     }
 }

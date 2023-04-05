@@ -1,11 +1,9 @@
 package com.kitap.agent.ui.menuitem.actions;
 
 import com.kitap.agent.api.apicalls.ApiCalls;
-import com.kitap.agent.base.BaseClass;
-import com.kitap.agent.ui.controllers.GenerateMenu;
+import com.kitap.agent.util.PropertyReaderHelper;
 import com.kitap.agent.ui.initializer.TrayIconAndMenuInitializer;
 import com.kitap.agent.ui.tray.AgentTrayIcon;
-import com.sun.javafx.stage.StageHelper;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -76,7 +74,7 @@ public class ContextMenuItemsAction {
         confirmationAlert.setContentText("Are you sure ??");
         confirmationAlert.showAndWait().ifPresent((btnType) -> {
             if (btnType == ButtonType.OK) {
-                apiCalls.deRegister(BaseClass.machineInformation.macAddress);
+                apiCalls.deRegister(PropertyReaderHelper.machineInformation.macAddress);
                 Alert informationAlert = new Alert(Alert.AlertType.INFORMATION);
                 informationAlert.setTitle("Deregistration");
                 informationAlert.setContentText("Agent is Deregistered");

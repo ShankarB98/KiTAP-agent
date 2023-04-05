@@ -1,6 +1,6 @@
 package com.kitap.agent.generate.util;
 
-import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.util.PropertyReaderHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
 
@@ -8,19 +8,17 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 
 @Slf4j
 public class FileOperations {
 
-    final Properties properties = BaseClass.properties;
     final String separator = File.separator;
 
     public String[] getListOfFolders(String path){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         log.info("getting list of folders by using path as input");
-        String kitapPath = properties.getProperty("destinationpath")+separator+path;
+        String kitapPath = PropertyReaderHelper.getProperty("destinationpath")+separator+path;
         File file = new File(kitapPath);
         if (file.exists()){
             stopWatch.stop();
@@ -56,7 +54,7 @@ public class FileOperations {
 
     /** creates a folder at specified path*/
     public boolean createFolder(String autType, String autName){
-        String finalPath = properties.getProperty("destinationpath")+separator+autType+separator+autName;
+        String finalPath = PropertyReaderHelper.getProperty("destinationpath")+separator+autType+separator+autName;
         return createNewFolder(finalPath);
     }
 
@@ -82,7 +80,7 @@ public class FileOperations {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         log.info("creating autType folder and autName folder by using autName and autType as inputs");
-        String path = properties.getProperty("destinationpath")+separator+autType;
+        String path = PropertyReaderHelper.getProperty("destinationpath")+separator+autType;
         File file = new File(path);
         file.mkdir();
         path = path+separator+autName;

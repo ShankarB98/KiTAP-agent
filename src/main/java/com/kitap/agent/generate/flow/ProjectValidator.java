@@ -1,6 +1,6 @@
 package com.kitap.agent.generate.flow;
 
-import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.util.PropertyReaderHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
 
@@ -8,6 +8,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+
+import static java.io.File.separator;
 
 @Slf4j
 public class ProjectValidator {
@@ -49,10 +51,10 @@ public class ProjectValidator {
         stopWatch.start();
         log.info("checking valid project or not by using projectpath as input");
         File dir = projectPath.getAbsoluteFile();
-        File subDirMain = new File(dir, BaseClass.properties.getProperty("mainapplicationpath"));
-        File subDirTest = new File(dir, BaseClass.properties.getProperty("testapplicationpath"));
+        File subDirMain = new File(dir, PropertyReaderHelper.getProperty("mainapplicationpath"));
+        File subDirTest = new File(dir, PropertyReaderHelper.getProperty("testapplicationpath"));
         if(subDirMain.isDirectory()&&subDirTest.isDirectory()){
-            File pomFile = new File(dir+BaseClass.separator+"pom.xml");
+            File pomFile = new File(dir+separator+"pom.xml");
             if (pomFile.exists()) {
                 stopWatch.stop();
                 log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+

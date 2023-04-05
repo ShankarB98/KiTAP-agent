@@ -1,9 +1,8 @@
 package com.kitap.agent.ui.controllers;
 
 import com.kitap.agent.api.apicalls.ApiCalls;
-import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.util.PropertyReaderHelper;
 import com.kitap.agent.ui.initializer.TrayIconAndMenuInitializer;
-import com.kitap.agent.ui.tray.AgentTrayIcon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -58,7 +57,7 @@ public class RegisterMenu {
             log.info("invalid key #" + agentKey);
         } else {
             log.info("calling api to register agent");
-            apiCalls.register(BaseClass.machineInformation.getAgentDto(agentName), agentKey);
+            apiCalls.register(PropertyReaderHelper.machineInformation.getAgentDto(agentName), agentKey);
 
             log.info("Updating the menu");
             TrayIconAndMenuInitializer.updateMenu(new Stage());

@@ -1,6 +1,6 @@
 package com.kitap.agent.database.service;
 
-import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.util.PropertyReaderHelper;
 import com.kitap.agent.database.model.ApplicationUnderTest;
 import com.kitap.agent.database.repository.ApplicationUnderTestRepo;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 import java.time.ZonedDateTime;
+
+import static java.io.File.separator;
 
 @Component
 @Slf4j
@@ -61,14 +63,14 @@ public class SaveAut {
         aut.setName(autName);
         aut.setDisplayName(autName);
         aut.setDescription(autName);
-        aut.setExecutableFilePath(BaseClass.properties.getProperty("destinationpath")+BaseClass.separator+autType+BaseClass.separator+autName);
+        aut.setExecutableFilePath(PropertyReaderHelper.getProperty("destinationpath")+separator+autType+separator+autName);
         /**
          * currently for demo purpose
          * setting sales force as default
          */
         aut.setType(autType);
         aut.setVersion(1);
-        aut.setCreatedBy(BaseClass.machineInformation.inetAddress.getHostName());
+        aut.setCreatedBy(PropertyReaderHelper.machineInformation.inetAddress.getHostName());
         aut.setCreatedAt(ZonedDateTime.now());
         aut.setIsActive(true);
         log.info("returning AUT by using autName and autType as inputs");

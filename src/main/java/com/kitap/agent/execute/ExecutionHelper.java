@@ -1,6 +1,6 @@
 package com.kitap.agent.execute;
 
-import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.util.PropertyReaderHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
 
@@ -9,13 +9,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Properties;
 
 @Slf4j
 public class ExecutionHelper {
 
     final String separator = File.separator;
-    Properties properties = BaseClass.properties;
 
     /**
      * @Description deletes previously existed test results from target folder
@@ -190,8 +188,8 @@ public class ExecutionHelper {
      * @param projectDirectory - root project directory
      * */
     protected String ifReportsExists(String projectDirectory){
-        String reportPath = projectDirectory +separator+properties.getProperty("testngreportsfilepath");
-        createFolders(projectDirectory +separator+properties.getProperty("testngreportsfolderpath"), 0);
+        String reportPath = projectDirectory +separator+ PropertyReaderHelper.getProperty("testngreportsfilepath");
+        createFolders(projectDirectory +separator+ PropertyReaderHelper.getProperty("testngreportsfolderpath"), 0);
         File report = new File(reportPath);
         if (report.exists()){
             /*String dfile = projectDirectory + "\\BackupReportFiles\\AgentReport" + java.time.LocalDate.now() + ".json";
@@ -281,7 +279,7 @@ public class ExecutionHelper {
      * @param version - version of aut
      * */
     protected void createTestNGFile(String projectDirectory, List<String> classNames, String version){
-        String testngxmlfilepath = projectDirectory+separator+properties.getProperty("testngxmlfilepath");
+        String testngxmlfilepath = projectDirectory+separator+ PropertyReaderHelper.getProperty("testngxmlfilepath");
         File xmlFileNew = new File(testngxmlfilepath);
         Path xmlFilePath = Path.of(testngxmlfilepath);
         StringBuilder output = new StringBuilder();
@@ -299,7 +297,7 @@ public class ExecutionHelper {
                     }
                     case "</listeners>" -> {
                         if (!listenerExistFlag) {
-                            output.append("\t\t<listener class-name=\"").append(properties.getProperty("listenerfilename")).append("\"/>\n");
+                            output.append("\t\t<listener class-name=\"").append(PropertyReaderHelper.getProperty("listenerfilename")).append("\"/>\n");
                         }
                         output.append(st).append("\n");
                         continue;

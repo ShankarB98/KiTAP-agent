@@ -1,7 +1,7 @@
 package com.kitap.agent.generate.flow;
 
 
-import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.util.PropertyReaderHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
 
@@ -20,7 +20,7 @@ public class CompileAndGenerateJarFile {
     public void compileAndPackage(File projectDirectory){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        getProcessor(BaseClass.getProperties(new String[] {"mavenvalidation","mavencompilation","mavenpackaging"}), projectDirectory);
+        getProcessor(PropertyReaderHelper.getProperties(new String[] {"mavenvalidation","mavencompilation","mavenpackaging"}), projectDirectory);
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");

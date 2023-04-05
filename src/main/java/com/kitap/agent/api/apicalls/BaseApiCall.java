@@ -1,10 +1,8 @@
 package com.kitap.agent.api.apicalls;
 
-import com.kitap.agent.base.BaseClass;
+import com.kitap.agent.util.PropertyReaderHelper;
 import com.kitap.agent.database.model.ApplicationUnderTest;
 import com.kitap.agent.database.model.dto.AgentDto;
-import com.kitap.agent.util.PropertyReader;
-import com.kitap.testresult.dto.agent.RegistrationDetails;
 import com.kitap.testresult.dto.execute.ExecutionAutDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -22,8 +20,8 @@ public abstract class BaseApiCall {
     HttpEntity<?> request;
     ResponseEntity<?> responseBody;
 
-    String baseServerUrl = BaseClass.properties.getProperty("server.base.url");
-    String baseAgentUrl = BaseClass.properties.getProperty("agent.base.url");
+    String baseServerUrl = PropertyReaderHelper.getProperty("server.base.url");
+    String baseAgentUrl = PropertyReaderHelper.getProperty("agent.base.url");
     public BaseApiCall(){
         headers.setContentType(MediaType.APPLICATION_JSON);
     }
