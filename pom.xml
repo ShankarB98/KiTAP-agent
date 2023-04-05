@@ -33,13 +33,6 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-
-	<!--	<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.0.0</version>
-		</dependency>-->
-
 		<!--		Other required dependencies -->
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -104,20 +97,20 @@
 			<artifactId>TestResultAdapter</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
-		<!--<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.6.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>-->
-
 		<dependency>
 			<groupId>net.serenity-bdd</groupId>
 			<artifactId>serenity-core</artifactId>
 			<version>${serenity.version}</version>
+		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -146,25 +139,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--The Enforcer plugin provides goals to control certain environmental constraints such as Maven version, JDK version and OS family along with many more built-in rules and user created rules.-->
-			<!--<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.0.0-M3</version>
-				<executions>
-					<execution>
-						<id>enforce</id>
-						<configuration>
-							<rules>
-								<dependencyConvergence />
-							</rules>
-						</configuration>
-							<goals>
-								<goal>enforce</goal>
-							</goals>
-					</execution>
-				</executions>
-			</plugin>-->
+
 		</plugins>
 	</build>
 

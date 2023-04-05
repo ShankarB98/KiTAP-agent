@@ -18,6 +18,7 @@ target/
 *.iws
 *.iml
 *.ipr
+.mvn
 
 ### NetBeans ###
 /nbproject/private/
@@ -34,6 +35,6 @@ build/
 
 
 ###log files###
-logs/*
+logs/
 *.log
 *.gz
