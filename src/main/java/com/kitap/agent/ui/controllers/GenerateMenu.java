@@ -324,6 +324,12 @@ public class GenerateMenu {
                             Stage generateStage = (Stage) anchorPane.getScene().getWindow();
                             generateStage.close();
                             log.info("closed the generation UI");
+                            generateStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                                @Override
+                                public void handle(WindowEvent event) {
+                                    generateStage.close();
+                                }
+                            });
                         }
                     });
                 }
