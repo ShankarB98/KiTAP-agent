@@ -10,12 +10,19 @@ import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
@@ -24,11 +31,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
+import java.util.Properties;
 
 /**
  * @Author KT1497
@@ -58,6 +65,8 @@ public class ExecuteMenu {
     @FXML
     public ComboBox<String> versionCombo;
     @FXML
+    public ComboBox<String> browserCombo;
+    @FXML
     public Button cancelButton;
     @FXML
     public Button executeTestButton;
@@ -76,6 +85,9 @@ public class ExecuteMenu {
         log.info("method initializing the execution UI");
         autType.getItems().removeAll(autType.getItems());
         autType.getItems().addAll(apiCalls.getAutTypes());
+
+        browserCombo.getItems().addAll("chrome","edge","firefox");
+
         log.info("method completed by updating AutTypes from api call in execution UI");
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
@@ -134,7 +146,8 @@ public class ExecuteMenu {
         log.info("clicked on executetests button from execution UI");
         new Thread() {
             public void run() {
-                if(autType.getValue()!=null&&executeAutCombo.getValue()!=null&&versionCombo.getValue()!=null) {
+                if(autType.getValue()!=null&&executeAutCombo.getValue()!=null&&
+                        versionCombo.getValue()!=null&&browserCombo.getValue()!=null) {
                     Platform.runLater(new Runnable() {
                         public void run() {
                             //Giving ExecutingTests Status and disabling contextmenu Items
@@ -261,5 +274,60 @@ public class ExecuteMenu {
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
+    }
+
+    public void onSelectionOfBrowser(ActionEvent actionEvent) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("selecting the browser from execution UI");
+
+        if (autType.getValue() != null && executeAutCombo.getValue() != null && versionCombo.getValue() != null) {
+            String selectedBrowser = browserCombo.getValue();
+            log.info(selectedBrowser);
+            String serenityPropertiesPath = reader.getProperty("destinationpath") + separator +
+                    autType.getValue() + separator + executeAutCombo.getValue() + separator +
+                    versionCombo.getValue() + separator + "serenity.properties";
+            log.info(serenityPropertiesPath);
+
+            Properties properties = new Properties();
+            try {
+                FileInputStream in = new FileInputStream(serenityPropertiesPath);
+                properties.load(in);
+                in.close();
+
+                if (selectedBrowser == "edge") {
+                    properties.setProperty(reader.getProperty("propertykey"), selectedBrowser);
+                    properties.setProperty(reader.getProperty("propertyvalue"), reader.getProperty("driverpath") + "msedgedriver.exe");
+                } else if (selectedBrowser == "chrome") {
+                    properties.setProperty(reader.getProperty("propertykey"), selectedBrowser);
+                    properties.setProperty(reader.getProperty("propertyvalue"), reader.getProperty("driverpath") + "chromedriver.exe");
+                } else if (selectedBrowser == "firefox") {
+                    properties.setProperty(reader.getProperty("propertykey"), selectedBrowser);
+                    properties.setProperty(reader.getProperty("propertyvalue"), reader.getProperty("driverpath") + "geckodriver.exe");
+                }
+                FileOutputStream out = new FileOutputStream(serenityPropertiesPath);
+                properties.store(out, null);
+                out.close();
+            } catch (Exception e) {
+                log.error(e.toString());
+                throw new RuntimeException(e);
+            }
+            log.info("browser selected from execution UI");
+            stopWatch.stop();
+            log.info("Execution time for " + new Object() {
+            }.getClass().getEnclosingMethod().getName() +
+                    " method is " + String.format("%.2f", stopWatch.getTotalTimeSeconds()) + " seconds");
+        }else{
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    log.error("Field not selected");
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Field not selected");
+                    alert.setContentText("Please select all the above fields");
+                    alert.showAndWait();
+                }
+            });
+        }
     }
 }
