@@ -24,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,6 +151,17 @@ public class ExecuteMenu {
                         versionCombo.getValue()!=null&&browserCombo.getValue()!=null) {
                     Platform.runLater(new Runnable() {
                         public void run() {
+                            Stage exeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
+                            exeStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                                @Override
+                                public void handle(WindowEvent event) {
+                                    event.consume();
+                                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                                    alert.setTitle("Error to close");
+                                    alert.setContentText("Not able to close the UI because execution is in process");
+                                    alert.showAndWait();
+                                }
+                            });
                             //Giving ExecutingTests Status and disabling contextmenu Items
                             AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(executingColour));
                             AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setText("Executing Tests");
@@ -199,7 +211,13 @@ public class ExecuteMenu {
                             //Closing Stage after process completion
                             //Stage executeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
                             //executeStage.close();
-
+                            Stage executeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
+                            executeStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                                @Override
+                                public void handle(WindowEvent event) {
+                                    executeStage.close();
+                                }
+                            });
                             /**
                              * Enabling all the buttons in UI
                              * */

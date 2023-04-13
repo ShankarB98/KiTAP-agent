@@ -26,6 +26,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -115,8 +116,6 @@ public class GenerateMenu {
         if(selectedDir!=null) {
             log.info(selectedDir.toString());
             folderTextField.setText(selectedDir.toString());
-            log.info("validating the test project");
-            validateProject();
         }else{
             log.info("No project selected");
         }
@@ -254,7 +253,17 @@ public class GenerateMenu {
                 if(autCombo.getValue()!=null) {
                     Platform.runLater(new Runnable() {
                         public void run() {
-
+                            Stage genStage = (Stage) anchorPane.getScene().getWindow();
+                            genStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                                @Override
+                                public void handle(WindowEvent event) {
+                                    event.consume();
+                                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                                    alert.setTitle("Error to close");
+                                    alert.setContentText("Not able to close the UI because generation is in process");
+                                    alert.showAndWait();
+                                }
+                            });
                             //Giving GeneratingTests Status and disabling contextmenu Items
                             AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(generatingColour));
                             AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setText("Generating Tests");
@@ -315,6 +324,12 @@ public class GenerateMenu {
                             Stage generateStage = (Stage) anchorPane.getScene().getWindow();
                             generateStage.close();
                             log.info("closed the generation UI");
+                            generateStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                                @Override
+                                public void handle(WindowEvent event) {
+                                    generateStage.close();
+                                }
+                            });
                         }
                     });
                 }
@@ -352,14 +367,14 @@ public class GenerateMenu {
                     String[] checker = new Validator().checkValidation(selectedDir);
                     log.info(Arrays.toString(checker));
                     if (checker[0].equals("invalid")) {
+                        Platform.runLater(
+                                () -> {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Invalid Project");
                         alert.setContentText("Please select valid project");
                         alert.showAndWait();
                         log.error("invalid project");
 
-                        Platform.runLater(
-                                () -> {
                                     autTypeResult.setText("Invalid");
                                     createAutButton.setDisable(true);
                                     generateTestsButton.setDisable(true);

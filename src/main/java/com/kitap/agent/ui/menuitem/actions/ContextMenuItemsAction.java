@@ -31,6 +31,7 @@ public class ContextMenuItemsAction {
 //    CallDeregisterApi callDeregisterApi;
     ApiCalls apiCalls = new ApiCalls();
     AgentTrayIcon agentTrayIcon= new AgentTrayIcon();
+    Stage openedStage;
 
     /**
      * @Description Action performed when register menuitem from context menu is clicked
@@ -55,6 +56,7 @@ public class ContextMenuItemsAction {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+        openedStage=stage;
         log.info("UI for Registration shown");
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
@@ -117,6 +119,7 @@ public class ContextMenuItemsAction {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+        openedStage=stage;
         log.info("UI for execution shown");
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
@@ -146,6 +149,7 @@ public class ContextMenuItemsAction {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+        openedStage=stage;
         log.info("UI for generation shown");
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
@@ -163,7 +167,11 @@ public class ContextMenuItemsAction {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         log.info("agent is restarting");
+        if(openedStage!=null){
+            openedStage.close();
+        }
         agentTrayIcon.removeAgentTrayIconFromTray("Agent is Shutting Down!!", "Please Wait!!", TrayIcon.MessageType.INFO);
+        agentTrayIcon.menu.hide();
         try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
