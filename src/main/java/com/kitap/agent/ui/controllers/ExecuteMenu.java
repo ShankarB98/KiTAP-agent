@@ -9,6 +9,7 @@ import com.kitap.testresult.dto.execute.ExecutionAutDetails;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -21,12 +22,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
+import org.controlsfx.control.CheckComboBox;
+import org.controlsfx.control.ToggleSwitch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
@@ -66,19 +70,19 @@ public class ExecuteMenu {
     @FXML
     public ComboBox<String> versionCombo;
     @FXML
-    public ComboBox<String> browserCombo;
+    public CheckComboBox<String> browserBox;
     @FXML
     public Button cancelButton;
     @FXML
     public Button executeTestButton;
     @FXML
     public Button viewTestResults;
-
     @FXML
     public ComboBox<String> executeAutCombo;
-
     @FXML
     public ComboBox<String> autType;
+    @FXML
+    public ToggleSwitch toggleSwitch;
     @FXML
     public void initialize() {
         StopWatch stopWatch = new StopWatch();
@@ -87,7 +91,7 @@ public class ExecuteMenu {
         autType.getItems().removeAll(autType.getItems());
         autType.getItems().addAll(apiCalls.getAutTypes());
 
-        browserCombo.getItems().addAll("chrome","edge","firefox");
+        browserBox.getItems().addAll("chrome","edge","firefox");
 
         log.info("method completed by updating AutTypes from api call in execution UI");
         stopWatch.stop();
@@ -147,93 +151,102 @@ public class ExecuteMenu {
         log.info("clicked on executetests button from execution UI");
         new Thread() {
             public void run() {
+                ObservableList<String> browsers = browserBox.getCheckModel().getCheckedItems();
                 if(autType.getValue()!=null&&executeAutCombo.getValue()!=null&&
-                        versionCombo.getValue()!=null&&browserCombo.getValue()!=null) {
-                    Platform.runLater(new Runnable() {
-                        public void run() {
-                            Stage exeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
-                            exeStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                                @Override
-                                public void handle(WindowEvent event) {
-                                    event.consume();
-                                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                                    alert.setTitle("Error to close");
-                                    alert.setContentText("Not able to close the UI because execution is in process");
-                                    alert.showAndWait();
+                        versionCombo.getValue()!=null&&browsers.size()!=0) {
+                        Platform.runLater(new Runnable() {
+                            public void run() {
+                                Stage exeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
+                                exeStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                                    @Override
+                                    public void handle(WindowEvent event) {
+                                        event.consume();
+                                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                                        alert.setTitle("Error to close");
+                                        alert.setContentText("Not able to close the UI because execution is in process");
+                                        alert.showAndWait();
+                                    }
+                                });
+                                //Giving ExecutingTests Status and disabling contextmenu Items
+                                AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(executingColour));
+                                AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setText("Executing Tests");
+                                for (int i = 1; i <= AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().size() - 1; i++) {
+                                    AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(i).setDisable(true);
                                 }
-                            });
-                            //Giving ExecutingTests Status and disabling contextmenu Items
-                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(executingColour));
-                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setText("Executing Tests");
-                            for (int i = 1; i <= AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().size() - 1; i++) {
-                                AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(i).setDisable(true);
+
+                                //Progress Indicator
+                                executeTestsProgressIndicator.setVisible(true);
+
+                                //Blinking Text
+                                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), blinkLabel);
+                                fadeTransition.setFromValue(1.0);
+                                fadeTransition.setToValue(0.0);
+                                fadeTransition.setCycleCount(Animation.INDEFINITE);
+                                fadeTransition.play();
+                                blinkLabel.setVisible(true);
+
+                                //Disabling all the buttons in UI Page
+                                executeTestButton.setDisable(true);
+                                viewTestResults.setDisable(true);
+                                cancelButton.setDisable(true);
                             }
+                        });
 
-                            //Progress Indicator
-                            executeTestsProgressIndicator.setVisible(true);
-
-                            //Blinking Text
-                            FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), blinkLabel);
-                            fadeTransition.setFromValue(1.0);
-                            fadeTransition.setToValue(0.0);
-                            fadeTransition.setCycleCount(Animation.INDEFINITE);
-                            fadeTransition.play();
-                            blinkLabel.setVisible(true);
-
-                            //Disabling all the buttons in UI Page
-                            executeTestButton.setDisable(true);
-                            viewTestResults.setDisable(true);
-                            cancelButton.setDisable(true);
+                    if (!toggleSwitch.isSelected()) {
+                        log.info("sequential execution started");
+                        String[] browserArray = browsers.toArray(new String[browsers.size()]);
+                        for (String browser : browserArray) {
+                            eachBrowserExecution(browser);
+                            ExecutionAutDetails details = new ExecutionAutDetails();
+                            details.setTestType(autType.getValue());
+                            details.setAut(executeAutCombo.getValue());
+                            details.setVersion(versionCombo.getValue());
+                            details.setTestCases(null);
+                            log.info("api call to execute tests");
+                            apiCalls.executeTests(details);
                         }
-                    });
+                    }else {
+                        log.info("parallel Execution started");
+                    }
+                        log.info("testExecution method completed");
+                        stopWatch.stop();
+                        log.info("Execution time for " + new Object() {
+                        }.getClass().getEnclosingMethod().getName() +
+                                " method is " + String.format("%.2f", stopWatch.getTotalTimeSeconds()) + " seconds");
 
-                    ExecutionAutDetails details = new ExecutionAutDetails();
-                    details.setTestType(autType.getValue());
-                    details.setAut(executeAutCombo.getValue());
-                    details.setVersion(versionCombo.getValue());
-                    details.setTestCases(null);
-                    log.info("api call to execute tests");
-                    apiCalls.executeTests(details);
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                //Enabling all the contextmenu Items
+                                executeTestsProgressIndicator.setVisible(false); //stopping progressIndicator
+                                blinkLabel.setVisible(false); // stopping Blinking Text
 
-                    log.info("testExecution method completed");
-                    stopWatch.stop();
-                    log.info("Execution time for " + new Object() {
-                    }.getClass().getEnclosingMethod().getName() +
-                            " method is " + String.format("%.2f", stopWatch.getTotalTimeSeconds()) + " seconds");
+                                //Closing Stage after process completion
+                                //Stage executeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
+                                //executeStage.close();
+                                Stage executeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
+                                executeStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                                    @Override
+                                    public void handle(WindowEvent event) {
+                                        executeStage.close();
+                                    }
+                                });
+                                /**
+                                 * Enabling all the buttons in UI
+                                 * */
+                                executeTestButton.setDisable(false);
+                                viewTestResults.setDisable(false);
+                                cancelButton.setDisable(false);
 
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            //Enabling all the contextmenu Items
-                            executeTestsProgressIndicator.setVisible(false); //stopping progressIndicator
-                            blinkLabel.setVisible(false); // stopping Blinking Text
 
-                            //Closing Stage after process completion
-                            //Stage executeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
-                            //executeStage.close();
-                            Stage executeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
-                            executeStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                                @Override
-                                public void handle(WindowEvent event) {
-                                    executeStage.close();
+                                //Enabling all the contextmenu Items
+                                AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(agentRunningColour));
+                                AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setText("Agent is running");
+                                for (int i = 1; i <= AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().size() - 1; i++) {
+                                    AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(i).setDisable(false);
                                 }
-                            });
-                            /**
-                             * Enabling all the buttons in UI
-                             * */
-                            executeTestButton.setDisable(false);
-                            viewTestResults.setDisable(false);
-                            cancelButton.setDisable(false);
-
-
-                            //Enabling all the contextmenu Items
-                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(agentRunningColour));
-                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setText("Agent is running");
-                            for (int i = 1; i <= AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().size() - 1; i++) {
-                                AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(i).setDisable(false);
                             }
-                        }
-                    });
+                        });
                 }
                 else{
                     Platform.runLater(new Runnable() {
@@ -294,14 +307,12 @@ public class ExecuteMenu {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
-    public void onSelectionOfBrowser(ActionEvent actionEvent) {
+    public void onSelectionOfBrowser(MouseEvent mouseEvent) {
+        //browsers = browserBox.getCheckModel().getCheckedItems();
+    }
+    private void eachBrowserExecution(String browser){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        log.info("selecting the browser from execution UI");
-
-        if (autType.getValue() != null && executeAutCombo.getValue() != null && versionCombo.getValue() != null) {
-            String selectedBrowser = browserCombo.getValue();
-            log.info(selectedBrowser);
             String serenityPropertiesPath = reader.getProperty("destinationpath") + separator +
                     autType.getValue() + separator + executeAutCombo.getValue() + separator +
                     versionCombo.getValue() + separator + "serenity.properties";
@@ -313,14 +324,14 @@ public class ExecuteMenu {
                 properties.load(in);
                 in.close();
 
-                if (selectedBrowser == "edge") {
-                    properties.setProperty(reader.getProperty("propertykey"), selectedBrowser);
+                if (browser == "edge") {
+                    properties.setProperty(reader.getProperty("propertykey"), browser);
                     properties.setProperty(reader.getProperty("propertyvalue"), reader.getProperty("driverpath") + "msedgedriver.exe");
-                } else if (selectedBrowser == "chrome") {
-                    properties.setProperty(reader.getProperty("propertykey"), selectedBrowser);
+                } else if (browser == "chrome") {
+                    properties.setProperty(reader.getProperty("propertykey"), browser);
                     properties.setProperty(reader.getProperty("propertyvalue"), reader.getProperty("driverpath") + "chromedriver.exe");
-                } else if (selectedBrowser == "firefox") {
-                    properties.setProperty(reader.getProperty("propertykey"), selectedBrowser);
+                } else if (browser == "firefox") {
+                    properties.setProperty(reader.getProperty("propertykey"), browser);
                     properties.setProperty(reader.getProperty("propertyvalue"), reader.getProperty("driverpath") + "geckodriver.exe");
                 }
                 FileOutputStream out = new FileOutputStream(serenityPropertiesPath);
@@ -330,22 +341,9 @@ public class ExecuteMenu {
                 log.error(e.toString());
                 throw new RuntimeException(e);
             }
-            log.info("browser selected from execution UI");
             stopWatch.stop();
             log.info("Execution time for " + new Object() {
             }.getClass().getEnclosingMethod().getName() +
                     " method is " + String.format("%.2f", stopWatch.getTotalTimeSeconds()) + " seconds");
-        }else{
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    log.error("Field not selected");
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Field not selected");
-                    alert.setContentText("Please select all the above fields");
-                    alert.showAndWait();
-                }
-            });
-        }
     }
 }

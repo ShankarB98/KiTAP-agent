@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
+<?import org.controlsfx.control.*?>
 
 <AnchorPane fx:id="executeTestsAnchorPane" prefHeight="280.0" prefWidth="416.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kitap.agent.ui.controllers.ExecuteMenu">
    <children>
@@ -81,7 +82,13 @@
             <Font size="13.0" />
          </font>
       </Label>
-      <ComboBox fx:id="browserCombo" layoutX="22.0" layoutY="203.0" onAction="#onSelectionOfBrowser" prefHeight="25.0" prefWidth="375.0" />
+      <CheckComboBox fx:id="browserBox" layoutX="22.0" layoutY="203.0" prefHeight="25.0" prefWidth="298.0" />
+      <ToggleSwitch fx:id="toggleSwitch" layoutX="362.0" layoutY="207.0" prefHeight="18.0" prefWidth="33.0" />
+      <Label layoutX="330.0" layoutY="209.0" text="Parallel">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
    </children>
    <effect>
       <Blend />
