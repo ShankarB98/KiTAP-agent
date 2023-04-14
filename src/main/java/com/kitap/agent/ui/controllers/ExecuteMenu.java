@@ -83,6 +83,8 @@ public class ExecuteMenu {
     public ComboBox<String> autType;
     @FXML
     public ToggleSwitch toggleSwitch;
+
+    String[] supportingBrowsers = {reader.getProperty("chromebrowser"), reader.getProperty("edgebrowser"), reader.getProperty("firefoxbrowser")};
     @FXML
     public void initialize() {
         StopWatch stopWatch = new StopWatch();
@@ -91,7 +93,7 @@ public class ExecuteMenu {
         autType.getItems().removeAll(autType.getItems());
         autType.getItems().addAll(apiCalls.getAutTypes());
 
-        browserBox.getItems().addAll("chrome","edge","firefox");
+        browserBox.getItems().addAll(supportingBrowsers);
 
         log.info("method completed by updating AutTypes from api call in execution UI");
         stopWatch.stop();
@@ -196,7 +198,7 @@ public class ExecuteMenu {
                         log.info("sequential execution started");
                         String[] browserArray = browsers.toArray(new String[browsers.size()]);
                         for (String browser : browserArray) {
-                            eachBrowserExecution(browser);
+                            settingBrowserProperties(browser);
                             ExecutionAutDetails details = new ExecutionAutDetails();
                             details.setTestType(autType.getValue());
                             details.setAut(executeAutCombo.getValue());
@@ -207,6 +209,7 @@ public class ExecuteMenu {
                         }
                     }else {
                         log.info("parallel Execution started");
+                        //TODO for parallel execution
                     }
                         log.info("testExecution method completed");
                         stopWatch.stop();
@@ -221,9 +224,6 @@ public class ExecuteMenu {
                                 executeTestsProgressIndicator.setVisible(false); //stopping progressIndicator
                                 blinkLabel.setVisible(false); // stopping Blinking Text
 
-                                //Closing Stage after process completion
-                                //Stage executeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
-                                //executeStage.close();
                                 Stage executeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
                                 executeStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                                     @Override
@@ -282,6 +282,9 @@ public class ExecuteMenu {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
+    /**
+     * For execution, AUT names will be updated based on AUT type selected
+     */
     public void onChangeOfAutType(ActionEvent actionEvent) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -295,6 +298,9 @@ public class ExecuteMenu {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
+    /**
+     * For execution, AUT versions will be updated based on AUT selected
+     */
     public void onAutSelection(ActionEvent actionEvent) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -307,21 +313,23 @@ public class ExecuteMenu {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
-    public void onSelectionOfBrowser(MouseEvent mouseEvent) {
-        //browsers = browserBox.getCheckModel().getCheckedItems();
-    }
-    private void eachBrowserExecution(String browser){
+    /**
+     * For execution, setting the browser properties in test project dynamically with respect to selected browser
+     * @param browser
+     */
+    private void settingBrowserProperties(String browser){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
+        log.info("setting properties for {} browser",browser);
             String serenityPropertiesPath = reader.getProperty("destinationpath") + separator +
                     autType.getValue() + separator + executeAutCombo.getValue() + separator +
-                    versionCombo.getValue() + separator + "serenity.properties";
+                    versionCombo.getValue() + separator + "serenity.properties";//Test project's serenity.properties file path
             log.info(serenityPropertiesPath);
 
             Properties properties = new Properties();
             try {
                 FileInputStream in = new FileInputStream(serenityPropertiesPath);
-                properties.load(in);
+                properties.load(in);//loading the serenity.properties file
                 in.close();
 
                 if (browser == "edge") {
@@ -337,6 +345,7 @@ public class ExecuteMenu {
                 FileOutputStream out = new FileOutputStream(serenityPropertiesPath);
                 properties.store(out, null);
                 out.close();
+                log.info("{} browser properties setting completed",browser);
             } catch (Exception e) {
                 log.error(e.toString());
                 throw new RuntimeException(e);
