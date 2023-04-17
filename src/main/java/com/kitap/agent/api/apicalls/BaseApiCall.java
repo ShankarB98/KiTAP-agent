@@ -11,10 +11,16 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+
+/**
+ * Abstract class which will be the base for api calls - setting base URI,
+ *                             setting request, getting response
+ * @author KT1450
+ */
 @Slf4j
 public abstract class BaseApiCall {
-    RestTemplate restTemplate = new RestTemplate();
-    URI uri;
+    private RestTemplate restTemplate = new RestTemplate();
+    private URI uri;
     String baseUrl;
     HttpHeaders headers = new HttpHeaders();
     HttpEntity<?> request;
@@ -26,6 +32,9 @@ public abstract class BaseApiCall {
         headers.setContentType(MediaType.APPLICATION_JSON);
     }
 
+    /**
+     * Sets the base URI
+     */
     public void setBaseURI(){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -41,6 +50,11 @@ public abstract class BaseApiCall {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
+    /**
+     * Getting the response by taking request value and http method as input
+     * @param reqValue value of the request
+     * @param httpMethod http method to be used
+     */
     protected void getResponse(String reqValue, HttpMethod httpMethod){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -53,6 +67,10 @@ public abstract class BaseApiCall {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
+    /**
+     * Getting response by taking autType as input
+     * @param autType type of AUT
+     */
     protected void getResponse(String autType){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -65,6 +83,10 @@ public abstract class BaseApiCall {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
+    /**
+     * Getting response by taking agentDto object as input
+     * @param agentDto object of agentDto
+     */
     protected void getResponse(AgentDto agentDto){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -77,6 +99,10 @@ public abstract class BaseApiCall {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
+    /**
+     * Getting response by taking executionDetails object as input
+     * @param details object of executionDetails
+     */
     protected void getResponse(ExecutionAutDetails details){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -89,6 +115,10 @@ public abstract class BaseApiCall {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
+    /**
+     * Getting response by taking applicationUnderTest object as input
+     * @param details object of applicationUnderTest
+     */
     protected void getResponse(ApplicationUnderTest details){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -101,6 +131,9 @@ public abstract class BaseApiCall {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
+    /**
+     * Getting response
+     */
     protected void getResponse(){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -113,6 +146,10 @@ public abstract class BaseApiCall {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
+    /**
+     * Setting request by using macAddress as input
+     * @param macAddress agent running system macAddress
+     */
     public void setRequest(String macAddress){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -122,6 +159,11 @@ public abstract class BaseApiCall {
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
+
+    /**
+     * Setting request by using agentDto object as input
+     * @param agentDto object of agentDto
+     */
     public void setRequest(AgentDto agentDto){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -132,6 +174,10 @@ public abstract class BaseApiCall {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
+    /**
+     * Setting request by using executionDetails object as input
+     * @param details object of executionDetails
+     */
     public void setRequest(ExecutionAutDetails details){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -142,6 +188,10 @@ public abstract class BaseApiCall {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
+    /**
+     * Setting request by using applicationUnderTest object as input
+     * @param details object of applicationUnderTest
+     */
     public void setRequest(ApplicationUnderTest details){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -152,6 +202,9 @@ public abstract class BaseApiCall {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
+    /**
+     * setting request
+     */
     public void setRequest(){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -161,22 +214,4 @@ public abstract class BaseApiCall {
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
-
-
-    public void saveJson(String jsonData){
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-        setBaseURI();
-        setRequest(jsonData);
-        responseBody = restTemplate.exchange(uri, HttpMethod.POST, request, void.class);
-        log.info("saving Json using jsonData as string");
-        stopWatch.stop();
-        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
-                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
-    }
-
-    public void setRequest(Class<?> jsonObject){
-        request = new HttpEntity<>(jsonObject, headers);
-    }
-
 }

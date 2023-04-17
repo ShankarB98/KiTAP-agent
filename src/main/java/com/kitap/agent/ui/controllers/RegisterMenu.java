@@ -6,7 +6,6 @@ import com.kitap.agent.ui.initializer.TrayIconAndMenuInitializer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -15,27 +14,22 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 /**
- * @Author KT1497
- *
- * @Description Controller class for registerMenu.fxml file,
- * which includes functionality with fxml UI elements
+ * Controller class for registerMenu.fxml file which includes functionality with fxml UI elements
+ * @author KT1497
  */
 @Slf4j
 @Component
 public class RegisterMenu {
-    ApiCalls apiCalls = new ApiCalls();
+    private ApiCalls apiCalls = new ApiCalls();
     @FXML
-    public TextField nameTextField;
+    private TextField nameTextField;
     @FXML
-    public TextField keyTextField;
+    private TextField keyTextField;
     @FXML
-    public Button registerButton;
-    @FXML
-    public AnchorPane registrationAnchorPane;
+    private AnchorPane registrationAnchorPane;
 
     /**
-     * Function performed when Register Button is clicked in JavaFX UI
-     *
+     * Function performed when Register Button is clicked in JavaFX registration UI
      * @param actionEvent JavaFX UI Register Button Click
      */
     @FXML

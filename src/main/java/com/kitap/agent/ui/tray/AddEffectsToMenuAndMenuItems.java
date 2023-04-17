@@ -16,9 +16,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
 /**
- * @Author: KT1497
- *
- * @Description: Creating JavaFX ContextMenu with CSS Styling along with MenuItems
+ * Creating JavaFX ContextMenu with CSS Styling along with MenuItems
+ * @author KT1497
  */
 @Slf4j
 public class AddEffectsToMenuAndMenuItems extends TrayIcon {
@@ -81,7 +80,6 @@ public class AddEffectsToMenuAndMenuItems extends TrayIcon {
                         contextMenu.setAutoHide(true);
 
                         //specify the location of context menu based on Platform(Windows/Linux/Mac)
-                        //contextMenu.setX(e.getX()-contextMenu.getX());
                         contextMenu.setX(e.getX());
                         if (PlatformUtil.isMac()) {
                             contextMenu.setY(e.getY());
@@ -98,4 +96,3 @@ public class AddEffectsToMenuAndMenuItems extends TrayIcon {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 }
-

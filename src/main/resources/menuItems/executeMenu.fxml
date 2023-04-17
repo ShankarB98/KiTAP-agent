@@ -10,23 +10,23 @@
 
 <AnchorPane fx:id="executeTestsAnchorPane" prefHeight="268.0" prefWidth="416.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kitap.agent.ui.controllers.ExecuteMenu">
    <children>
-      <Label fx:id="executeTitle" layoutX="73.0" layoutY="14.0" prefHeight="39.0" prefWidth="256.0" text="Execute KiTAP Tests" textFill="#096eb6">
+      <Label layoutX="73.0" layoutY="14.0" prefHeight="39.0" prefWidth="256.0" text="Execute KiTAP Tests" textFill="#096eb6">
          <font>
             <Font size="27.0" />
          </font>
       </Label>
       <ComboBox fx:id="versionCombo" layoutX="21.0" layoutY="197.0" prefHeight="25.0" prefWidth="375.0" />
-      <ImageView fx:id="kitapImage" fitHeight="53.0" fitWidth="52.0" layoutX="21.0" layoutY="14.0">
+      <ImageView fitHeight="53.0" fitWidth="52.0" layoutX="21.0" layoutY="14.0">
          <image>
             <Image url="@../images/kitap.png" />
          </image>
       </ImageView>
-      <Label fx:id="executeAutLabel" layoutX="21.0" layoutY="128.0" text="Select AUT:">
+      <Label layoutX="21.0" layoutY="128.0" text="Select AUT:">
          <font>
             <Font size="13.0" />
          </font>
       </Label>
-      <Label fx:id="versionLabel" layoutX="20.0" layoutY="178.0" text="Select Version:">
+      <Label layoutX="20.0" layoutY="178.0" text="Select Version:">
          <font>
             <Font size="13.0" />
          </font>

@@ -12,21 +12,20 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 /**
- * @Author: KT1497
- *
- * @Description: Getting the information of the machine currently using by agent
+ * Getting the information of the machine currently using by agent
  *               like IP Address, MAC Address, AdminName,
- *               OS Information,AgentName & agentKey from UI. Setting these
- *               values to a DTO class
+ *               OS Information,AgentName & agentKey from UI.
+ *               Setting these values to a DTO class
+ *@author KT1497
  */
 @Slf4j
 @Component
 public class MachineInformation{
-    final PropertyReader reader = new PropertyReader();
+    private final PropertyReader reader = new PropertyReader();
     public final InetAddress inetAddress;
-    public final String osName;
-    public final String osVersion;
-    public final String adminUser;
+    private final String osName;
+    private final String osVersion;
+    private final String adminUser;
 
     public final String macAddress;
 
@@ -38,6 +37,12 @@ public class MachineInformation{
         this.macAddress = getMacAddress();
     }
 
+    /**
+     * setting the system details in which agent is running to dto class
+     * and returning the agentdto
+     * @param agentName name of the agent given by user
+     * @return agentdto object with all details
+     */
     public AgentDto getAgentDto(String agentName){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -63,8 +68,7 @@ public class MachineInformation{
 
     /**
      * Getting InetAddress
-     * 
-     * @return InetAddress
+     * @return InetAddress system inetaddress
      */
     public InetAddress getInetAddress() {
         StopWatch stopWatch = new StopWatch();
@@ -86,8 +90,7 @@ public class MachineInformation{
 
     /**
      * Getting MACAddress of a Machine
-     * 
-     * @return String(MAC Address)
+     * @return String(MAC Address) system macaddress
      */
     public String getMacAddress() {
         StopWatch stopWatch = new StopWatch();

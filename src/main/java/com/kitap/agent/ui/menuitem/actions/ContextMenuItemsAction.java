@@ -19,22 +19,18 @@ import java.io.IOException;
 import java.net.URL;
 
 /**
- * @Author: KT1497
- *
- * @Description: Actions performed when clicked on contextMenu Items of TrayIcon
+ *Actions performed when clicked on contextMenu Items of TrayIcon
+ * @author KT1497
  */
 @Slf4j
 @Component
 public class ContextMenuItemsAction {
-
-//    @Autowired
-//    CallDeregisterApi callDeregisterApi;
-    ApiCalls apiCalls = new ApiCalls();
-    AgentTrayIcon agentTrayIcon= new AgentTrayIcon();
-    Stage openedStage;
+    private ApiCalls apiCalls = new ApiCalls();
+    private Stage openedStage;
 
     /**
-     * @Description Action performed when register menuitem from context menu is clicked
+     * Action performed when register menuitem from context menu is clicked
+     * @param stage JavaFX stage for registration
      */
     public void registerMenuItemAction(Stage stage) {
         StopWatch stopWatch = new StopWatch();
@@ -64,7 +60,7 @@ public class ContextMenuItemsAction {
     }
 
     /**
-     * @Description Action performed when deRegister menuitem from context menu is clicked
+     * Action performed when deRegister menuitem from context menu is clicked
      */
     public void deregisterMenuItemAction() {
         StopWatch stopWatch = new StopWatch();
@@ -97,7 +93,8 @@ public class ContextMenuItemsAction {
     }
 
     /**
-     * @Description Action performed when execute menuitem from context menu is clicked
+     * Action performed when execute menuitem from context menu is clicked
+     * @param stage JavaFX stage for execution
      */
     public void executeMenuItemAction(Stage stage) {
         StopWatch stopWatch = new StopWatch();
@@ -127,7 +124,8 @@ public class ContextMenuItemsAction {
     }
 
     /**
-     * @Description Action performed when generate menuitem from context menu is clicked
+     * Action performed when generate menuitem from context menu is clicked
+     * @param stage JavaFX stage for generation
      */
     public void generateMenuItemAction(Stage stage) {
         StopWatch stopWatch = new StopWatch();
@@ -159,10 +157,8 @@ public class ContextMenuItemsAction {
 
     /**
      * Funtionality when restart MenuItem clicked
-     *
-     * @param agentTrayIcon
+     * @param agentTrayIcon agent icon in the system tray
      */
-
     public void restartAgent(AgentTrayIcon agentTrayIcon) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -187,8 +183,7 @@ public class ContextMenuItemsAction {
 
     /**
      * Functionality when quit MenuItem clicked
-     *
-     * @param agentTrayIcon
+     * @param agentTrayIcon agent icon in the system tray
      */
     public void quitAgent(AgentTrayIcon agentTrayIcon) {
         StopWatch stopWatch = new StopWatch();
@@ -202,4 +197,3 @@ public class ContextMenuItemsAction {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 }
-

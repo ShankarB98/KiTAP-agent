@@ -9,22 +9,23 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 
+/**
+ * This class will do loading properties from Property reader class and holds those values in a variable
+ *       And provides information when ever requested instead of reading values from application.properties file
+ *       all the time.
+ *       Holds information and references of classes and information which required over the project.
+ * @author KT1450
+ */
 @Slf4j
 public class PropertyReaderHelper {
-
-    /**
-     * This class will do loading properties from Property reader class and holds those values in a variable
-     * And provides information when ever requested instead of reading values from application.properties file
-     * all the time.
-     * Holds information and references of classes and information which required over the project.
-     * */
     static final private Properties properties = new PropertyReader().loadProperties();
     static final public MachineInformation machineInformation = new MachineInformation();
 
     /**
-     * @Description returns single property from already loaded properties
-     * @return String
-     * */
+     * Method returns single property from already loaded properties
+     * @param propertyName name of the property
+     * @return  property value(String)
+     */
     public static String getProperty(String propertyName){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -42,9 +43,10 @@ public class PropertyReaderHelper {
     }
 
     /**
-     * @Description returns list of properties from already loaded properties
-     * @return List of Strings
-     * */
+     * Method returns list of properties from already loaded properties
+     * @param propertyNames array of property names to get property values
+     * @return List of property values corresponding to property names
+     */
     public static List<String> getProperties(String[] propertyNames){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();

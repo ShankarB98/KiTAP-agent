@@ -7,13 +7,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.util.StopWatch;
 
 /**
- * @Author KT1497
- * @Description SpringBoot Main class which is launching JavaFX Application
+ * SpringBoot Main class which is launching JavaFX Application
+ * @author KT1497
  */
 @Slf4j
 @SpringBootApplication
-//@OpenAPIDefinition(info = @Info(title = "KiTAP API", version = "1.0", description = "KiTAP Master and Result"))
 public class KitapAgentApplication {
+
+	/**
+	 * Launches the application
+	 * @param args - Application startup arguments
+	 */
 	public static void main(String[] args) {
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
@@ -24,5 +28,4 @@ public class KitapAgentApplication {
 		log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
 				" method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
 	}
-
 }

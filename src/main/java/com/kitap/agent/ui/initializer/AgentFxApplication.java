@@ -13,14 +13,12 @@ import org.springframework.util.StopWatch;
 import java.io.File;
 
 /**
- * @Author KT1497
- *
- * @Description Class that extends Application class to implement JavaFX features and
- * initializes the SpringBoot Application
+ * Class that extends Application class to implement JavaFX features and initializes the SpringBoot Application
+ * @author KT1497
  */
 @Slf4j
 public class AgentFxApplication extends Application {
-    public ConfigurableApplicationContext applicationContext;
+    private ConfigurableApplicationContext applicationContext;
     private final PropertyReader reader = new PropertyReader();
 
     /**
@@ -44,18 +42,14 @@ public class AgentFxApplication extends Application {
     }
 
     /**
-     *
-     * @param stage the primary stage for this application, onto which
-     * the application scene can be set.
-     * Applications may create other stages, if needed, but they will not be
-     * primary stages.
+     * Applications may create other stages, if needed, but they will not be primary stages.
+     * @param stage the primary stage for this application, onto which the application scene can be set.
      */
     @Override
     public void start(Stage stage) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         log.info("JavaFX start method");
-
         log.info("Check KiTAP folder in ProgramData folder of C drive exists or not");
         File file = new File(reader.getProperty("destinationpath"));
         if(!file.exists()){
@@ -74,5 +68,4 @@ public class AgentFxApplication extends Application {
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
-
 }

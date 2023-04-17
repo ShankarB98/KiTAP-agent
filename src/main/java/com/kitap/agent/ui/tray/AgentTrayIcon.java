@@ -14,8 +14,8 @@ import java.awt.*;
 import java.util.Objects;
 
 /**
- * @Author: KT1497
- * @Description: TrayIcon adding to System Tray. Adding Context Menu with MenuItems to our TrayIcon.
+ * TrayIcon adding to System Tray. Adding Context Menu with MenuItems to our TrayIcon.
+ * @author KT1497
  */
 @Slf4j
 @Data
@@ -35,8 +35,8 @@ public class AgentTrayIcon {
     public ContextMenu menu = new ContextMenu();
 
     /**
-     * @Author: KT1497
-     * @Description: TrayIcon adding to systemtray,Adding ContextMenu to our TrayIcon
+     * TrayIcon adding to systemtray,Adding ContextMenu to our TrayIcon
+     * @return icon in the system tray is returned
      */
     public TrayIcon createAndAddAgentTrayIconWithMenuToTray() {
         StopWatch stopWatch = new StopWatch();
@@ -70,6 +70,11 @@ public class AgentTrayIcon {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return icon;
     }
+
+    /**
+     * Changing the menu and adding the trayicon to system tray
+     * @return icon in the system tray is returned
+     */
     public TrayIcon changeAndAddAgentTrayIconWithMenuToTray() {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -110,8 +115,7 @@ public class AgentTrayIcon {
     }
 
     /**
-     * @Author: KT1497
-     * @Description: Adding ContextMenu to our TrayIcon
+     * Adding ContextMenu to our TrayIcon
      */
     public void addMenuToTrayIcon() {
         StopWatch stopWatch = new StopWatch();
@@ -149,6 +153,7 @@ public class AgentTrayIcon {
                 menu.getItems().add(quit);
             } else {
                 log.info("Menu if agent is - Registered");
+                //remove
                 menu.getItems().remove(register);
                 //add
                 menu.getItems().add(runStatus);
@@ -166,10 +171,10 @@ public class AgentTrayIcon {
     }
 
     /**
-     * @Author: KT1497
-     * @Description: Adding TrayIcon to SystemTray
-     * @params: caption is the title of the message popup window, text is any string displaying message,
-     * messagetype is the type of message
+     * Adding TrayIcon to SystemTray
+     * @param caption is the title of the message popup window
+     * @param text is any string displaying message,
+     * @param messageType is the type of message
      */
     public void addAgentTrayIconToTray(String caption, String text, TrayIcon.MessageType messageType) {
         StopWatch stopWatch = new StopWatch();
@@ -190,10 +195,10 @@ public class AgentTrayIcon {
     }
 
     /**
-     * @Author: KT1497
-     * @Description: Removing TrayIcon from System Tray
-     * @params: caption is the title of the message popup window, text is any string displaying message,
-     * messagetype is the type of message
+     * Removing TrayIcon from System Tray
+     * @param caption is the title of the message popup window
+     * @param text is any string displaying message,
+     * @param messageType is the type of message
      */
     public void removeAgentTrayIconFromTray(String caption, String text, TrayIcon.MessageType messageType) {
         StopWatch stopWatch = new StopWatch();

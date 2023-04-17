@@ -8,24 +8,20 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 import java.awt.*;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.ZonedDateTime;
 
 /**
- * @Author: KT1497
- *
- * @Description: Initializing the TrayIcon adding and ContextMenu with MenuItem Actions
+ *Initializing the TrayIcon adding and ContextMenu with MenuItem Actions
+ * @author KT1497
  */
 @Slf4j
 @Component
 public class TrayIconAndMenuInitializer {
 
-    static TrayIcon oldIconWithMenu;
-    static ContextMenuItemsAction contextMenuItemsActionImpl = new ContextMenuItemsAction();
+    static TrayIcon oldIconWithMenu; //variable is declared as static to avoid circular dependency error in creating the object
+    private static ContextMenuItemsAction contextMenuItemsActionImpl = new ContextMenuItemsAction();//declared as static to use it in static methods
+
     /**
     * Start of TrayIcon Addition to system Tray and Menu
-    *
     * @param stage JavaFX UI stage
     */
     public static void startTrigger(Stage stage) {
@@ -47,6 +43,11 @@ public class TrayIconAndMenuInitializer {
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
+
+    /**
+     * Removing the old trayicon menu and updating the Trayicon Menu
+     * @param stage JavaFX UI stage
+     */
     public static void updateMenu(Stage stage) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -74,9 +75,8 @@ public class TrayIconAndMenuInitializer {
 
     /**
      * Action call when Register MenuItem Clicked
-     *
      * @param stage JavaFX UI Stage
-     * @param agentTrayIcon
+     * @param agentTrayIcon - tray icon added in system tray
      */
     private static void registerOnAction(Stage stage, AgentTrayIcon agentTrayIcon) {
         StopWatch stopWatch = new StopWatch();
@@ -93,8 +93,7 @@ public class TrayIconAndMenuInitializer {
 
     /**
      * Action call when Deregister MenuItem Clicked
-     *
-     * @param agentTrayIcon
+     * @param agentTrayIcon - tray icon added in system tray
      */
     private static void deRegisterOnAction(AgentTrayIcon agentTrayIcon) {
         StopWatch stopWatch = new StopWatch();
@@ -109,9 +108,8 @@ public class TrayIconAndMenuInitializer {
 
     /**
      * Action call when Generate Tests MenuItem Clicked
-     *
      * @param stage JavaFX UI stage
-     * @param agentTrayIcon
+     * @param agentTrayIcon tray icon added in system tray
      */
     private static void generateOnAction(Stage stage, AgentTrayIcon agentTrayIcon) {
         StopWatch stopWatch = new StopWatch();
@@ -127,8 +125,7 @@ public class TrayIconAndMenuInitializer {
 
     /**
      * Action call when Restart MenuItem Clicked
-     *
-     * @param agentTrayIcon
+     * @param agentTrayIcon tray icon added in system tray
      */
     private static void restartOnAction(AgentTrayIcon agentTrayIcon) {
         StopWatch stopWatch = new StopWatch();
@@ -143,8 +140,7 @@ public class TrayIconAndMenuInitializer {
 
     /**
      * Action call when Quit MenuItem Clicked
-     *
-     * @param agentTrayIcon
+     * @param agentTrayIcon tray icon added in system tray
      */
     private static void quitOnAction(AgentTrayIcon agentTrayIcon) {
         StopWatch stopWatch = new StopWatch();
@@ -159,9 +155,8 @@ public class TrayIconAndMenuInitializer {
 
     /**
      * Action call when Execute Tests MenuItem Clicked
-     *
      * @param stage JavaFX UI stage
-     * @param agentTrayIcon
+     * @param agentTrayIcon tray icon added in system tray
      */
     private static void executeOnAction(Stage stage, AgentTrayIcon agentTrayIcon) {
         StopWatch stopWatch = new StopWatch();

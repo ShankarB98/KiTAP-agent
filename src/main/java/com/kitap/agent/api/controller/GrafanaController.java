@@ -23,8 +23,6 @@ import java.util.List;
 public class GrafanaController {
 
     private final ExecutedTestCaseRepository executedTestCaseRepository;
-
-
     @GetMapping()
     public List<ExecutedTestCase> getTestsResults() {
         return executedTestCaseRepository.findAll();
