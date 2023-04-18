@@ -10,6 +10,12 @@ import java.net.URI;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+/**
+ * This is the entity class of ApplicationUnderTest with fields like name, displayName,
+ *      description, url, executableFilePath, type of aut, version of aut, createdBy,
+ *      createdAt time, modifiedAt time, modifiedBy, isActive
+ * @author KT1450
+ */
 @Getter
 @Setter
 @ToString
@@ -24,16 +30,19 @@ public class ApplicationUnderTest {
     private String description;
     private URI url;
     private String executableFilePath;
-    //private Type type;
     private String type;
     private Integer version;
-    //private Long createdBy;
     private String createdBy;
     private ZonedDateTime createdAt;
     private Long modifiedBy;
     private ZonedDateTime modifiedAt;
     private Boolean isActive;
 
+    /**
+     * Compare and checks two objects are equal or not
+     * @param o input object
+     * @return true if two objects are same, else false
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -42,6 +51,10 @@ public class ApplicationUnderTest {
         return id != null && Objects.equals(id, that.id);
     }
 
+    /**
+     * getting the hashcode of an object
+     * @return value of hashcode
+     */
     @Override
     public int hashCode() {
         return getClass().hashCode();

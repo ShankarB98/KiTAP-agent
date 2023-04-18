@@ -1,7 +1,5 @@
 package com.kitap.agent.generate.flow;
 
-
-import com.kitap.agent.api.apicalls.ApiCalls;
 import com.kitap.agent.util.PropertyReaderHelper;
 import com.kitap.agent.generate.service.FindClassesFromJarService;
 import com.kitap.testresult.dto.agent.GenerationDetails;
@@ -12,18 +10,23 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
+/**
+ * Class contains functionality for generating the metadata from jar file
+ * @author KT1450
+ */
 @Slf4j
 public class MetaDataGenerator {
 
     final String separator = File.separator;
 
-    ApiCalls apiCalls = new ApiCalls();
-
+    /**
+     * Method generates the json data from jar file
+     * @param details GenerationDetails object
+     */
     public void generateMetaData(GenerationDetails details){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         log.info("generating metadata by using generation details as input");
-        //String qualifiedPath = properties.getProperty("destinationpath")+separator+details.getAutType()+separator+details.getAutName()+separator+details.getVersion()+separator+"target";
         String qualifiedPath = details.getProjectPath()+separator+"target";
         File [] jarFiles = new File(qualifiedPath).listFiles();
         File jarFile = null;
@@ -32,9 +35,6 @@ public class MetaDataGenerator {
                 if (file.getName().endsWith("-tests.jar")) {
                     jarFile = file;
                 }
-//                if (file.getName().endsWith("-jar-with-dependencies.jar")) {
-//                    details.setProjectPath(new File(file.getAbsolutePath()));
-//                }
             }
         }
 
@@ -50,7 +50,6 @@ public class MetaDataGenerator {
             jsonFile.createNewFile();
             Files.writeString(jsonFile.toPath(), result);
             log.info("metadata generation completed");
-            //apiCalls.saveJsonFileInServer(result);
         } catch (IOException e) {
             log.error(e.toString());
             throw new RuntimeException(e);
@@ -60,6 +59,11 @@ public class MetaDataGenerator {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
+    /**
+     * Generating the json file name
+     * @param details GenerationDetails object
+     * @return json file name
+     */
     private String generateJsonFileName(GenerationDetails details){
         log.info("generating json file name is returned from generateJsonFileName method");
         return PropertyReaderHelper.getProperty("destinationpath")+separator
@@ -67,17 +71,5 @@ public class MetaDataGenerator {
                             +details.getAutName()+separator
                             +details.getVersion()+separator
                             +details.getAutName()+".json";
-    }
-
-    private String formatJsonFileName(String jsonFileName){
-        if(jsonFileName.endsWith(".json")){
-            System.out.println("from if");
-            System.out.println(jsonFileName);
-            return jsonFileName;
-        }else{
-            System.out.println(jsonFileName);
-            System.out.println("from else");
-            return jsonFileName+".json";
-        }
     }
 }

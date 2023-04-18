@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * Controller for operating the execution of tests
  * @author  KT1450

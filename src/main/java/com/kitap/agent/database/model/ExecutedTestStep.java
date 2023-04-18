@@ -7,7 +7,12 @@ import org.hibernate.Hibernate;
 
 import java.time.ZonedDateTime;
 import java.util.Objects;
-
+/**
+ * This is the entity class of ExecutedTestStep with fields like testStepName,
+ *      testStepVersion, testStartedAt time, testFinishedAt time, result, errorDetails,
+ *      screenSnipPath
+ * @author KT1450
+ */
 @Getter
 @Setter
 @Entity
@@ -25,6 +30,11 @@ public class ExecutedTestStep {
     private String errorDetails;
     private String screenSnipPath;
 
+    /**
+     * Compare and checks two objects are equal or not
+     * @param o input object
+     * @return true if two objects are same, else false
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -33,6 +43,10 @@ public class ExecutedTestStep {
         return id != null && Objects.equals(id, that.id);
     }
 
+    /**
+     * getting the hashcode of an object
+     * @return value of hashcode
+     */
     @Override
     public int hashCode() {
         return getClass().hashCode();

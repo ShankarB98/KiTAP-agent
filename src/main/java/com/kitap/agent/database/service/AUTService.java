@@ -1,9 +1,9 @@
 package com.kitap.agent.database.service;
 
-import com.kitap.agent.util.PropertyReaderHelper;
 import com.kitap.agent.database.model.ApplicationUnderTest;
 import com.kitap.agent.database.repository.ApplicationUnderTestRepo;
 import com.kitap.agent.ui.machineInfo.MachineInformation;
+import com.kitap.agent.util.PropertyReaderHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;

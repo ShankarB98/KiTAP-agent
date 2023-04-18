@@ -11,12 +11,18 @@ import java.io.IOException;
 
 import static java.io.File.separator;
 
+/**
+ * Class contains functionality for checking, validating the project and describing the aut type
+ * @author KT1450
+ */
 @Slf4j
 public class ProjectValidator {
 
-    //String propertiesPath = reader.getProperty(ProjectType.TESTEXECUTION);
-
-    /** method for check project validation */
+    /**
+     * method for checking project validation
+     * @param projectPath path of the test project
+     * @return array with valid/invalid in zeroth index and aut type status value in first index
+     */
     public String[] check(File projectPath){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -47,6 +53,11 @@ public class ProjectValidator {
         return arr;
     }
 
+    /**
+     * Validating the test project with required structure for kitap
+     * @param projectPath path of the test project
+     * @return status message with what are the folders present in structure
+     */
     private String isValidProject(File projectPath){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -107,27 +118,11 @@ public class ProjectValidator {
         }
     }
 
-    private String isKiTAPProject(File pomFile){
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(pomFile));
-            String line;
-            String trimmedLine;
-            while ((line = reader.readLine()) != null) {
-                trimmedLine = line.trim();
-                if (trimmedLine.contains("<groupId>com.kitap.fw.core</groupId>")) {
-                    trimmedLine = trimmedLine.replace(" ", "");
-                    //if (trimmedLine.contains("<!--")) continue;
-                    return "it is kitap core project";
-                }
-            }
-        } catch (IOException ex) {
-            log.error(ex.toString());
-            throw new RuntimeException(ex);
-        }
-        projectAutType(pomFile);
-        return "it is not kitap project";
-    }
-
+    /**
+     * Checking for aut type of the project
+     * @param pomFile test project's pom.xml file
+     * @return if valid returns aut type else returns a message as invalid
+     */
     private String projectAutType(File pomFile){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -151,8 +146,6 @@ public class ProjectValidator {
             while ((line = reader.readLine()) != null) {
                 trimmedLine = line.trim();
                 if (trimmedLine.contains(KITAP_CORE)) {
-                    //trimmedLine = trimmedLine.replace(" ", "");
-                    //if (trimmedLine.contains("<!--")) continue;
                     isKitapCore = true;
                 }
                 if(trimmedLine.contains(GROUPID_WEB)){

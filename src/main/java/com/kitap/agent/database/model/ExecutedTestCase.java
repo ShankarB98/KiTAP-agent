@@ -1,6 +1,5 @@
 package com.kitap.agent.database.model;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +9,12 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+/**
+ * This is the entity class of ExecutedTestCase with fields like testCaseName, autName,
+ *      testCaseVersion, testCaseStartedAt time, testCaseFinishedAt time, result, browserName,
+ *      browserVersion, osName, osVersion, deviceType, cloudVendor
+ * @author KT1450
+ */
 @Getter
 @Setter
 @Entity
@@ -36,6 +40,11 @@ public class ExecutedTestCase {
     @JoinColumn(name = "testcase_id")
     private List<ExecutedTestStep> executedTestStepList = new ArrayList<>();
 
+    /**
+     * Compare and checks two objects are equal or not
+     * @param o input object
+     * @return true if two objects are same, else false
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -44,6 +53,10 @@ public class ExecutedTestCase {
         return id != null && Objects.equals(id, that.id);
     }
 
+    /**
+     * getting the hashcode of an object
+     * @return value of hashcode
+     */
     @Override
     public int hashCode() {
         return getClass().hashCode();

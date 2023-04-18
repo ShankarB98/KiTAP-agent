@@ -1,6 +1,5 @@
 package com.kitap.agent.generate.flow;
 
-
 import com.kitap.agent.util.PropertyReaderHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
@@ -11,12 +10,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
+/**
+ * Class contains functionality for the compilation and generating the jar file
+ * @author KT1450
+ */
 @Slf4j
 public class CompileAndGenerateJarFile {
 
     /**
      * method for compile project and package
-     * */
+     * @param projectDirectory project folder which has to be compiled and packaged
+     */
     public void compileAndPackage(File projectDirectory){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -26,22 +30,16 @@ public class CompileAndGenerateJarFile {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
-    private Process getProcessor(String[] commands, File directory){
-        Process process = null;
-        try {
-            process = Runtime.getRuntime().exec(commands,null, directory);
-        } catch (IOException e) {
-            log.error(e.toString());
-            throw new RuntimeException(e);
-        }
-        return process;
-    }
-
+    /**
+     * Getting processor by using list of properties and project folder
+     * @param properties list of properties
+     * @param directory project folder
+     */
     private void getProcessor(List<String> properties, File directory){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         log.info("getting processor by using properties and directory as inputs");
-        Process process = null;
+        Process process;
         for (String command: properties){
             try {
                 process = Runtime.getRuntime().exec(command,null, directory);
@@ -57,17 +55,10 @@ public class CompileAndGenerateJarFile {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
-    private Process getProcessor(String command, File directory){
-        Process process = null;
-        try {
-            process = Runtime.getRuntime().exec(command,null, directory);
-        } catch (IOException e) {
-            log.error(e.toString());
-            throw new RuntimeException(e);
-        }
-        return process;
-    }
-
+    /**
+     * Giving the reader process output with Process object as input
+     * @param process Process object
+     */
     private void processOutput(Process process){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -93,6 +84,10 @@ public class CompileAndGenerateJarFile {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
+    /**
+     * Throwing an error if process is not getting exit properly
+     * @param process input Process object
+     */
     private void throwError(Process process){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
