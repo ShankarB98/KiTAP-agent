@@ -13,32 +13,25 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.effect.BlurType;
-import javafx.scene.effect.InnerShadow;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.ToggleSwitch;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 import java.awt.*;
-import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -83,7 +76,6 @@ public class ExecuteMenu {
     public ComboBox<String> autType;
     @FXML
     public ToggleSwitch toggleSwitch;
-
     String[] supportingBrowsers = {reader.getProperty("chromebrowser"), reader.getProperty("edgebrowser"), reader.getProperty("firefoxbrowser")};
     @FXML
     public void initialize() {
