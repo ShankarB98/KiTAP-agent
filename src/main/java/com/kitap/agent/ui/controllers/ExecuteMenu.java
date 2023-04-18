@@ -154,6 +154,7 @@ public class ExecuteMenu {
         new Thread() {
             public void run() {
                 ObservableList<String> browsers = browserBox.getCheckModel().getCheckedItems();
+                log.info(browsers.toString());
                 if(autType.getValue()!=null&&executeAutCombo.getValue()!=null&&
                         versionCombo.getValue()!=null&&browsers.size()!=0) {
                         Platform.runLater(new Runnable() {
@@ -196,7 +197,7 @@ public class ExecuteMenu {
 
                     if (!toggleSwitch.isSelected()) {
                         log.info("sequential execution started");
-                        String[] browserArray = browsers.toArray(new String[browsers.size()]);
+                       String[] browserArray = browsers.toArray(new String[browsers.size()]);
                         for (String browser : browserArray) {
                             settingBrowserProperties(browser);
                             ExecutionAutDetails details = new ExecutionAutDetails();
@@ -285,6 +286,7 @@ public class ExecuteMenu {
     /**
      * For execution, AUT names will be updated based on AUT type selected
      */
+    @FXML
     public void onChangeOfAutType(ActionEvent actionEvent) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -315,7 +317,7 @@ public class ExecuteMenu {
 
     /**
      * For execution, setting the browser properties in test project dynamically with respect to selected browser
-     * @param browser
+     * @param browser selected browser as input
      */
     private void settingBrowserProperties(String browser){
         StopWatch stopWatch = new StopWatch();
@@ -332,15 +334,22 @@ public class ExecuteMenu {
                 properties.load(in);//loading the serenity.properties file
                 in.close();
 
-                if (browser == "edge") {
-                    properties.setProperty(reader.getProperty("propertykey"), browser);
-                    properties.setProperty(reader.getProperty("propertyvalue"), reader.getProperty("driverpath") + "msedgedriver.exe");
-                } else if (browser == "chrome") {
-                    properties.setProperty(reader.getProperty("propertykey"), browser);
-                    properties.setProperty(reader.getProperty("propertyvalue"), reader.getProperty("driverpath") + "chromedriver.exe");
-                } else if (browser == "firefox") {
-                    properties.setProperty(reader.getProperty("propertykey"), browser);
-                    properties.setProperty(reader.getProperty("propertyvalue"), reader.getProperty("driverpath") + "geckodriver.exe");
+                switch (browser) {
+                    case "edge" : {
+                        properties.setProperty(reader.getProperty("propertykey1"), browser);
+                        properties.setProperty(reader.getProperty("propertykey2"), reader.getProperty("driverpath") + "msedgedriver.exe");
+                        break;
+                    }
+                    case "chrome" : {
+                        properties.setProperty(reader.getProperty("propertykey1"), browser);
+                        properties.setProperty(reader.getProperty("propertykey2"), reader.getProperty("driverpath") + "chromedriver.exe");
+                        break;
+                    }
+                    case "firefox" : {
+                        properties.setProperty(reader.getProperty("propertykey1"), browser);
+                        properties.setProperty(reader.getProperty("propertykey2"), reader.getProperty("driverpath") + "geckodriver.exe");
+                        break;
+                    }
                 }
                 FileOutputStream out = new FileOutputStream(serenityPropertiesPath);
                 properties.store(out, null);
