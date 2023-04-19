@@ -32,9 +32,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Properties;
-
+enum ValidBrowsers{
+    CHROME,
+    EDGE,
+    FIREFOX
+}
 /**
  * @Author KT1497
  * @Description Controller class for executeMenu.fxml file,
@@ -76,7 +81,35 @@ public class ExecuteMenu {
     public ComboBox<String> autType;
     @FXML
     public ToggleSwitch toggleSwitch;
-    String[] supportingBrowsers = {reader.getProperty("chromebrowser"), reader.getProperty("edgebrowser"), reader.getProperty("firefoxbrowser")};
+
+    /**
+     * Validating the configured browsers and getting them to add in CheckComboBox of execution UI
+     * @return returns array of browsers if validation is success else return empty array
+     */
+    private String[] checkAndGetBrowsers(){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("checking the browsers entered from config file and getting them if validation successful");
+         String chromeBrowserProperty = reader.getProperty("chromebrowser");
+         String edgeBrowserProperty = reader.getProperty("edgebrowser");
+         String firefoxBrowserProperty = reader.getProperty("firefoxbrowser");
+        if((!chromeBrowserProperty.equalsIgnoreCase(ValidBrowsers.CHROME.name()))||
+                (!edgeBrowserProperty.equalsIgnoreCase(ValidBrowsers.EDGE.name()))||
+                (!firefoxBrowserProperty.equalsIgnoreCase(ValidBrowsers.FIREFOX.name()))){
+            log.info("Please check..Browsers are not entered properly");
+            stopWatch.stop();
+            log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                    " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
+            return new String[0];
+        }else{
+            String[] supportingBrowsers = {chromeBrowserProperty, edgeBrowserProperty, firefoxBrowserProperty};
+            log.info("returning the browsers after validating");
+            stopWatch.stop();
+            log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                    " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
+            return supportingBrowsers;
+        }
+    }
     @FXML
     public void initialize() {
         StopWatch stopWatch = new StopWatch();
@@ -85,7 +118,21 @@ public class ExecuteMenu {
         autType.getItems().removeAll(autType.getItems());
         autType.getItems().addAll(apiCalls.getAutTypes());
 
-        browserBox.getItems().addAll(supportingBrowsers);
+        if(checkAndGetBrowsers().length!=0) {
+            log.info(Arrays.toString(checkAndGetBrowsers()));
+            browserBox.getItems().addAll(checkAndGetBrowsers());
+            log.info("browsers added in CheckComboBox of execution UI");
+        }else{
+            Platform.runLater(() -> {
+                log.error("Error in configuring browsers");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Browser configuration error");
+                alert.setContentText("Browser may not be configured or empty.Please check!");
+                alert.showAndWait();
+                Stage execStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
+                execStage.close();
+            });
+        }
 
         log.info("method completed by updating AutTypes from api call in execution UI");
         stopWatch.stop();
