@@ -258,8 +258,8 @@ public class GenerateMenu {
                                 @Override
                                 public void handle(WindowEvent event) {
                                     event.consume();
-                                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                                    alert.setTitle("Error to close");
+                                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                    alert.setTitle("Unable to close");
                                     alert.setContentText("Not able to close the UI because generation is in process");
                                     alert.showAndWait();
                                 }

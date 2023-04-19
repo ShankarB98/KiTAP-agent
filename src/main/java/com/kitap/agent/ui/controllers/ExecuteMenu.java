@@ -32,13 +32,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Properties;
 enum ValidBrowsers{
     CHROME,
     EDGE,
-    FIREFOX
+    FIREFOX,
+    SAFARI
 }
 /**
  * @Author KT1497
@@ -84,28 +86,36 @@ public class ExecuteMenu {
 
     /**
      * Validating the configured browsers and getting them to add in CheckComboBox of execution UI
+     *
      * @return returns array of browsers if validation is success else return empty array
      */
-    private String[] checkAndGetBrowsers(){
+    private ArrayList<String> checkAndGetBrowsers(){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         log.info("checking the browsers entered from config file and getting them if validation successful");
-         String supportedBrowsers = reader.getProperty("supportedBrowsers");
+        ArrayList<String> validatedBrowsers = new ArrayList<>();
+        String supportedBrowsers = reader.getProperty("supportedBrowsers");
          if (null == supportedBrowsers || supportedBrowsers.trim().isEmpty()) {
              log.warn("Invalid supportedBrowsers config value.");
              stopWatch.stop();
              log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
                      " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
-             return new String[0];
+             return new ArrayList<>();
          }
-
         else{
-            String[] supportingBrowsers = supportedBrowsers.split(",");
+            String[] supportingBrowsers = supportedBrowsers.replaceAll("\\s","").split(",");
+             for(String browser : supportingBrowsers){
+                 if(Arrays.stream(ValidBrowsers.values()).anyMatch(b -> b.name().equals(browser.toUpperCase()))){
+                     validatedBrowsers.add(browser);
+                 }else{
+                     log.warn("{} is not a valid browser",browser);
+                 }
+             }
             log.info("returning the browsers after validating");
             stopWatch.stop();
             log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
                     " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
-            return supportingBrowsers;
+            return validatedBrowsers;
         }
     }
     @FXML
@@ -116,8 +126,8 @@ public class ExecuteMenu {
         autType.getItems().removeAll(autType.getItems());
         autType.getItems().addAll(apiCalls.getAutTypes());
 
-        if(checkAndGetBrowsers().length!=0) {
-            log.info(Arrays.toString(checkAndGetBrowsers()));
+        if(checkAndGetBrowsers().size()!=0) {
+            log.info(String.valueOf((checkAndGetBrowsers())));
             browserBox.getItems().addAll(checkAndGetBrowsers());
             log.info("browsers added in CheckComboBox of execution UI");
         }else{
@@ -125,7 +135,7 @@ public class ExecuteMenu {
                 log.error("Error in configuring browsers");
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Browser configuration error");
-                alert.setContentText("Browser may not be configured or empty.Please check!");
+                alert.setContentText("Browser(s) may not be configured or empty.Please check!");
                 alert.showAndWait();
                 Stage execStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
                 execStage.close();
@@ -201,8 +211,8 @@ public class ExecuteMenu {
                                     @Override
                                     public void handle(WindowEvent event) {
                                         event.consume();
-                                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                                        alert.setTitle("Error to close");
+                                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                        alert.setTitle("Unable to close");
                                         alert.setContentText("Not able to close the UI because execution is in process");
                                         alert.showAndWait();
                                     }
@@ -366,10 +376,9 @@ public class ExecuteMenu {
             log.info(serenityPropertiesPath);
 
             Properties properties = new Properties();
-            try {
-                FileInputStream in = new FileInputStream(serenityPropertiesPath);
+            try(FileInputStream in = new FileInputStream(serenityPropertiesPath)) {
+
                 properties.load(in);//loading the serenity.properties file
-                in.close();
 
                 switch (browser) {
                     case "edge" : {
@@ -388,9 +397,9 @@ public class ExecuteMenu {
                         break;
                     }
                 }
-                FileOutputStream out = new FileOutputStream(serenityPropertiesPath);
-                properties.store(out, null);
-                out.close();
+                try(FileOutputStream out = new FileOutputStream(serenityPropertiesPath)) {
+                    properties.store(out, null);
+                }
                 log.info("{} browser properties setting completed",browser);
             } catch (Exception e) {
                 log.error(e.toString());
