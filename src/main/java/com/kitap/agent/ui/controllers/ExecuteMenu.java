@@ -90,19 +90,17 @@ public class ExecuteMenu {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         log.info("checking the browsers entered from config file and getting them if validation successful");
-         String chromeBrowserProperty = reader.getProperty("chromebrowser");
-         String edgeBrowserProperty = reader.getProperty("edgebrowser");
-         String firefoxBrowserProperty = reader.getProperty("firefoxbrowser");
-        if((!chromeBrowserProperty.equalsIgnoreCase(ValidBrowsers.CHROME.name()))||
-                (!edgeBrowserProperty.equalsIgnoreCase(ValidBrowsers.EDGE.name()))||
-                (!firefoxBrowserProperty.equalsIgnoreCase(ValidBrowsers.FIREFOX.name()))){
-            log.info("Please check..Browsers are not entered properly");
-            stopWatch.stop();
-            log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
-                    " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
-            return new String[0];
-        }else{
-            String[] supportingBrowsers = {chromeBrowserProperty, edgeBrowserProperty, firefoxBrowserProperty};
+         String supportedBrowsers = reader.getProperty("supportedBrowsers");
+         if (null == supportedBrowsers || supportedBrowsers.trim().isEmpty()) {
+             log.warn("Invalid supportedBrowsers config value.");
+             stopWatch.stop();
+             log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                     " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
+             return new String[0];
+         }
+
+        else{
+            String[] supportingBrowsers = supportedBrowsers.split(",");
             log.info("returning the browsers after validating");
             stopWatch.stop();
             log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
