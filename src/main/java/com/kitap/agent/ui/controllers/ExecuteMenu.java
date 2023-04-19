@@ -205,8 +205,8 @@ public class ExecuteMenu {
                     Stage exeStage = (Stage) executeTestsAnchorPane.getScene().getWindow();
                     exeStage.setOnCloseRequest(event -> {
                         event.consume();
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error to close");
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Unable to close");
                         alert.setContentText("Not able to close the UI because execution is in process");
                         alert.showAndWait();
                     });
