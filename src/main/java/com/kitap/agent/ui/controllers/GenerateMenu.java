@@ -227,45 +227,16 @@ public class GenerateMenu {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         log.info("clicked on GenerateTests button from generation UI");
-        new Thread() {
-            public void run() {
-                if(autCombo.getValue()!=null) {
-                    Platform.runLater(new Runnable() {
-                        public void run() {
-                            Stage genStage = (Stage) anchorPane.getScene().getWindow();
-                            genStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                                @Override
-                                public void handle(WindowEvent event) {
-                                    event.consume();
-                                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                    alert.setTitle("Unable to close");
-                                    alert.setContentText("Not able to close the UI because generation is in process");
-                                    alert.showAndWait();
-                                }
-                            });
-                            //Giving GeneratingTests Status and disabling contextmenu Items
-                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(generatingColour));
-                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setText("Generating Tests");
-                            for (int i = 1; i <= AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().size() - 1; i++) {
-                                AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(i).setDisable(true);
-                            }
-                            //Progress Indicator
-                            generateTestsProgressIndicator.setVisible(true);
-
-                            //Blinking Text
-                            FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), generatingBlinkLabel);
-                            fadeTransition.setFromValue(1.0);
-                            fadeTransition.setToValue(0.0);
-                            fadeTransition.setCycleCount(Animation.INDEFINITE);
-                            fadeTransition.play();
-                            generatingBlinkLabel.setVisible(true);
-
-                            //Disabling all the buttons in UI Page
-                            browseButton.setDisable(true);
-                            createAutButton.setDisable(true);
-                            generateTestsButton.setDisable(true);
-                            cancelButton.setDisable(true);
-                        }
+        new Thread(() -> {
+            if(autCombo.getValue()!=null) {
+                Platform.runLater(() -> {
+                    Stage genStage = (Stage) anchorPane.getScene().getWindow();
+                    genStage.setOnCloseRequest(event -> {
+                        event.consume();
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Unable to close");
+                        alert.setContentText("Not able to close the UI because generation is in process");
+                        alert.showAndWait();
                     });
                     //Giving GeneratingTests Status and disabling contextmenu Items
                     AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(generatingColour));
@@ -357,11 +328,11 @@ public class GenerateMenu {
                 if (checker[0].equals("invalid")) {
                     Platform.runLater(
                             () -> {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Invalid Project");
-                    alert.setContentText("Please select valid project");
-                    alert.showAndWait();
-                    log.error("invalid project");
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Invalid Project");
+                                alert.setContentText("Please select valid project");
+                                alert.showAndWait();
+                                log.error("invalid project");
 
                                 autTypeResult.setText("Invalid");
                                 createAutButton.setDisable(true);
