@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.CheckComboBox?>
+<?import org.controlsfx.control.ToggleSwitch?>
 
-<AnchorPane fx:id="executeTestsAnchorPane" prefHeight="268.0" prefWidth="416.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kitap.agent.ui.controllers.ExecuteMenu">
+<AnchorPane fx:id="executeTestsAnchorPane" prefHeight="280.0" prefWidth="416.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kitap.agent.ui.controllers.ExecuteMenu">
    <children>
       <Label layoutX="73.0" layoutY="14.0" prefHeight="39.0" prefWidth="256.0" text="Execute KiTAP Tests" textFill="#096eb6">
          <font>
@@ -31,7 +38,7 @@
             <Font size="13.0" />
          </font>
       </Label>
-      <Button fx:id="viewTestResults" layoutX="150.0" layoutY="236.0" mnemonicParsing="false" onAction="#displayTestResults" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: #096eb6;" text="View Tests Results" textFill="WHITE">
+      <Button fx:id="viewTestResults" layoutX="150.0" layoutY="242.0" mnemonicParsing="false" onAction="#displayTestResults" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: #096eb6;" text="View Tests Results" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -43,7 +50,7 @@
             </InnerShadow>
          </effect>
       </Button>
-      <Button fx:id="cancelButton" layoutX="22.0" layoutY="236.0" mnemonicParsing="false" onAction="#cancelClicked" prefHeight="25.0" prefWidth="111.0" style="-fx-background-color: #de3c27;" text="Cancel" textFill="WHITE">
+      <Button fx:id="cancelButton" layoutX="22.0" layoutY="242.0" mnemonicParsing="false" onAction="#cancelClicked" prefHeight="25.0" prefWidth="111.0" style="-fx-background-color: #de3c27;" text="Cancel" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -55,7 +62,7 @@
             </InnerShadow>
          </effect>
       </Button>
-      <Button fx:id="executeTestButton" layoutX="284.0" layoutY="236.0" mnemonicParsing="false" onAction="#testExecution" prefHeight="25.0" prefWidth="111.0" style="-fx-background-color: #096eb6;" text="Execute Tests" textFill="WHITE">
+      <Button fx:id="executeTestButton" layoutX="286.0" layoutY="242.0" mnemonicParsing="false" onAction="#testExecution" prefHeight="25.0" prefWidth="111.0" style="-fx-background-color: #096eb6;" text="Execute Tests" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -67,15 +74,23 @@
             </InnerShadow>
          </effect>
       </Button>
-      <ComboBox fx:id="executeAutCombo" layoutX="21.0" layoutY="146.0" onAction="#onAutSelection" prefHeight="25.0" prefWidth="375.0" />
-      <ProgressIndicator fx:id="executeTestsProgressIndicator" layoutX="185.0" layoutY="128.0" visible="false" />
-      <Label fx:id="blinkLabel" layoutX="310.0" layoutY="259.0" text="Executing..." visible="false" />
+      <ComboBox fx:id="executeAutCombo" layoutX="22.0" layoutY="148.0" onAction="#onAutSelection" prefHeight="25.0" prefWidth="171.0" />
+      <ProgressIndicator fx:id="executeTestsProgressIndicator" layoutX="183.0" layoutY="134.0" visible="false" />
+      <Label fx:id="blinkLabel" layoutX="312.0" layoutY="265.0" prefHeight="10.0" prefWidth="59.0" text="Executing..." visible="false" />
       <Label layoutX="22.0" layoutY="78.0" text="Select AUT Type:">
          <font>
             <Font size="13.0" />
          </font>
       </Label>
       <ComboBox fx:id="autType" layoutX="21.0" layoutY="96.0" onAction="#onChangeOfAutType" prefHeight="25.0" prefWidth="375.0" />
+      <Label layoutX="21.0" layoutY="183.0" text="Select Browser:">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <CheckComboBox fx:id="browserBox" layoutX="22.0" layoutY="203.0" prefHeight="25.0" prefWidth="287.0" />
+      <ToggleSwitch fx:id="toggleSwitch" layoutX="362.0" layoutY="207.0" prefHeight="18.0" prefWidth="33.0" />
+      <Label layoutX="322.0" layoutY="207.0" text="Parallel" />
    </children>
    <effect>
       <Blend />

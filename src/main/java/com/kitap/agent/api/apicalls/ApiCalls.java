@@ -28,7 +28,7 @@ public class ApiCalls extends BaseApiCall {
         stopWatch.start();
         log.info("amIRegistered apicall started");
         macAddress = macAddress.replace(" ", "%20");
-        baseUrl = baseServerUrl+ PropertyReaderHelper.getProperty("am.i.registered") + "?macAddress=" + macAddress + "";
+        baseUrl = baseServerUrl+ PropertyReaderHelper.getProperty("am.i.registered") + macAddress + "";
         log.info("mac address {}", macAddress);
         log.info("api call url {}", baseUrl);
         getResponse(macAddress, HttpMethod.GET);
@@ -71,7 +71,7 @@ public class ApiCalls extends BaseApiCall {
         stopWatch.start();
         log.info("deRegister apicall started");
         macAddress = macAddress.replace(" ", "%20");
-        baseUrl = baseServerUrl+ PropertyReaderHelper.getProperty("agent.deregister") + "?macAddress=" + macAddress + "";
+        baseUrl = baseServerUrl+ PropertyReaderHelper.getProperty("agent.deregister") + macAddress + "";
         getResponse(macAddress, HttpMethod.PUT);
         log.info(String.valueOf(responseBody.getStatusCode()));
         log.info("deRegister apicall completed with returning boolean");

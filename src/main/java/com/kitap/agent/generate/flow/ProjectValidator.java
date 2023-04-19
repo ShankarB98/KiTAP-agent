@@ -31,8 +31,7 @@ public class ProjectValidator {
         log.info("value at"+value);
         String [] arr = new String[2];
         switch (value) {
-            case "main and test java does not exists":
-            case "main and test java exists but not required packages":
+            case "main, test directories and serenity properties file  does not exists":
             case "pom file does not exists":
             case "it is not a valid kitap project":
                 log.info(value);
@@ -66,29 +65,9 @@ public class ProjectValidator {
 
         File subDirMain = new File(dir, PropertyReaderHelper.getProperty("mainapplicationpath"));
         File subDirTest = new File(dir, PropertyReaderHelper.getProperty("testapplicationpath"));
-        File subDirTestResources = new File(dir,PropertyReaderHelper.getProperty("testresourcespath"));
-        if(subDirMain.isDirectory()&&subDirTest.isDirectory()&&subDirTestResources.isDirectory()){
-            log.info("main and test directories are present in project");
-
-            File testCaseDir = new File(subDirTest, PropertyReaderHelper.getProperty("testcasespackage"));
-            File stepsDir = new File(subDirTest, PropertyReaderHelper.getProperty("stepspackage"));
-            File pagesDir = new File(subDirTest, PropertyReaderHelper.getProperty("pagespackage"));
-            File utilitiesDir = new File(subDirTest, PropertyReaderHelper.getProperty("utilitiespackage"));
-            File baseDir = new File(subDirTest, PropertyReaderHelper.getProperty("basepackage"));
-
-            File driversDir = new File(subDirTestResources + separator + "drivers");
-            File testDataDir = new File(subDirTestResources + separator + "testdata");
-            File healeniumPropertiesFile = new File(subDirTestResources + separator + "healenium.properties");
-            File serenityPropertiesFile = new File(dir + separator + "serenity.properties");
-            File kairosLogoOnSerenityName = new File(dir + separator + "serenity-logo.png");
-
-
-            if(testCaseDir.isDirectory()&&stepsDir.isDirectory()&&
-                    pagesDir.isDirectory()&&utilitiesDir.isDirectory()&&baseDir.isDirectory()&&
-                    driversDir.isDirectory()&&testDataDir.isDirectory()&&healeniumPropertiesFile.exists()&&
-                    serenityPropertiesFile.exists()&&kairosLogoOnSerenityName.exists()) {
-                log.info("All the specified packages and files are present");
-
+        File serenityPropertiesFile = new File(dir + separator + "serenity.properties");
+        if(subDirMain.isDirectory()&&subDirTest.isDirectory()&&serenityPropertiesFile.exists()){
+            log.info("main, test directories and serenity properties file are present in project");
                 File pomFile = new File(dir + separator + "pom.xml");
                 if (pomFile.exists()) {
                     stopWatch.stop();
@@ -103,18 +82,11 @@ public class ProjectValidator {
                             " method is " + String.format("%.2f", stopWatch.getTotalTimeSeconds()) + " seconds");
                     return "pom file does not exists";
                 }
-            } else {
-                stopWatch.stop();
-                log.info("Execution time for " + new Object() {
-                }.getClass().getEnclosingMethod().getName() +
-                        " method is " + String.format("%.2f", stopWatch.getTotalTimeSeconds()) + " seconds");
-                return "main and test java exists but not required packages";
-            }
-        }else{
+            } else{
             stopWatch.stop();
             log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
                     " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
-            return "main and test java does not exists";
+            return "main, test directories and serenity properties file  does not exists";
         }
     }
 
