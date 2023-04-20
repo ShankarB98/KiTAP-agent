@@ -9,11 +9,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Class containing all the functions performed with files and folders
+ * @author KT1450
+ */
 @Slf4j
 public class FileOperations {
 
     final String separator = File.separator;
 
+    /**
+     * Getting list of folders from the input path
+     * @param path path from which we need to get folders
+     * @return array of folders
+     */
     public String[] getListOfFolders(String path){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -35,6 +44,11 @@ public class FileOperations {
         }
     }
 
+    /**
+     * Getting list of folders from the array of folders as input
+     * @param folders list of file objects
+     * @return array of auts
+     */
     private String[] getListOfFolders(File [] folders){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -52,12 +66,11 @@ public class FileOperations {
         return autsList.toArray(result);
     }
 
-    /** creates a folder at specified path*/
-    public boolean createFolder(String autType, String autName){
-        String finalPath = PropertyReaderHelper.getProperty("destinationpath")+separator+autType+separator+autName;
-        return createNewFolder(finalPath);
-    }
-
+    /**
+     * creating new folder at input path
+     * @param path path where new folder have to create
+     * @return false if folder exists else create the new folders and returns true
+     */
     private boolean createNewFolder(String path){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -76,6 +89,11 @@ public class FileOperations {
         return file.mkdir();
     }
 
+    /**
+     * Creating aut folder using autName and autType as inputs
+     * @param autName name of the AUT
+     * @param autType type of AUT
+     */
     public void createAut(String autName, String autType){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();

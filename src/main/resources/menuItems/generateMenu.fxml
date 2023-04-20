@@ -8,7 +8,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="anchorPane" onMouseClicked="#onClickAnchorPane" prefHeight="263.0" prefWidth="419.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kitap.agent.ui.controllers.GenerateMenu">
+<AnchorPane fx:id="anchorPane" prefHeight="263.0" prefWidth="419.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kitap.agent.ui.controllers.GenerateMenu">
     <children>
         <Label fx:id="generateTitle" layoutX="73.0" layoutY="14.0" prefHeight="39.0" prefWidth="256.0" text="Generate KiTAP Tests" textFill="#096eb6">
             <font>

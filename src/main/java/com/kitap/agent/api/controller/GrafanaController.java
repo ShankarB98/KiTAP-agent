@@ -16,27 +16,29 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+/**
+ * Controller class for grafana
+ * @author KT1505
+ */
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/executed-testcases")
 public class GrafanaController {
-
     private final ExecutedTestCaseRepository executedTestCaseRepository;
-
-
     @GetMapping()
     public List<ExecutedTestCase> getTestsResults() {
         return executedTestCaseRepository.findAll();
     }
 
     /**
-     * @Description returns list test result tables
+     * Method returns list test result tables
      * @param autName aut name
      * @param testCaseVersion aut version
      * @param fromTime range of time start time
      * @param toTime range of end time
-     * */
+     * @return list of testResultTable objects
+     */
     @GetMapping("/table/{autName}/{testCaseVersion}/{fromTime}/{toTime}")
     public List<TestResultTable> getTestsResultsTable(@PathVariable String autName, @PathVariable Integer testCaseVersion, @PathVariable ZonedDateTime fromTime, @PathVariable ZonedDateTime toTime) {
         System.out.println("TestTest");
@@ -50,31 +52,33 @@ public class GrafanaController {
     }
 
     /**
-     * @Description returns list of aut's those linked with executed test cases
-     * */
+     * Method returns list of aut's those linked with executed test cases
+     * @return list of aut names
+     */
     @GetMapping("/aut")
     public List<String> getAuts() {
         return executedTestCaseRepository.getAllAUTNames();
     }
 
-
     /**
-     * @Description returns list of versions those linked with executed test cases
+     * Method returns list of versions those linked with executed test cases
      * @param autName aut name
-     * */
+     * @return list of all versions of an aut
+     */
     @GetMapping("/version/{autName}")
     public List<Integer> getVersions(@PathVariable String autName) {
         return executedTestCaseRepository.getAllVersions(autName);
     }
 
     /**
-     * @Description returns list test result tables of time response
+     * Method returns list test result tables of time response
      * @param autName aut name
      * @param result result of test case
      * @param testCaseVersion aut version
      * @param fromTime range of time start time
      * @param toTime range of end time
-     * */
+     * @return list of testCaseTimeResponse objects
+     */
     @GetMapping("/countByTimeForResult/{autName}/{result}/{testCaseVersion}/{fromTime}/{toTime}")
     public List<TestCaseTimeResponse> countByTimeForResult(@PathVariable String autName, @PathVariable String result, @PathVariable Integer testCaseVersion, @PathVariable ZonedDateTime fromTime, @PathVariable ZonedDateTime toTime) {
         ZonedDateTime from = fromTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
@@ -83,13 +87,14 @@ public class GrafanaController {
     }
 
     /**
-     * @Description returns list test result tables of count response
+     * Method returns list test result tables of count response
      * @param autName aut name
      * @param result result of test case
      * @param testCaseVersion aut version
      * @param fromTime range of time start time
      * @param toTime range of end time
-     * */
+     * @return list of testCaseCountResponse objects
+     */
     @GetMapping("/countByName/{autName}/{result}/{testCaseVersion}/{fromTime}/{toTime}")
     public List<TestCaseCountResponse> countByName(@PathVariable String autName, @PathVariable String result, @PathVariable Integer testCaseVersion, @PathVariable ZonedDateTime fromTime, @PathVariable ZonedDateTime toTime) {
 
@@ -100,12 +105,13 @@ public class GrafanaController {
     }
 
     /**
-     * @Description returns list test result tables of time response
+     * Method returns list test result tables of time response
      * @param autName aut name
      * @param testCaseVersion aut version
      * @param fromTime range of time start time
      * @param toTime range of end time
-     * */
+     * @return list of testCaseTimeResponse objects
+     */
     @GetMapping("/countByTime/{autName}/{testCaseVersion}/{fromTime}/{toTime}")
     public List<TestCaseTimeResponse> countByTime(@PathVariable String autName, @PathVariable Integer testCaseVersion, @PathVariable ZonedDateTime fromTime, @PathVariable ZonedDateTime toTime) {
 
@@ -114,4 +120,3 @@ public class GrafanaController {
         return executedTestCaseRepository.countByTime(autName, testCaseVersion, from, to);
     }
 }
-

@@ -9,29 +9,27 @@ import org.springframework.util.StopWatch;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * This class identifies aut type and initiates the tests' execution accordingly by processing inputs
+ * @author KT1450
+ */
 @Slf4j
 public class TestRunner {
-
-    /**
-     * This class identifies aut type and initiates the tests' execution accordingly by processing inputs
-     * */
-
     final String separator = File.separator;
     private final ExecutionAutDetails executionDetails;
 
     /**
      * Used class level variable to hold execution detail object
-     * That was done by using constructor
-     * */
+     * that was done by using constructor
+     */
     public TestRunner(ExecutionAutDetails executionDetails){
         this.executionDetails = executionDetails;
     }
 
     /**
-     * @Description  invokes the test cases' execution process and returns test result
+     * Method invokes the test cases' execution process and returns test result
      * @return a list of executed test cases results
-     * */
+     */
     public List<ExecutedTestCase> executeTests(){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -59,7 +57,6 @@ public class TestRunner {
                 break;
         }
 
-        //TODO
         Reports reports = new Reports();
         reports.changeLogo(executionPath);
         log.info("execution completed with returning list of executedtestcase objects");

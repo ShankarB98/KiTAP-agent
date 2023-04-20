@@ -1,31 +1,32 @@
 package com.kitap.agent.execute;
 
-import com.kitap.agent.util.PropertyReader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Date;
 
 import static java.io.File.separator;
+
+/**
+ * Class used to change logo and name for the reports
+ * @author KT1450
+ */
 @Slf4j
 public class Reports {
-
-        public void changeLogo(String path) {
+    /**
+     * Method which is used to change the logo in the report
+     * @param path source path of the logo
+     */
+     public void changeLogo(String path) {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             log.info("changing the logo in report");
             try {
                 File src = new File(path + separator + "serenity-logo.png");
-                //final URL kairosLogo = this.getClass().getResource("/images/serenity-logo.png");
-                //final String kairosLogo = System.getProperty("user.dir")+"\\src\\main\\resources\\images\\serenity-logo.png";
-                //System.out.println(kairosLogo.toString());
-                //File src = new File(kairosLogo.getFile());
                 File dest = new File(path + separator + "target" + separator + "site" + separator + "serenity" + separator + "images" + separator + "serenity-logo.png");
 
                 long Old = dest.lastModified();
@@ -43,19 +44,16 @@ public class Reports {
                     System.out.println(Diff);
                     count = count + 1;
                     System.out.println(count);
-                   /* if(count > 100){
-                        break;
-                    }*/
                 }
 
                 dest.delete();
                 Files.copy(src.toPath(), dest.toPath());
 
-                //String reportFilePath = path + separator + "target" + separator + "site" + separator + "serenity" + separator + "index.html";
                 String reportFilePath = path + separator + "target" + separator + "site" + separator + "serenity";
 
                 File[] files = new File(reportFilePath).listFiles();
 
+                assert files != null;
                 for(File file: files){
                     if(file.getName().endsWith("html")){
                         changeName(file.getAbsolutePath());
@@ -72,8 +70,11 @@ public class Reports {
 
         }
 
-
-        private void changeName(String reportFilePath){
+    /**
+     * Method used to change the name of the report
+     * @param reportFilePath path of the report
+     */
+    private void changeName(String reportFilePath){
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             log.info("changing the name by using reportFilePath as input");
@@ -105,6 +106,4 @@ public class Reports {
                 throw new RuntimeException(e);
             }
         }
-
-
 }

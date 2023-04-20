@@ -9,11 +9,19 @@ import java.time.ZonedDateTime;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Class contains functionality for giving all the details of jar
+ * @author KT1450
+ */
 @Slf4j
 public class JarDetailsService {
 
 
-    /** generates basic details about jar file */
+    /**
+     * Method generates basic details about jar file
+     * @param aut AUT object
+     * @param jarFile jarfile as File object
+     */
     public void getMetaData(AUT aut, File jarFile){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();

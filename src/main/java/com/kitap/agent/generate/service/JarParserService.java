@@ -1,7 +1,5 @@
 package com.kitap.agent.generate.service;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.kitap.agent.util.PropertyReader;
 import com.kitap.testresult.dto.agent.GenerationDetails;
 import com.kitap.testresult.dto.generate.Clazz;
@@ -25,30 +23,32 @@ import java.util.zip.ZipEntry;
 
 import static java.util.Arrays.stream;
 
+/**
+ * Class used for the parsing of jar file to json
+ * @author KT1450
+ */
 @Slf4j
 public class JarParserService{
-
     URL[] urls;
     URLClassLoader urlClassLoader;
-
     ClassPool cp = new ClassPool();
-
     private HashSet<String> listOfClasses = new HashSet<>();
     private Set<Class<?>> listOfTestClasses;
     private Long version;
 
     private PropertyReader reader = new PropertyReader();
 
-
     /**
      * method which provides all the info about classes and packages of jar
+     * @param jarFile jar file with class data
+     * @param details GenerationDetails object
+     * @return list of Clazz objects
      */
     public List<Clazz> getAllClassData(File jarFile, GenerationDetails details) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         log.info("method getAllClassData started with jarfile and generationdetails");
         try {
-            //String jarsPath = reader.getProperty("destinationpath") + File.separator + details.getAutType() + File.separator + details.getAutName() + File.separator + details.getVersion() + File.separator + "target" + File.separator + "test-jars";
             String jarsPath = details.getProjectPath().getAbsolutePath()+ File.separator + "target" + File.separator + "test-jars";
             File jarDir = new File(jarsPath);
             File[] jarFiles = jarDir.listFiles((dir, name) -> name.endsWith(".jar"));
@@ -64,7 +64,7 @@ public class JarParserService{
             cp.insertClassPath(jarFile.getAbsolutePath());
             this.version = details.getVersion();
         } catch (IOException e) {
-            //log.error(e.toString());
+            log.error(e.toString());
             throw new RuntimeException(e);
         } catch (NotFoundException e) {
             throw new RuntimeException(e);
@@ -76,6 +76,11 @@ public class JarParserService{
         return scanJar(jarFile);
     }
 
+    /**
+     * Method scans the input jar file
+     * @param jarFile jar file to be scanned
+     * @return list of Clazz objects
+     */
     private List<Clazz> scanJar(File jarFile) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -84,7 +89,7 @@ public class JarParserService{
         try {
             jar = new JarFile(jarFile);
         } catch (IOException e) {
-            //log.error(e.toString());
+            log.error(e.toString());
             throw new RuntimeException(e);
         }
         Enumeration<? extends JarEntry> enumeration = jar.entries();
@@ -92,12 +97,12 @@ public class JarParserService{
             ZipEntry zipEntry = enumeration.nextElement();
             String name = zipEntry.getName();
 
-            /** adding all class names*/
+            // adding all class names
             if (name.endsWith(".class")) {
                 listOfClasses.add(name);
             }
         }
-        filterTestClasses1();
+        filterTestClasses();
         log.info("scanning the jar completed with returning list of clazz objects");
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
@@ -106,23 +111,9 @@ public class JarParserService{
     }
 
     /**
-     * the following method filters and provides the classes of test cases
+     * Filtering the test classes present in the jar file
      */
     private void filterTestClasses() {
-        HashSet<Class<?>> classes = new HashSet<>();
-        for (String clazz : listOfClasses) {
-            String className = clazz.replaceAll("/", ".").replaceAll(".class", "");
-            try {
-                classes.add(urlClassLoader.loadClass(className));
-            } catch (ClassNotFoundException e) {
-                //log.error(e.toString());
-                throw new RuntimeException(e);
-            }
-        }
-        listOfTestClasses = classes.stream().filter(this::hasMethodWithTestAnnotation).collect(Collectors.toSet());
-    }
-
-    private void filterTestClasses1() {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         log.info("filtering test classes");
@@ -145,6 +136,7 @@ public class JarParserService{
 
     /**
      * getting list of all classes info
+     * @return list of Clazz objects
      */
     private List<Clazz> constructClazzObjects() {
         StopWatch stopWatch = new StopWatch();
@@ -163,6 +155,8 @@ public class JarParserService{
 
     /**
      * getting single class object
+     * @param clazz Class object
+     * @return Clazz object
      */
     private Clazz getClassObject(Class<?> clazz) {
         StopWatch stopWatch = new StopWatch();
@@ -183,20 +177,22 @@ public class JarParserService{
 
     /**
      * getting all the required method formats
+     * @param clazz Class object
+     * @return list of Step objects
      */
     private List<Step> constructStepsFromTestMethod(Class<?> clazz) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         log.info("constructing steps from test method by using clazz object as input");
-        /** getting declared fields and finding which are steps fields */
+        //getting declared fields and finding which are steps fields
         Field[] declaredFields = clazz.getDeclaredFields();
         List<String> stepFieldTypes = new ArrayList<>();
         for (Field field : declaredFields) {
-            if (isStepFiled(field))
+            if (isStepField(field))
                 stepFieldTypes.add(field.getType().getName());
         }
 
-        /** getting single test method which annotated with @Test */
+        // getting single test method which annotated with @Test
         java.lang.reflect.Method testMethod = null;
         for (java.lang.reflect.Method method : clazz.getDeclaredMethods()) {
             if (isTestMethod(method))
@@ -205,7 +201,7 @@ public class JarParserService{
         assert testMethod != null;
         log.info("constructed steps from test method are returned as list");
 
-        /** constructing steps for each test script */
+        // constructing steps for each test script
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
@@ -214,6 +210,10 @@ public class JarParserService{
 
     /**
      * constructing steps of a single test method
+     * @param stepFieldTypes list of step field types
+     * @param className name of the class
+     * @param methodName name of the method
+     * @return list of step objects
      */
     private List<Step> constructSteps(List<String> stepFieldTypes, String className, String methodName) {
         StopWatch stopWatch = new StopWatch();
@@ -235,17 +235,23 @@ public class JarParserService{
         return finalSteps;
     }
 
+    /**
+     * getting steps of a test method
+     * @param className name of the class
+     * @param methodName name of the method
+     * @return list of step objects
+     */
     private List<Step> getSteps(String className, String methodName) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        CtClass ctClass = null;
+        CtClass ctClass;
         List<Step> steps = new ArrayList<>();
         try {
             ctClass = cp.get(className);
             CtMethod method = ctClass.getDeclaredMethod(methodName);
             method.instrument(
                     new ExprEditor() {
-                        public void edit(MethodCall m) throws CannotCompileException {
+                        public void edit(MethodCall m) {
                             String name = m.getMethodName();
                             Step step = new Step();
                             step.setName(name);
@@ -263,37 +269,39 @@ public class JarParserService{
         return steps;
     }
 
-
     /**
-     * getting all the annotations on methods
+     * Checking whether test annotation present at method level
+     * @param testClass test Class object
+     * @return true if present else false
      */
-    /*private List<Annotation> getAnnotations(java.lang.reflect.Method[] methods){
-        List<Annotation> annotations = new ArrayList<>();
-        for (java.lang.reflect.Method method: methods) {
-            java.lang.annotation.Annotation[] arr = method.getAnnotations();
-            if (arr.length > 1){
-                Annotation annoBean = new Annotation();
-                for(java.lang.annotation.Annotation anno:  arr){
-                    annoBean.setName(anno.toString());
-                    annoBean.setMethodName(method.getName());
-                    annotations.add(annoBean);
-                }
-            }
-        }
-        return annotations;
-    }*/
     private boolean hasMethodWithTestAnnotation(final Class<?> testClass) {
         return stream(testClass.getDeclaredMethods()).anyMatch(this::isTestMethod);
     }
 
+    /**
+     * Checking input method is test method or not
+     * @param method Method object
+     * @return true if test method else false
+     */
     private boolean isTestMethod(final java.lang.reflect.Method method) {
         return containsAnnotationCalled(method.getAnnotations(), "Test");
     }
 
-    private boolean isStepFiled(final Field field) {
+    /**
+     * Checking input field is step field or not
+     * @param field Field object
+     * @return true if field else false
+     */
+    private boolean isStepField(final Field field) {
         return containsAnnotationCalled(field.getAnnotations(), "Steps");
     }
 
+    /**
+     * Checking for called annotation
+     * @param annotations array of annotations
+     * @param annotationName name of the annotation
+     * @return true if matched else false
+     */
     private boolean containsAnnotationCalled(java.lang.annotation.Annotation[] annotations, String annotationName) {
         return stream(annotations).anyMatch(annotation -> annotation.annotationType().getSimpleName().equals(annotationName));
     }

@@ -4,6 +4,11 @@ import lombok.Data;
 
 import java.time.ZonedDateTime;
 
+/**
+ * AgentDto class include all the fields related to
+ *                  system in which agent is running
+ * @author KT1450
+ */
 @Data
 public class AgentDto {
     private String name;

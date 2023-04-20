@@ -10,22 +10,19 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
+/**
+ * All the api call methods are defined here by extending BaseApiCall class
+ * @author KT1450
+ */
 @Component
 @Slf4j
 public class ApiCalls extends BaseApiCall {
 
-    public boolean isActive(String macAddress) {
-        macAddress = macAddress.replace(" ", "%20");
-        baseUrl = baseServerUrl+ PropertyReaderHelper.getProperty("agent.inactive") + "?macAddress=" + macAddress + "";
-        getResponse(macAddress, HttpMethod.POST);
-        return Boolean.TRUE.equals(responseBody.getBody());
-    }
-
     /**
-     * @Description api call to know agent is registered or not
+     * Api call to know agent is registered or not
      * @param macAddress unique physical address of system which cannot change
-     * @return boolean
-     * */
+     * @return boolean whether agent is registered or not
+     */
     public boolean amIRegistered(String macAddress) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -44,10 +41,10 @@ public class ApiCalls extends BaseApiCall {
     }
 
     /**
-     * @Description Performs action to register agent
+     * Performs action to register agent
      * @param agentDto contains all agent details
-     * @return boolean
-     * */
+     * @return boolean to know whether the registration is successful or not
+     */
     public boolean register(AgentDto agentDto, String agentRegistrationKey) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -65,10 +62,10 @@ public class ApiCalls extends BaseApiCall {
     }
 
     /**
-     * @Description Performs action to deregister agent
+     * Performs action to deregister agent
      * @param macAddress unique physical address of system which cannot change
-     * @return boolean
-     * */
+     * @return boolean to know whether the deregistration is successful or not
+     */
     public boolean deRegister(String macAddress) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -85,57 +82,10 @@ public class ApiCalls extends BaseApiCall {
     }
 
     /**
-     * @Description Performs action to shut down agent
-     * @param macAddress unique physical address of system which cannot change
-     * @return boolean
-     * */
-    public boolean quit(String macAddress) {
-        macAddress = macAddress.replace(" ", "%20");
-        baseUrl = baseServerUrl+ PropertyReaderHelper.getProperty("quitApi") + "?macAddress=" + macAddress + "";
-        getResponse(macAddress, HttpMethod.GET);
-        return Boolean.TRUE.equals(responseBody.getBody());
-    }
-
-    /**
-     * @Description Performs action to save AUT in server
-     * @param details AUT Object
-     * @return String
-     * */
-    public String saveAutInServer(ApplicationUnderTest details){
-        baseUrl = baseServerUrl+ PropertyReaderHelper.getProperty("saveAutInServer");
-        getResponse(details);
-        return (String) responseBody.getBody();
-    }
-
-    /**
-     * @Description returns list of aut under an aut type from server
-     * @param autType aut type
-     * @return String []
-     * */
-    public String[] getAllAUTFromServer(String autType) {
-        autType = autType.replace(" ", "%20");
-        baseUrl = baseServerUrl+ PropertyReaderHelper.getProperty("getListOfAUT") + "?autType=" + autType + "";
-        getResponse(autType);
-        return (String[]) responseBody.getBody();
-    }
-
-    /**
-     * @Description saves generated json for test cases data in server
-     * @param jsonData json data
-     * */
-    public void saveJsonFileInServer(String jsonData){
-        baseUrl = baseServerUrl+ PropertyReaderHelper.getProperty("saveJson");
-        saveJson(jsonData);
-    }
-    public void getJsonFileInServer(String jsonData){
-        baseUrl = baseServerUrl+ PropertyReaderHelper.getProperty("getJsonFileFromServer");
-        saveJson(jsonData);
-    }
-
-    /**
-     * @Description saves aut in in-memory data base
+     * saves aut in an in-memory database
      * @param details aut object
-     * */
+     * @return responsebody aut
+     */
     private String saveAUT(ApplicationUnderTest details) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -149,12 +99,11 @@ public class ApiCalls extends BaseApiCall {
         return (String) responseBody.getBody();
     }
 
-
     /**
-     * @Description returns list of aut under an aut type from in-memory database
+     * Method returns list of aut under an aut type from in-memory database
      * @param autType aut type
-     * @return String []
-     * */
+     * @return String [] array of auts
+     */
     public String[] getAllAUT(String autType) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -170,9 +119,9 @@ public class ApiCalls extends BaseApiCall {
     }
 
     /**
-     * @Description executes the test cases
+     * Method executes the test cases
      * @param details execution details object
-     * */
+     */
     public void executeTests(ExecutionAutDetails details){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -187,11 +136,11 @@ public class ApiCalls extends BaseApiCall {
     }
 
     /**
-     * @Description saves the aut with specified name and type
+     * Method saves the aut with specified name and type
      * @param autName - The name of the AUT.
      * @param autType - The type of the AUT.
      * @return A string representing the result of saving the AUT.
-     * */
+     */
     public String saveAUT(String autName, String autType) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -205,9 +154,9 @@ public class ApiCalls extends BaseApiCall {
     }
 
     /**
-     * @Description returns list of aut types from in-memory database
+     * Method returns list of aut types from in-memory database
      * @return A String array representing list of aut types
-     * */
+     */
     public String[] getAutTypes(){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();

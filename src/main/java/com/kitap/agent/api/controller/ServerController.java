@@ -11,20 +11,24 @@ import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+
+/**
+ * Controller class for server
+ * @author KT1450
+ */
 @Slf4j
 @RestController
 @RequestMapping("/v1")
 public class ServerController {
-
     @Autowired
     ExecutedTestCaseRepository executedTestCaseRepository;
-
     final FileOperations operations = new FileOperations();
 
     /**
-     * @Description executes the test cases and saves that result into database
+     * Method executes the test cases and saves that result into database
      * @param details execution detail object
-     * */
+     * @return String - saved to database
+     */
     @PostMapping("/executeTests")
     public String execute(@RequestBody ExecutionAutDetails details) {
         StopWatch stopWatch = new StopWatch();
@@ -41,11 +45,11 @@ public class ServerController {
     }
 
     /**
-     * @Description returns list of versions
+     * Method returns list of versions
      * @param autName aut name
      * @param autType aut type
-     * @return String[]
-     * */
+     * @return String[] - array of aut versions
+     */
     @GetMapping("/getVersions")
     public String[] getVersions(@RequestParam String autType, @RequestParam String autName){
         autType = autType.replace("%20", " ");

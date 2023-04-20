@@ -11,10 +11,19 @@ import org.springframework.util.StopWatch;
 import java.io.File;
 import java.util.List;
 
+/**
+ * Class contains the functionality for finding the classes from the jar file
+ * @author KT1450
+ */
 @Slf4j
 public class FindClassesFromJarService {
 
-    /** parse the jar file and generates the data */
+    /**
+     * parse the jar file and generates the data
+     * @param jarFile jarFile as File object
+     * @param details GenerationDetails object
+     * @return json format after parsing the jar
+     */
     public String parseJar(File jarFile, GenerationDetails details){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();

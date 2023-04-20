@@ -8,11 +8,20 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Class contains logic which validates the jar file
+ * @author KT1497
+ */
 @Slf4j
-public class JarValidator /*extends BaseClass*/ {
+public class JarValidator  {
 
-
-    /** checks a jar file is valid or not */
+    /**
+     * checks a jar file is valid or not
+     * @param name name of the jar file
+     * @param path path of the jar file
+     * @return true if valid else false
+     * @throws IOException exception by exec method, readLine method
+     */
     public boolean isJarValid(String name, String path) throws IOException {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();

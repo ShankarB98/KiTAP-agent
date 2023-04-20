@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
 
 /**
+ * To check the platform of the system
  * @author KT1497
  */
 @Slf4j
@@ -17,7 +18,6 @@ public final class PlatformUtil {
 
     /**
      * Check if the Current Platform is Windows
-     *
      * @return boolean
      */
     public static boolean isWindow() {
@@ -32,7 +32,6 @@ public final class PlatformUtil {
 
     /**
      * Check if the Current Platform is MacOS
-     *
      * @return boolean
      */
     public static boolean isMac() {
@@ -47,7 +46,6 @@ public final class PlatformUtil {
 
     /**
      * Check if the Current Platform is Linux
-     *
      * @return boolean
      */
     public static boolean isLinux() {
@@ -60,5 +58,4 @@ public final class PlatformUtil {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return os.contains("nix") || os.contains("nux") || os.indexOf("aix") > 0;
     }
-
 }
