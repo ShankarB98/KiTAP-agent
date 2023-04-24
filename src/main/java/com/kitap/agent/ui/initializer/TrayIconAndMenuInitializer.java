@@ -2,12 +2,18 @@ package com.kitap.agent.ui.initializer;
 
 import com.kitap.agent.ui.menuitem.actions.ContextMenuItemsAction;
 import com.kitap.agent.ui.tray.AgentTrayIcon;
+import com.kitap.agent.ui.tray.ServerCheck;
+import com.kitap.agent.util.PropertyReaderHelper;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 import java.awt.*;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.util.concurrent.*;
 
 /**
  *Initializing the TrayIcon adding and ContextMenu with MenuItem Actions
@@ -28,22 +34,60 @@ public class TrayIconAndMenuInitializer {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         AgentTrayIcon agentTrayIcon = new AgentTrayIcon();
+        String serverUrl = PropertyReaderHelper.getProperty("server.base.url");
+        String serverAddress = serverUrl.substring(7,serverUrl.lastIndexOf(":"));
+        int serverPort = Integer.parseInt(serverUrl.substring(serverUrl.lastIndexOf(":")+1,serverUrl.length()-1));
 
-        log.info("calling method to create and add agentTrayicon");
-        oldIconWithMenu = agentTrayIcon.createAndAddAgentTrayIconWithMenuToTray();
+        try (Socket socket = new Socket()){
 
-        log.info("calling methods for all menuitem actions");
-        registerOnAction(stage, agentTrayIcon);
-        deRegisterOnAction(agentTrayIcon);
-        generateOnAction(stage, agentTrayIcon);
-        restartOnAction(agentTrayIcon);
-        quitOnAction(agentTrayIcon);
-        executeOnAction(stage, agentTrayIcon);
+            socket.connect(new InetSocketAddress(serverAddress,serverPort), 3000);
+            log.info("Server is up!");
+
+            PropertyReaderHelper.updatePropertyValue(false);
+            log.info(PropertyReaderHelper.getProperty("isServerLess"));
+            log.info("calling method to create and add agentTrayicon");
+            oldIconWithMenu = agentTrayIcon.createAndAddAgentTrayIconWithMenuToTray();
+        } catch (Exception e){
+            log.info("Server is down or unreachable!");
+
+            PropertyReaderHelper.updatePropertyValue(true);
+            log.info(PropertyReaderHelper.getProperty("isServerLess"));
+            log.info("calling method to create and add agentTrayicon");
+            oldIconWithMenu = agentTrayIcon.createAndAddAgentTrayIconWithMenuToTray();
+            agentTrayIcon.getIcon().displayMessage("Server Down.","Server is not Reachable.", TrayIcon.MessageType.INFO);
+            e.printStackTrace();
+        }
+
+        Platform.runLater(() -> {
+            log.info("calling methods for all menuitem actions");
+            registerOnAction(stage, agentTrayIcon);
+            deRegisterOnAction(agentTrayIcon);
+            generateOnAction(stage, agentTrayIcon);
+            restartOnAction(agentTrayIcon);
+            quitOnAction(agentTrayIcon);
+            executeOnAction(stage, agentTrayIcon);
+        });
+
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
 
+    /**
+     * Method used to update the trayicon and its menu based on server status
+     * @param serverStatus status of the server whether it is reachable or not
+     */
+    public static void serverUpdate(Boolean serverStatus){
+
+        if(serverStatus){
+            PropertyReaderHelper.updatePropertyValue(false);
+            log.info(PropertyReaderHelper.getProperty("isServerLess"));
+        }else {
+            PropertyReaderHelper.updatePropertyValue(true);
+            log.info(PropertyReaderHelper.getProperty("isServerLess"));
+        }
+        Platform.runLater(()->updateMenu(new Stage()));
+    }
     /**
      * Removing the old trayicon menu and updating the Trayicon Menu
      * @param stage JavaFX UI stage
@@ -61,12 +105,14 @@ public class TrayIconAndMenuInitializer {
         oldIconWithMenu = agentTrayIcon.changeAndAddAgentTrayIconWithMenuToTray();
 
         log.info("calling methods for all menuitem actions");
-        registerOnAction(stage, agentTrayIcon);
-        deRegisterOnAction(agentTrayIcon);
-        generateOnAction(stage, agentTrayIcon);
-        restartOnAction(agentTrayIcon);
-        quitOnAction(agentTrayIcon);
-        executeOnAction(stage, agentTrayIcon);
+        Platform.runLater(() -> {
+            registerOnAction(stage, agentTrayIcon);
+            deRegisterOnAction(agentTrayIcon);
+            generateOnAction(stage, agentTrayIcon);
+            restartOnAction(agentTrayIcon);
+            quitOnAction(agentTrayIcon);
+            executeOnAction(stage, agentTrayIcon);
+        });
 
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+

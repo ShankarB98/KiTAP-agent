@@ -1,7 +1,9 @@
 package com.kitap.agent.ui.initializer;
 
 import com.kitap.agent.KitapAgentApplication;
+import com.kitap.agent.ui.tray.ServerCheck;
 import com.kitap.agent.util.PropertyReader;
+import com.kitap.agent.util.PropertyReaderHelper;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -11,6 +13,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.StopWatch;
 
 import java.io.File;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Class that extends Application class to implement JavaFX features and initializes the SpringBoot Application
@@ -64,6 +68,20 @@ public class AgentFxApplication extends Application {
         log.info("KiTAP folder present in ProgramData folder of C drive");
         log.info("Calling method to start addition of trayicon and menu");
         TrayIconAndMenuInitializer.startTrigger(stage);
+
+        log.info("Separate thread executor to check the server status");
+        String serverUrl = PropertyReaderHelper.getProperty("server.base.url");
+        String serverAddress = serverUrl.substring(7,serverUrl.lastIndexOf(":"));
+        int serverPort = Integer.parseInt(serverUrl.substring(serverUrl.lastIndexOf(":")+1,serverUrl.length()-1));
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        ServerCheck checker = new ServerCheck(serverAddress,serverPort,3000);
+        executor.submit(checker);
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");

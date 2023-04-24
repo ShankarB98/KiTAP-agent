@@ -62,8 +62,8 @@ public class AgentTrayIcon {
         Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/images/kitapTrayIcon.png"));
 
         icon = new AddEffectsToMenuAndMenuItems(image, menu);
-        addMenuToTrayIcon();
         addAgentTrayIconToTray("Agent is Starting", "Please Wait!!", TrayIcon.MessageType.NONE);
+        addMenuToTrayIcon();
         log.info("Added Trayicon along with menu to system tray and returning that icon");
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
@@ -124,7 +124,7 @@ public class AgentTrayIcon {
         ApiCalls apiCalls = new ApiCalls();
 
         String serverCheck = PropertyReaderHelper.getProperty("isServerLess");
-        Boolean serverLess = Boolean.parseBoolean(serverCheck);
+        boolean serverLess = Boolean.parseBoolean(serverCheck);
 
         if (serverLess) {
             log.info("Menu for serverless is adding");
@@ -135,35 +135,35 @@ public class AgentTrayIcon {
             menu.getItems().add(seperatorLine);
             menu.getItems().add(quit);
         } else {
-            log.info("Menu for server is adding");
-            log.info("calling api to know registration status of agent");
-            boolean isRegistered = apiCalls.amIRegistered(PropertyReaderHelper.machineInformation.macAddress);
-            log.info("Registration status of agent is {}", isRegistered);
-            if (!isRegistered) {
-                log.info("Menu if agent is - Not Registered");
-                //remove
-                menu.getItems().remove(deRegister);
-                //add
-                menu.getItems().add(runStatus);
-                menu.getItems().add(register);
-                menu.getItems().add(generateTests);
-                menu.getItems().add(executeTests);
-                menu.getItems().add(reStart);
-                menu.getItems().add(seperatorLine);
-                menu.getItems().add(quit);
-            } else {
-                log.info("Menu if agent is - Registered");
-                //remove
-                menu.getItems().remove(register);
-                //add
-                menu.getItems().add(runStatus);
-                menu.getItems().add(generateTests);
-                menu.getItems().add(executeTests);
-                menu.getItems().add(deRegister);
-                menu.getItems().add(reStart);
-                menu.getItems().add(seperatorLine);
-                menu.getItems().add(quit);
-            }
+                log.info("Menu for server is adding");
+                log.info("calling api to know registration status of agent");
+                boolean isRegistered = apiCalls.amIRegistered(PropertyReaderHelper.machineInformation.macAddress);
+                log.info("Registration status of agent is {}", isRegistered);
+                if (!isRegistered) {
+                    log.info("Menu if agent is - Not Registered");
+                    //remove
+                    menu.getItems().remove(deRegister);
+                    //add
+                    menu.getItems().add(runStatus);
+                    menu.getItems().add(register);
+                    menu.getItems().add(generateTests);
+                    menu.getItems().add(executeTests);
+                    menu.getItems().add(reStart);
+                    menu.getItems().add(seperatorLine);
+                    menu.getItems().add(quit);
+                } else {
+                    log.info("Menu if agent is - Registered");
+                    //remove
+                    menu.getItems().remove(register);
+                    //add
+                    menu.getItems().add(runStatus);
+                    menu.getItems().add(generateTests);
+                    menu.getItems().add(executeTests);
+                    menu.getItems().add(deRegister);
+                    menu.getItems().add(reStart);
+                    menu.getItems().add(seperatorLine);
+                    menu.getItems().add(quit);
+                }
         }
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+

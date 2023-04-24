@@ -67,4 +67,8 @@ public class PropertyReaderHelper {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return properties;
     }
+
+    public static String updatePropertyValue(boolean value){
+        return (String) properties.setProperty("isServerLess", String.valueOf(value));
+    }
 }
