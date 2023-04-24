@@ -13,7 +13,8 @@ import org.springframework.util.StopWatch;
 import java.awt.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  *Initializing the TrayIcon adding and ContextMenu with MenuItem Actions
@@ -38,19 +39,20 @@ public class TrayIconAndMenuInitializer {
         String serverAddress = serverUrl.substring(7,serverUrl.lastIndexOf(":"));
         int serverPort = Integer.parseInt(serverUrl.substring(serverUrl.lastIndexOf(":")+1,serverUrl.length()-1));
 
+        //Initial server status checking
         try (Socket socket = new Socket()){
 
             socket.connect(new InetSocketAddress(serverAddress,serverPort), 3000);
             log.info("Server is up!");
 
-            PropertyReaderHelper.updatePropertyValue(false);
+            PropertyReaderHelper.updateIsServerLessPropertyValue(false);//update isServerLess property in config file with false
             log.info(PropertyReaderHelper.getProperty("isServerLess"));
             log.info("calling method to create and add agentTrayicon");
             oldIconWithMenu = agentTrayIcon.createAndAddAgentTrayIconWithMenuToTray();
         } catch (Exception e){
-            log.info("Server is down or unreachable!");
+            log.info("Server is down or unreachable.");
 
-            PropertyReaderHelper.updatePropertyValue(true);
+            PropertyReaderHelper.updateIsServerLessPropertyValue(true);//update isServerLess property in config file with true
             log.info(PropertyReaderHelper.getProperty("isServerLess"));
             log.info("calling method to create and add agentTrayicon");
             oldIconWithMenu = agentTrayIcon.createAndAddAgentTrayIconWithMenuToTray();
@@ -78,15 +80,21 @@ public class TrayIconAndMenuInitializer {
      * @param serverStatus status of the server whether it is reachable or not
      */
     public static void serverUpdate(Boolean serverStatus){
-
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        log.info("Updating the IsServerLess property based on input serverStatus");
         if(serverStatus){
-            PropertyReaderHelper.updatePropertyValue(false);
+            PropertyReaderHelper.updateIsServerLessPropertyValue(false);
             log.info(PropertyReaderHelper.getProperty("isServerLess"));
         }else {
-            PropertyReaderHelper.updatePropertyValue(true);
+            PropertyReaderHelper.updateIsServerLessPropertyValue(true);
             log.info(PropertyReaderHelper.getProperty("isServerLess"));
         }
+        log.info("Updating the menu as per server status");
         Platform.runLater(()->updateMenu(new Stage()));
+        stopWatch.stop();
+        log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
+                " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
     }
     /**
      * Removing the old trayicon menu and updating the Trayicon Menu
