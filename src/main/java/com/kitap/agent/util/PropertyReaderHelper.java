@@ -67,4 +67,12 @@ public class PropertyReaderHelper {
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");
         return properties;
     }
+
+    /**
+     * Method will update the isserverless property value with given input
+     * @param value value of the property to be updated
+     */
+    public static void updateIsServerLessPropertyValue(boolean value){
+         properties.setProperty("isServerLess", String.valueOf(value));
+    }
 }
