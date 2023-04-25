@@ -55,14 +55,18 @@ public class ServerCheck implements Runnable {
                         log.info("Server is up and running.");
                         if(!isUp){
                             log.info("On change of server status, shows an information message.");
-                            JOptionPane.showMessageDialog(new JFrame(),"Server is UP");
+                            final JDialog dialog = new JDialog();
+                            dialog.setAlwaysOnTop(true);
+                            JOptionPane.showMessageDialog(dialog,"Server is UP");
                         }
                         isUp = true;
                 } catch (Exception e){
                         log.info("Server is down or unreachable.");
                         if(isUp){
                             log.info("On change of server status, shows an information message.");
-                            JOptionPane.showMessageDialog(new JFrame(),"Server is DOWN");
+                            final JDialog dialog = new JDialog();
+                            dialog.setAlwaysOnTop(true);
+                            JOptionPane.showMessageDialog(dialog,"Server is DOWN");
                         }
                         isUp = false;
                     e.printStackTrace();

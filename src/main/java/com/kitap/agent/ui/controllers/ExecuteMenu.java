@@ -360,24 +360,7 @@ public class ExecuteMenu {
         try(FileInputStream in = new FileInputStream(serenityPropertiesPath)) {
 
             properties.load(in);//loading the serenity.properties file
-
-            switch (browser) {
-                case "edge" : {
-                    properties.setProperty(reader.getProperty("propertykey1"), browser);
-                    properties.setProperty(reader.getProperty("propertykey2"), reader.getProperty("driverpath") + "msedgedriver.exe");
-                    break;
-                }
-                case "chrome" : {
-                    properties.setProperty(reader.getProperty("propertykey1"), browser);
-                    properties.setProperty(reader.getProperty("propertykey2"), reader.getProperty("driverpath") + "chromedriver.exe");
-                    break;
-                }
-                case "firefox" : {
-                    properties.setProperty(reader.getProperty("propertykey1"), browser);
-                    properties.setProperty(reader.getProperty("propertykey2"), reader.getProperty("driverpath") + "geckodriver.exe");
-                    break;
-                }
-            }
+            properties.setProperty(reader.getProperty("browserPropertyKey"), browser);
             try(FileOutputStream out = new FileOutputStream(serenityPropertiesPath)) {
                 properties.store(out, null);
             }
