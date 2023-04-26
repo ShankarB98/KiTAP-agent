@@ -20,7 +20,7 @@ public class ServerCheck implements Runnable {
     private final String serverAddress;
     private final int port;
     private final int timeout;
-    static boolean isUp;
+    static boolean isUp = true;
 
     /**
      * Constructor to assign values to instance variables
@@ -55,14 +55,18 @@ public class ServerCheck implements Runnable {
                         log.info("Server is up and running.");
                         if(!isUp){
                             log.info("On change of server status, shows an information message.");
-                            JOptionPane.showMessageDialog(new JFrame(),"Server is UP");
+                            final JDialog dialog = new JDialog();
+                            dialog.setAlwaysOnTop(true);
+                            JOptionPane.showMessageDialog(dialog,"Successfully connected to KiTAP Server.");
                         }
                         isUp = true;
                 } catch (Exception e){
                         log.info("Server is down or unreachable.");
                         if(isUp){
                             log.info("On change of server status, shows an information message.");
-                            JOptionPane.showMessageDialog(new JFrame(),"Server is DOWN");
+                            final JDialog dialog = new JDialog();
+                            dialog.setAlwaysOnTop(true);
+                            JOptionPane.showMessageDialog(dialog,"Failed to connect to KiTAP server. Will try again in a while");
                         }
                         isUp = false;
                     e.printStackTrace();
