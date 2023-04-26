@@ -66,7 +66,7 @@ public class ServerCheck implements Runnable {
                             log.info("On change of server status, shows an information message.");
                             final JDialog dialog = new JDialog();
                             dialog.setAlwaysOnTop(true);
-                            JOptionPane.showMessageDialog(dialog,"Failed to connect to server. Will try again in a while");
+                            JOptionPane.showMessageDialog(dialog,"Failed to connect to KiTAP server. Will try again in a while");
                         }
                         isUp = false;
                     e.printStackTrace();
