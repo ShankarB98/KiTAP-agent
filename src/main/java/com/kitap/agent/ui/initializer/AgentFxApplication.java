@@ -68,20 +68,6 @@ public class AgentFxApplication extends Application {
         log.info("KiTAP folder present in ProgramData folder of C drive");
         log.info("Calling method to start addition of trayicon and menu");
         TrayIconAndMenuInitializer.startTrigger(stage);
-
-        try {
-            Thread.sleep(8000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        log.info("Separate thread executor to check the server status");
-        String serverUrl = PropertyReaderHelper.getProperty("server.base.url");
-        String serverAddress = serverUrl.substring(7,serverUrl.lastIndexOf(":"));
-        int serverPort = Integer.parseInt(serverUrl.substring(serverUrl.lastIndexOf(":")+1,serverUrl.length()-1));
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        ServerCheck checker = new ServerCheck(serverAddress,serverPort,3000);
-        executor.submit(checker);
-
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
                 " method is "+String.format("%.2f",stopWatch.getTotalTimeSeconds())+" seconds");

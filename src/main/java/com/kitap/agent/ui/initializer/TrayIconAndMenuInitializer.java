@@ -10,7 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
@@ -34,6 +37,7 @@ public class TrayIconAndMenuInitializer {
     public static void startTrigger(Stage stage) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
+        boolean initialServerStatus;
         AgentTrayIcon agentTrayIcon = new AgentTrayIcon();
         String serverUrl = PropertyReaderHelper.getProperty("server.base.url");
         String serverAddress = serverUrl.substring(7,serverUrl.lastIndexOf(":"));
@@ -49,14 +53,18 @@ public class TrayIconAndMenuInitializer {
             log.info(PropertyReaderHelper.getProperty("isServerLess"));
             log.info("calling method to create and add agentTrayicon");
             oldIconWithMenu = agentTrayIcon.createAndAddAgentTrayIconWithMenuToTray();
+            initialServerStatus=true;
         } catch (Exception e){
             log.info("Server is down or unreachable.");
 
+            initialServerStatus=false;
             PropertyReaderHelper.updateIsServerLessPropertyValue(true);//update isServerLess property in config file with true
             log.info(PropertyReaderHelper.getProperty("isServerLess"));
             log.info("calling method to create and add agentTrayicon");
             oldIconWithMenu = agentTrayIcon.createAndAddAgentTrayIconWithMenuToTray();
-            agentTrayIcon.getIcon().displayMessage("Server Down.","Server is not Reachable.", TrayIcon.MessageType.INFO);
+            final JDialog dialog = new JDialog();
+            dialog.setAlwaysOnTop(true);
+            JOptionPane.showMessageDialog(dialog,"Failed to connect to KiTAP server. Will try again in a while");
             e.printStackTrace();
         }
 
@@ -69,6 +77,15 @@ public class TrayIconAndMenuInitializer {
             quitOnAction(agentTrayIcon);
             executeOnAction(stage, agentTrayIcon);
         });
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        log.info("Separate thread executor to check the server status");
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        ServerCheck checker = new ServerCheck(serverAddress,serverPort,3000,initialServerStatus);
+        executor.submit(checker);
 
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
