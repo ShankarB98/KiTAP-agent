@@ -228,83 +228,92 @@ public class GenerateMenu {
         stopWatch.start();
         log.info("clicked on GenerateTests button from generation UI");
         new Thread(() -> {
-            if(autCombo.getValue()!=null) {
-                Platform.runLater(() -> {
-                    Stage genStage = (Stage) anchorPane.getScene().getWindow();
-                    genStage.setOnCloseRequest(event -> {
-                        event.consume();
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Unable to close");
-                        alert.setContentText("Not able to close the UI because generation is in process");
-                        alert.showAndWait();
+            if(selectedDir.exists()) {
+                if (autCombo.getValue() != null) {
+                    Platform.runLater(() -> {
+                        Stage genStage = (Stage) anchorPane.getScene().getWindow();
+                        genStage.setOnCloseRequest(event -> {
+                            event.consume();
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Unable to close");
+                            alert.setContentText("Not able to close the UI because generation is in process");
+                            alert.showAndWait();
+                        });
+                        //Giving GeneratingTests Status and disabling contextmenu Items
+                        AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(generatingColour));
+                        AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setText("Generating Tests");
+                        for (int i = 1; i <= AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().size() - 1; i++) {
+                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(i).setDisable(true);
+                        }
+                        //JavaFX UI Progress Indicator
+                        generateTestsProgressIndicator.setVisible(true);
+
+                        //JavaFX UI Blinking Text
+                        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), generatingBlinkLabel);
+                        fadeTransition.setFromValue(1.0);
+                        fadeTransition.setToValue(0.0);
+                        fadeTransition.setCycleCount(Animation.INDEFINITE);
+                        fadeTransition.play();
+                        generatingBlinkLabel.setVisible(true);
+
+                        //Disabling all the buttons in UI Page
+                        browseButton.setDisable(true);
+                        createAutButton.setDisable(true);
+                        generateTestsButton.setDisable(true);
+                        cancelButton.setDisable(true);
                     });
-                    //Giving GeneratingTests Status and disabling contextmenu Items
-                    AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(generatingColour));
-                    AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setText("Generating Tests");
-                    for (int i = 1; i <= AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().size() - 1; i++) {
-                        AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(i).setDisable(true);
-                    }
-                    //JavaFX UI Progress Indicator
-                    generateTestsProgressIndicator.setVisible(true);
 
-                    //JavaFX UI Blinking Text
-                    FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), generatingBlinkLabel);
-                    fadeTransition.setFromValue(1.0);
-                    fadeTransition.setToValue(0.0);
-                    fadeTransition.setCycleCount(Animation.INDEFINITE);
-                    fadeTransition.play();
-                    generatingBlinkLabel.setVisible(true);
+                    //setting the details for tests generation
+                    GenerationDetails details = new GenerationDetails();
+                    details.setProjectPath(selectedDir);
+                    details.setAutName(autCombo.getValue());
+                    details.setAutType(autTypeResult.getText());
+                    details.setCreateNewVersion(true);
+                    details.setPublishToServer(false);
+                    log.info(details.getAutName());
+                    Validator validator = new Validator();
+                    log.info("compiling and packaging the test project");
+                    validator.compileAndPackage(selectedDir);
+                    log.info("Copying the files");
+                    String version = validator.copyFiles(details);
+                    details.setVersion(Long.parseLong(version));
+                    log.info("Generating...");
+                    new Generator().generate(details);
 
-                    //Disabling all the buttons in UI Page
-                    browseButton.setDisable(true);
-                    createAutButton.setDisable(true);
-                    generateTestsButton.setDisable(true);
-                    cancelButton.setDisable(true);
-                });
+                    log.info("Generation Completed");
 
-                //setting the details for tests generation
-                GenerationDetails details = new GenerationDetails();
-                details.setProjectPath(selectedDir);
-                details.setAutName(autCombo.getValue());
-                details.setAutType(autTypeResult.getText());
-                details.setCreateNewVersion(true);
-                details.setPublishToServer(false);
-                log.info(details.getAutName());
-                Validator validator = new Validator();
-                log.info("compiling and packaging the test project");
-                validator.compileAndPackage(selectedDir);
-                log.info("Copying the files");
-                String version = validator.copyFiles(details);
-                details.setVersion(Long.parseLong(version));
-                log.info("Generating...");
-                new Generator().generate(details);
+                    Platform.runLater(() -> {
+                        //Enabling all the contextmenu Items
+                        AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(agentRunningColour));
+                        AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setText("Agent is running");
+                        for (int i = 1; i <= AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().size() - 1; i++) {
+                            AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(i).setDisable(false);
+                        }
+                        generateTestsProgressIndicator.setVisible(false); //stopping progressIndicator
+                        generatingBlinkLabel.setVisible(false);// stopping Blinking Text
 
-                log.info("Generation Completed");
-
-                Platform.runLater(() -> {
-                    //Enabling all the contextmenu Items
-                    AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setGraphic(new ImageView(agentRunningColour));
-                    AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(0).setText("Agent is running");
-                    for (int i = 1; i <= AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().size() - 1; i++) {
-                        AddEffectsToMenuAndMenuItems.button.getContextMenu().getItems().get(i).setDisable(false);
-                    }
-                    generateTestsProgressIndicator.setVisible(false); //stopping progressIndicator
-                    generatingBlinkLabel.setVisible(false);// stopping Blinking Text
-
-                    //Closing Stage after process completion
-                    Stage generateStage = (Stage) anchorPane.getScene().getWindow();
-                    generateStage.close();
-                    log.info("closed the generation UI");
-                    generateStage.setOnCloseRequest(event -> generateStage.close());
-                });
-            }
-            else{
+                        //Closing Stage after process completion
+                        Stage generateStage = (Stage) anchorPane.getScene().getWindow();
+                        generateStage.close();
+                        log.info("closed the generation UI");
+                        generateStage.setOnCloseRequest(event -> generateStage.close());
+                    });
+                } else {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("No AUT selected");
+                        alert.setContentText("Please select AUT");
+                        alert.showAndWait();
+                        log.error("No AUT selected");
+                    });
+                }
+            }else{
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("No AUT selected");
-                    alert.setContentText("Please select AUT");
+                    alert.setTitle("Directory Path Invalid");
+                    alert.setContentText("Selected project directory does not exist.");
                     alert.showAndWait();
-                    log.error("No AUT selected");
+                    log.error("Invalid test project directory.");
                 });
             }
         }).start();
