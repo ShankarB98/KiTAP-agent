@@ -66,6 +66,7 @@ public class GenerateMenu {
     private Button cancelButton;
     @FXML
     private Label autTypeResult;
+    Stage openedStage;
 
     /**
      * Functionality to be performed on initialization of generation UI
@@ -127,6 +128,9 @@ public class GenerateMenu {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         log.info("clicked on CreateNewAut button from generation UI");
+        if(openedStage!=null){
+            openedStage.close();
+        }
         Stage newAutStage = new Stage();
         Group root = new Group();
         Scene scene = new Scene(root);
@@ -195,6 +199,7 @@ public class GenerateMenu {
 
         newAutStage.setScene(scene);
         newAutStage.show();
+        openedStage = newAutStage;
         log.info("New AUT UI is shown");
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+

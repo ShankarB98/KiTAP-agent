@@ -1,6 +1,7 @@
 package com.kitap.agent.ui.menuitem.actions;
 
 import com.kitap.agent.api.apicalls.ApiCalls;
+import com.kitap.agent.ui.initializer.AgentFxApplication;
 import com.kitap.agent.util.PropertyReaderHelper;
 import com.kitap.agent.ui.initializer.TrayIconAndMenuInitializer;
 import com.kitap.agent.ui.tray.AgentTrayIcon;
@@ -174,7 +175,8 @@ public class ContextMenuItemsAction {
             log.error(e.toString());
             throw new RuntimeException(e);
         }
-        TrayIconAndMenuInitializer.startTrigger(new Stage());
+        AgentFxApplication agentFxApplication = new AgentFxApplication();
+        agentFxApplication.start(new Stage());
         log.info("agent restarted");
         stopWatch.stop();
         log.info("Execution time for "+new Object(){}.getClass().getEnclosingMethod().getName()+
